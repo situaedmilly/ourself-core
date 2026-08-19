@@ -1,0 +1,68 @@
+# OURSELF EVENT · Addressable Claim · v1
+#
+# stable_id:   SELF-SCHEMA-01K3MEVENTCLAIM00000000000
+# entity_type: schema
+# status:      CANDIDATE_UNRATIFIED
+# evidence_tier: Symbolic
+# created_at:  2026-08-19
+# derived_from: SELF-SPEC-01K3MMORPHSEMANTICS0010000
+#
+# DEFINITION (MORPH-SEMANTICS-001 §8)
+#   An EVENT is an addressable claim that an occurrence or state transition
+#   happened, carrying enough provenance to determine its epistemic standing.
+#
+#   The narrower "witnessed claim that a state transition occurred" is REJECTED:
+#   it cannot type AUTHORIZATION_GRANTED, SELECTION_RETRACTED, WITNESS_FAILED,
+#   or REGISTRAR_UNAVAILABLE, none of which assert an external effect transition.
+#
+#   EventEmitted != OccurrenceEstablished.
+
+contract: OURSELF_EVENT
+version: v1
+realm: ourself-core
+
+event:
+  event_ref:                 null   # SELF-EVENT-<26>
+  subject_ref:               null
+  occurrence_type:           null   # institutional occurrence OR state transition
+
+  prior_state_ref:           null
+  resulting_state_ref:       null
+  proposed_transition_ref:   null
+  authorized_transition_ref: null
+  observed_effect_ref:       null
+
+  witness_refs:              []
+
+  epistemic_class:           null   # CLAIMED | OBSERVED | INFERRED | ESTABLISHED
+
+  emitted_by_ref:            null
+  emitted_at:                null
+
+  # --- cross-modal reconciliation (PEEP) ---------------------------------
+  # Non-observation by one modality does not falsify another modality unless
+  # that modality's observability over the asserted proposition was established.
+  observation:
+    observer:            null
+    modality:            null
+    instrument:          null
+    time:                null
+    raw_result_ref:      null
+    interpretation_rule: null
+    method_validity:     null   # VALID | INVALID | UNKNOWN
+    claim_validity:      null   # method_validity and claim_validity are
+                                # INDEPENDENT. A correct conclusion from an
+                                # invalid measurement is still an invalid
+                                # measurement.
+    observability_scope: null
+  cross_modal_relation:  null   # CORROBORATED | CONTRADICTED | ORTHOGONAL | UNRESOLVED
+
+epistemic_class_law: >
+  epistemic_class is asserted by the emitter and is itself a CLAIM until
+  adjudicated. An event MUST NOT be emitted with class ESTABLISHED by its own
+  emitter without an adjudication_ref from a distinct authority.
+
+prohibitions:
+  - "An event MUST NOT be treated as evidence for its own occurrence_type."
+  - "Emission timestamp is not occurrence timestamp unless the emitter witnessed the occurrence."
+  - "An absent event is not evidence that nothing occurred (P-19: observable-by-probe-set != all current state)."

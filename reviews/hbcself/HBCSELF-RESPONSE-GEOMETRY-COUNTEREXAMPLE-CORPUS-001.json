@@ -1,0 +1,267 @@
+{
+  "stable_id": "SELF-CORPUS-01K3MHBCCOUNTEREX001000000",
+  "display_id": "HBCSELF-RESPONSE-GEOMETRY-COUNTEREXAMPLE-CORPUS-001",
+  "entity_type": "counterexample_corpus",
+  "created_at": "2026-08-19",
+  "repository": "situaedmilly/ourself-core",
+  "controlling_signal": "FOUNDATION_SIGNAL",
+  "authority_provenance": "DIRECTIVE_DERIVED",
+  "status": "COMPLETE",
+  "evidence_tier": "Symbolic",
+  "standing_note": "These counterexamples are CONSTRUCTED, not EXECUTED. No model was run. Each is an analytic construction whose outcome follows from the stated definition. Executing them is the purpose of the equation chamber, which is specified but NOT implemented.",
+  "outcome_key": {
+    "REFUTES": "the target is false as written",
+    "REFUTES_IDENTIFIABILITY": "the target may be true but cannot be established from observation",
+    "BOUNDS": "the target survives but its scope is narrower than stated",
+    "CONFIRMS": "the attack fails and the target is strengthened",
+    "CONFIRMS_AND_STRENGTHENS": "the attack makes the target mandatory rather than optional",
+    "CONFIRMS_AND_EXTENDS": "the attack confirms and yields novel residue",
+    "CONFIRMS_OBSERVABLY": "confirmed and the joint survives the identifiability attack",
+    "SHALLOWER_MODEL_SUFFICES": "null-model law forbids the deeper claim on current evidence",
+    "DEEP_MODEL_SURVIVES_WEAKLY": "deeper claim earns its place only under a stated extra witness",
+    "NO_ADDED_PREDICTIVE_CONTENT": "deep and shallow models prescribe identical action"
+  },
+  "counterexamples": [
+    {
+      "id": "CX-01",
+      "attack": "constant response",
+      "targets": "P-04, E-09",
+      "construction": "R(S,X)=c for all S,X. Model family 1 with zero gain.",
+      "outcome": "BOUNDS",
+      "consequence": "P-04 is existential ('may'), so a constant system does not refute it. Any universal reading of P-04 is FALSE_BY_COUNTEREXAMPLE. chi=0 here is correct and uninformative."
+    },
+    {
+      "id": "CX-02",
+      "attack": "memoryless",
+      "targets": "E-01",
+      "construction": "Two runs reach the same (S,X,C) by different paths and yield different R.",
+      "outcome": "REFUTES",
+      "consequence": "R_t is not a function of the instantaneous tuple. Either X absorbs unbounded history or H must be an explicit argument. CC-05."
+    },
+    {
+      "id": "CX-03",
+      "attack": "stateless",
+      "targets": "P-02, P-03, P-07",
+      "construction": "X = {} (empty). R = F(S) only.",
+      "outcome": "BOUNDS",
+      "consequence": "With no state, meaning IS intrinsic to S and interpretation morph is unrepresentable. The taxonomy has a domain floor: it requires a non-trivial state space to be meaningful at all."
+    },
+    {
+      "id": "CX-04",
+      "attack": "stochastic",
+      "targets": "E-09, E-10",
+      "construction": "R ~ Bernoulli(sigmoid(S)). Pathwise dR/dS does not exist.",
+      "outcome": "REFUTES",
+      "consequence": "Sensitivity must be d E[R]/dS or a transition probability P(R'|S,X). The pathwise derivative is undefined for every realization."
+    },
+    {
+      "id": "CX-05",
+      "attack": "delayed response",
+      "targets": "E-01, E-09",
+      "construction": "R_t = F(S_{t-k}, X_t) with k>0.",
+      "outcome": "REFUTES",
+      "consequence": "dR_t/dS_t = 0 while the system is fully responsive to signal. Sensitivity is a functional of signal history, not a partial derivative at t."
+    },
+    {
+      "id": "CX-06",
+      "attack": "hysteretic",
+      "targets": "E-01, P-23, E-13",
+      "construction": "Theta_enter=0.7, Theta_exit=0.3. Drive S up through 0.7, then down to 0.5.",
+      "outcome": "CONFIRMS_AND_STRENGTHENS",
+      "consequence": "System remains in R_1 at S=0.5 having been in R_0 at S=0.5 on the way up. Same (S, nominal X), different R. P-23 becomes MANDATORY, not optional. X must carry a branch label."
+    },
+    {
+      "id": "CX-07",
+      "attack": "multi-stable",
+      "targets": "E-05, E-14",
+      "construction": "Three attractor basins; identical (S,X) in different basins.",
+      "outcome": "REFUTES",
+      "consequence": "X_{t+1} is not a function of (S_t,X_t) without a basin label. E-05 remains well-formed only once the label is part of X."
+    },
+    {
+      "id": "CX-08",
+      "attack": "saturating",
+      "targets": "E-09",
+      "construction": "R = tanh(gS). At large S, dR/dS -> 0.",
+      "outcome": "BOUNDS",
+      "consequence": "chi -> 0 at saturation while the system is fully responsive below the knee. chi is a LOCAL instrument and must never be reported as a global system property."
+    },
+    {
+      "id": "CX-09",
+      "attack": "discontinuous / threshold",
+      "targets": "E-09, E-14",
+      "construction": "R = 0 for S<Theta, 1 for S>=Theta.",
+      "outcome": "REFUTES",
+      "consequence": "dR/dS = 0 almost everywhere and undefined at Theta. The derivative is zero where the system is insensitive and undefined where it is maximally sensitive - close to the inverse of the intended meaning. CC-07. This is the review's clearest mathematical falsification."
+    },
+    {
+      "id": "CX-10",
+      "attack": "partial observability",
+      "targets": "P-07, E-06, E-07",
+      "construction": "Model A: I changes by invertible g. Model B: F changes by g-inverse. Both run on identical input sequences.",
+      "outcome": "REFUTES_IDENTIFIABILITY",
+      "consequence": "F-02. Byte-identical response trajectories for every input. An interpretation morph and a compensating response-law morph are indistinguishable from any amount of trajectory data. MECHANISM_NOT_IDENTIFIED."
+    },
+    {
+      "id": "CX-11",
+      "attack": "partial observability",
+      "targets": "E-08, P-07",
+      "construction": "Model A: coupling K doubles. Model B: signal amplitude S doubles, K fixed.",
+      "outcome": "REFUTES_IDENTIFIABILITY",
+      "consequence": "F-01. R depends only on the composite S(K). COUPLING_CHANGED is not constructible as an observation. This is why the specimen set has no coupling case."
+    },
+    {
+      "id": "CX-12",
+      "attack": "partial observability",
+      "targets": "P-19, F-03",
+      "construction": "Two internal states differing only on a variable outside probe set pi.",
+      "outcome": "CONFIRMS",
+      "consequence": "STATE_CHANGED=false is always a claim about pi, never absolute. Must be recorded as NO_CHANGE_OBSERVED_UNDER_PROBE_SET_pi."
+    },
+    {
+      "id": "CX-13",
+      "attack": "adversarial observer",
+      "targets": "P-15",
+      "construction": "Cryptographically intact log attesting a semantically invalid claim.",
+      "outcome": "CONFIRMS",
+      "consequence": "Raw witness integrity and semantic witness validity are independent axes. A perfect hash over a wrong statement is a perfect hash over a wrong statement."
+    },
+    {
+      "id": "CX-14",
+      "attack": "invalid method / correct conclusion",
+      "targets": "P-16",
+      "construction": "Wrong instrument, wrong units, arithmetic error - answer happens to be right.",
+      "outcome": "CONFIRMS",
+      "consequence": "method_validity=INVALID with claim_validity=TRUE. Both fields required in schemas/event.v1.yaml. Neither may be derived from the other."
+    },
+    {
+      "id": "CX-15",
+      "attack": "valid method / false hypothesis",
+      "targets": "P-16",
+      "construction": "Correct instrument and procedure, measuring the wrong quantity for the hypothesis.",
+      "outcome": "CONFIRMS",
+      "consequence": "method_validity=VALID with claim_validity=FALSE. Establishes the converse direction; the two axes are genuinely orthogonal."
+    },
+    {
+      "id": "CX-16",
+      "attack": "capable-but-unauthorized",
+      "targets": "P-11, P-13, F-04",
+      "construction": "Substrate executes; institution blocks. Observer sees only the block.",
+      "outcome": "CONFIRMS_AND_EXTENDS",
+      "consequence": "F-04: A is observable only where it binds; R_capability only where it does not. The two surfaces are jointly unobservable at every operating point. Novel residue NSR-04."
+    },
+    {
+      "id": "CX-17",
+      "attack": "authorized-but-incapable",
+      "targets": "P-13",
+      "construction": "Authority granted for an operation the substrate cannot perform.",
+      "outcome": "CONFIRMS",
+      "consequence": "Refutes any model in which authorization implies executability. AUTHORIZED_PLAN != CURRENTLY_EXECUTABLE_PLAN."
+    },
+    {
+      "id": "CX-18",
+      "attack": "multiple observer modalities",
+      "targets": "P-35",
+      "construction": "Human observes X. Machine probe lacks observability over X and reports nothing.",
+      "outcome": "CONFIRMS",
+      "consequence": "Machine silence falsifies nothing. cross_modal_relation=ORTHOGONAL, not CONTRADICTED. This review is itself an instance regarding SELFPI/WOMBSELF/Antigravity."
+    },
+    {
+      "id": "CX-19",
+      "attack": "no-op transition",
+      "targets": "M-05, E-05, E-17",
+      "construction": "Operation executes; Distinguish(R_t,R_t+1) returns no distinction.",
+      "outcome": "CONFIRMS",
+      "consequence": "NO_CHANGE must be a first-class result, distinct from both 'no operation' and 'delta present but immaterial'. Three outcomes, not two."
+    },
+    {
+      "id": "CX-20",
+      "attack": "response without learning",
+      "targets": "P-27",
+      "construction": "History grows monotonically; response distribution invariant across it.",
+      "outcome": "CONFIRMS_OBSERVABLY",
+      "consequence": "P-27 is one of the few ladder joints that survives identifiability: accumulation without learning is detectable by intervention."
+    },
+    {
+      "id": "CX-21",
+      "attack": "learning without F-mutation",
+      "targets": "P-28",
+      "construction": "Parameter theta inside a fixed F adapts. Equivalently: F itself changed.",
+      "outcome": "REFUTES_IDENTIFIABILITY",
+      "consequence": "The F/X boundary is a modelling choice, not an observation. P-28 is unwitnessable black-box."
+    },
+    {
+      "id": "CX-22",
+      "attack": "F-mutation without self-modification",
+      "targets": "P-29",
+      "construction": "F changes by an externally supplied update vs by the system's own governed mechanism M.",
+      "outcome": "REFUTES_IDENTIFIABILITY",
+      "consequence": "Requires M to be a declared inspectable object. Identical trajectories otherwise. Only P-30 (authorized vs not) survives, because authorization is an institutional record checkable independently of behaviour."
+    },
+    {
+      "id": "CX-23",
+      "attack": "null model",
+      "targets": "SELFPI interpretation morph claim",
+      "construction": "PARAMETER_UPDATE_ONLY: a rule table changed, no interpretive architecture moved. Alternative: OBSERVER_LIMITATION - the analyst's reading changed, not SELFPI.",
+      "outcome": "SHALLOWER_MODEL_SUFFICES",
+      "consequence": "The deep claim survives only on cited white-box inspection evidence. From behaviour alone the shallow model explains the same witness and the null-model law forbids the deeper claim."
+    },
+    {
+      "id": "CX-24",
+      "attack": "null model",
+      "targets": "Antigravity capability/admissibility split",
+      "construction": "STATE_CHANGE_ONLY: a flag flipped and blocked a normal path. MEASUREMENT_ERROR: entry observed, execution never began.",
+      "outcome": "DEEP_MODEL_SURVIVES_WEAKLY",
+      "consequence": "The split is more economical ONLY if both the physical entry and the institutional block were separately witnessed. If only the block was witnessed, STATE_CHANGE_ONLY suffices and the split is unearned."
+    },
+    {
+      "id": "CX-25",
+      "attack": "null model",
+      "targets": "WOMBSELF materiality-without-observation claim",
+      "construction": "OBSERVER_LIMITATION: materiality was always context-dependent and the first evaluation was simply wrong.",
+      "outcome": "NO_ADDED_PREDICTIVE_CONTENT",
+      "consequence": "Both models prescribe the same action: re-evaluate on context change. The deep model makes no prediction the shallow one does not. Novel residue NSR-06 - a category for claims that are not wrong but earn nothing."
+    },
+    {
+      "id": "CX-26",
+      "attack": "reflective system",
+      "targets": "P-08",
+      "construction": "A system whose state IS its program. Changing X changes F by construction.",
+      "outcome": "BOUNDS",
+      "consequence": "CHANGING THE SYSTEM != CHANGING HOW THE SYSTEM CAN CHANGE collapses at the substrate level while remaining meaningful at the type level. The type level must be declared, not assumed."
+    }
+  ],
+  "summary": {
+    "generated": 26,
+    "by_outcome": {
+      "BOUNDS": 4,
+      "REFUTES": 5,
+      "CONFIRMS_AND_STRENGTHENS": 1,
+      "REFUTES_IDENTIFIABILITY": 4,
+      "CONFIRMS": 7,
+      "CONFIRMS_AND_EXTENDS": 1,
+      "CONFIRMS_OBSERVABLY": 1,
+      "SHALLOWER_MODEL_SUFFICES": 1,
+      "DEEP_MODEL_SURVIVES_WEAKLY": 1,
+      "NO_ADDED_PREDICTIVE_CONTENT": 1
+    },
+    "refutations": [
+      "CX-02",
+      "CX-04",
+      "CX-05",
+      "CX-07",
+      "CX-09",
+      "CX-10",
+      "CX-11",
+      "CX-21",
+      "CX-22"
+    ],
+    "most_productive_attack": "partial observability (CX-10, CX-11, CX-12) - produced findings F-01, F-02, F-03",
+    "single_clearest_falsification": "CX-09 - chi = dR/dS is zero where a threshold system is insensitive and undefined where it is maximally sensitive",
+    "known_gaps": [
+      "No counterexample exercises LINEAGE_PRESERVED=false in isolation.",
+      "No constructible counterexample exists for COUPLING_CHANGED as an OBSERVATION - see CX-11. This is a result, not an omission.",
+      "No empirical counterexample: nothing was executed. All 26 are analytic."
+    ]
+  }
+}

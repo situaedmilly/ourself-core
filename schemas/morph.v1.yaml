@@ -1,0 +1,114 @@
+# OURSELF MORPH Typed Edge · v1
+#
+# stable_id:   SELF-SCHEMA-01K3MMORPHEDGE000000000000
+# entity_type: schema
+# status:      CANDIDATE_UNRATIFIED
+# evidence_tier: Symbolic
+# created_at:  2026-08-19
+# derived_from: SELF-SPEC-01K3MMORPHSEMANTICS0010000
+#
+# STANDING NOTE
+#   Candidate contract. Not canon. No evaluator consumes it.
+#   EndpointsExist != TransitionEstablished. The edge is Matter in its own right.
+
+contract: OURSELF_MORPH_EDGE
+version: v1
+realm: ourself-core
+
+morph:
+  # --- identity -----------------------------------------------------------
+  morph_ref:            null   # SELF-MORPH-<26>
+  subject_ref:          null   # what is being transformed
+
+  # --- typing (question 1) ------------------------------------------------
+  source_state_ref:     null
+  target_state_ref:     null
+  transition_type_ref:  null   # REQUIRED. A morph typed only by its endpoints
+                               # is not typed. See specimen M-01.
+  context_ref:          null
+
+  # --- admissibility (question 2) -----------------------------------------
+  precondition_refs:    []
+  selection_ref:        null   # required only where selection_required is TRUE
+  authority_ref:        null   # required only where effectful is TRUE
+
+  # --- realization (question 3) -------------------------------------------
+  requested_effect_ref: null
+  observed_effect_ref:  null
+  non_observability_witness_ref: null   # REQUIRED when observed_effect_ref is
+                                        # null and the morph still claims to
+                                        # satisfy the observability conjunct
+
+  # --- establishment (question 4) -----------------------------------------
+  witness_refs:         []
+  resulting_state_ref:  null
+  delta_ref:            null
+  lineage_head_ref:     null
+
+  # --- standing ladder ----------------------------------------------------
+  # Each stage is a separate act with separate authority and separate evidence.
+  # No stage implies its successor.
+  standing:
+    proposal:     null   # UNREACHED | REACHED | REFUSED
+    execution:    null
+    witness:      null
+    adjudication: null
+
+  # --- guard discharge (MORPH-SEMANTICS-001 §2.1) -------------------------
+  guards:
+    selection_required:
+      value:        null   # TRUE | FALSE | GUARD_UNRESOLVED
+      semantic_type: SELECTION
+      witness_ref:  null   # a guard discharged without a witness is UNRESOLVED
+    effectful:
+      value:        null
+      semantic_type: OBSERVATION
+      witness_ref:  null
+
+  # --- what actually moved (RESPONSE-GEOMETRY-001 §9) ---------------------
+  # UNDETERMINED is first class. A witness that cannot tell MUST NOT emit false.
+  witness_discrimination:
+    STATE_CHANGED:             null   # true | false | UNDETERMINED
+    INTERPRETATION_CHANGED:    null
+    RESPONSE_FUNCTION_CHANGED: null
+    COUPLING_CHANGED:          null
+    NO_CHANGE:                 null   # first-class result, not absence of result
+
+  # --- revision (specimen M-07) -------------------------------------------
+  supersedes:    []
+  superseded_by: null
+  # A contradicted morph is NEVER edited in place. Revision is a new act with
+  # its own stable ID; the original retains its ID and gains superseded_by.
+
+admissibility_predicate:
+  conjuncts:
+    - SOURCE_STATE_RESOLVED
+    - TARGET_TRANSITION_TYPED
+    - CONTEXT_BOUND
+    - PRECONDITIONS_SATISFIED
+    - {name: SELECTION_STANDING_VALID, guarded_by: selection_required}
+    - {name: AUTHORITY_VALID,          guarded_by: effectful}
+    - SUBJECT_SCOPE_BOUND
+    - EFFECT_OBSERVED_OR_EXPLICITLY_NOT_OBSERVABLE
+    - WITNESS_VALID
+    - RESULTING_STATE_DISTINGUISHED
+    - LINEAGE_PRESERVED
+  evaluation_law: >
+    Any conjunct evaluating to GUARD_UNRESOLVED halts evaluation at the standing
+    already reached. It does not evaluate to false and does not permit the
+    remaining conjuncts to be skipped.
+
+non_observability_witness:
+  stable_id:   null
+  reason_class: null   # NO_INSTRUMENT | OUT_OF_SCOPE | DESTROYED_BEFORE_READ |
+                       # PRIVACY_BOUNDED | SUBSTRATE_OPAQUE | REGISTRAR_UNAVAILABLE
+  attempted_observation_refs: []
+  observer_ref: null
+  modality:     null
+  observability_scope: null
+  bounded_until: null
+  evidence_tier: null
+  law: >
+    NotObserved != NotObservable. NotObservable != EffectEstablished.
+    Declaring an effect unobservable never upgrades the effect; it records that
+    the system looked and states what stopped it.

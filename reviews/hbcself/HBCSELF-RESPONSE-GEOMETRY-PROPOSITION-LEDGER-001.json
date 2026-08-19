@@ -1,0 +1,610 @@
+{
+  "stable_id": "SELF-LEDGER-01K3MHBCPROPLEDGER00100000",
+  "display_id": "HBCSELF-RESPONSE-GEOMETRY-PROPOSITION-LEDGER-001",
+  "entity_type": "proposition_ledger",
+  "created_at": "2026-08-19",
+  "repository": "situaedmilly/ourself-core",
+  "authorizing_command": "AUTHORIZE_HBCSELF_HYPERBOLIC_RESPONSE_GEOMETRY_COLD_REVIEW_AND_EQUATION_CHAMBER_01",
+  "controlling_signal": "FOUNDATION_SIGNAL",
+  "authority_provenance": "DIRECTIVE_DERIVED",
+  "status": "COMPLETE",
+  "evidence_tier": "Symbolic",
+  "standing_note": "Classification is analysis, not execution. No proposition is canonized by appearing here. Rejected and bounded propositions remain Matter.",
+  "attack_key": {
+    "A1": "constant response",
+    "A2": "memoryless",
+    "A3": "stateless",
+    "A4": "stochastic response",
+    "A5": "delayed response",
+    "A6": "hysteretic response",
+    "A7": "multi-stable",
+    "A8": "saturating",
+    "A9": "discontinuous",
+    "A10": "partially observable",
+    "A11": "adversarial observer",
+    "A12": "invalid measurement with correct conclusion",
+    "A13": "valid measurement with false hypothesis",
+    "A14": "capable-but-unauthorized",
+    "A15": "authorized-but-mechanically-incapable",
+    "A16": "multiple observer modalities",
+    "A17": "no-op transition",
+    "A18": "response without learning",
+    "A19": "learning without response-function mutation",
+    "A20": "response-function mutation without self-modification",
+    "A24": "static reference probe"
+  },
+  "propositions": [
+    {
+      "id": "P-01",
+      "statement": "SIGNAL != MEANING",
+      "mathematical_status": "DEFINITION_CANDIDATE",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Mirrors CLAIM !<= EVIDENCE in the type plane. Survives all 20 attacks; it is a type separation, not a behavioural claim.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A1",
+        "A3",
+        "A10"
+      ]
+    },
+    {
+      "id": "P-02",
+      "statement": "MEANING(S) IS NOT NECESSARILY INTRINSIC TO S",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "REFINES_EXISTING_PRIMITIVE",
+      "notes": "Existential/modal form ('not necessarily'). Refutable only by exhibiting a system where meaning is always intrinsic. Attack 3 (stateless) shows such systems exist, which bounds the scope but does not refute the existential.",
+      "attacks_failed": [
+        "A3 bounds: in a stateless system meaning IS intrinsic to S"
+      ],
+      "attacks_notably_survived": [
+        "A2",
+        "A10"
+      ]
+    },
+    {
+      "id": "P-03",
+      "statement": "I_t = I(S_t, X_t)",
+      "mathematical_status": "UNDER_SPECIFIED",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "CONTRADICTS_EXISTING_LAW",
+      "notes": "CC-04. Contradicts E-02 which adds C_t and H_t. Demote to restricted case with explicit assumption C,H subset-of X.",
+      "attacks_failed": [
+        "CC-04 vs E-02"
+      ],
+      "attacks_notably_survived": []
+    },
+    {
+      "id": "P-04",
+      "statement": "SAME SIGNAL + DIFFERENT STATE MAY PRODUCE DIFFERENT RESPONSE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Existential ('may'). Attack 1 (constant response) exhibits systems where it does not happen, bounding it to non-universal. Any reading of P-04 as universal is FALSE_BY_COUNTEREXAMPLE.",
+      "attacks_failed": [
+        "A1 refutes universal reading"
+      ],
+      "attacks_notably_survived": [
+        "A2",
+        "A6"
+      ]
+    },
+    {
+      "id": "P-05",
+      "statement": "NO COUPLING != MECHANICAL != STATE-DEPENDENT != ADAPTIVE != RESPONSE-FUNCTION MUTATION != RECURSIVE SELF-MODIFICATION",
+      "mathematical_status": "DEFINITION_CANDIDATE",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "CC-09. Levels 4-6 are not separable from black-box observation (F-02). Levels 0-3 ARE separable by intervention. Retain as model-internal taxonomy with observability caveat.",
+      "attacks_failed": [
+        "A19",
+        "A20 - levels 4/5/6 observationally equivalent"
+      ],
+      "attacks_notably_survived": [
+        "A1",
+        "A2",
+        "A3"
+      ]
+    },
+    {
+      "id": "P-06",
+      "statement": "TRAJECTORY != EXECUTION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Instance of PROJECTION !<= STATE. Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A5",
+        "A17"
+      ]
+    },
+    {
+      "id": "P-07",
+      "statement": "STATE MORPH != INTERPRETATION MORPH != RESPONSE-FUNCTION MORPH != COUPLING MORPH",
+      "mathematical_status": "DEFINITION_CANDIDATE",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "F-02 and F-01. Real inside a model; NOT witnessable from trajectory data. I/F pair non-identifiable under any invertible reparameterization g: (I,F) ~ (g.I, F.g-inv). K/S also non-identifiable. Only STATE MORPH is even partly observable, and only up to the probe set (F-03).",
+      "attacks_failed": [
+        "A10 - partial observability collapses I vs F and K vs S"
+      ],
+      "attacks_notably_survived": [
+        "A17"
+      ]
+    },
+    {
+      "id": "P-08",
+      "statement": "CHANGING THE SYSTEM != CHANGING HOW THE SYSTEM CAN CHANGE",
+      "mathematical_status": "DEFINITION_CANDIDATE",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "NOVEL_SEMANTIC_RESIDUE",
+      "notes": "Well-formed given a meta-level. For a reflective system whose state IS its program the distinction collapses at the substrate level while remaining meaningful at the type level. Requires the type level to be declared, not assumed.",
+      "attacks_failed": [
+        "reflective-system collapse at substrate level"
+      ],
+      "attacks_notably_survived": [
+        "A18",
+        "A19",
+        "A20"
+      ]
+    },
+    {
+      "id": "P-09",
+      "statement": "REACHABLE != REACHED != ACTIVATED != EFFECTFUL",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Four-stage separation matching the standing ladder. Survives all attacks.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A17",
+        "A14",
+        "A15"
+      ]
+    },
+    {
+      "id": "P-10",
+      "statement": "PRECONDITION SATISFIED != EVENT OCCURRED",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Specimen M-02/M-03. Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A17"
+      ]
+    },
+    {
+      "id": "P-11",
+      "statement": "CAPABILITY RESPONSE != INSTITUTIONALLY ADMITTED RESPONSE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "REFINES_EXISTING_PRIMITIVE",
+      "notes": "TRUE, and F-04: the two sides are jointly unobservable at every operating point. A is observable only where it binds; R_capability only where it does not. Supporting specimen (Antigravity) is founder testimony, epistemic_class CLAIMED - not inspected by this review.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A14",
+        "A15"
+      ]
+    },
+    {
+      "id": "P-12",
+      "statement": "HIGH MATERIALITY != PROHIBITION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Type separation between a measure and a permission. Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A14"
+      ]
+    },
+    {
+      "id": "P-13",
+      "statement": "AUTHORIZED != MECHANICALLY CAPABLE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Attack 15 (authorized-but-incapable) directly confirms. Refutes any model in which authority implies executability.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A14",
+        "A15"
+      ]
+    },
+    {
+      "id": "P-14",
+      "statement": "POLICY DECLARED != POLICY ENFORCED",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "SELF-APPLYING: every law in this repository is declared and none is enforced. This review records itself as an instance.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A11"
+      ]
+    },
+    {
+      "id": "P-15",
+      "statement": "RAW WITNESS INTEGRITY != SEMANTIC WITNESS VALIDITY",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Attack 11 (adversarial observer) confirms: a byte-perfect log can attest a semantically invalid claim.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A11",
+        "A12"
+      ]
+    },
+    {
+      "id": "P-16",
+      "statement": "CORRECT CONCLUSION != VALID MEASUREMENT",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Attacks 12 and 13 establish both directions. method_validity and claim_validity are independent axes; both are carried in schemas/event.v1.yaml.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A12",
+        "A13"
+      ]
+    },
+    {
+      "id": "P-17",
+      "statement": "OBSERVED EFFECT != CAUSAL ATTRIBUTION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "The most empirically robust item in the set - standard confounding. Specimen M-04 (right effect, wrong subject) is its institutional form.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A7",
+        "A10",
+        "A17"
+      ]
+    },
+    {
+      "id": "P-18",
+      "statement": "UI STATE != SUBSTRATE STATE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Instance of PROJECTION !<= STATE. Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A10"
+      ]
+    },
+    {
+      "id": "P-19",
+      "statement": "OBSERVABLE BY PROBE SET != ALL CURRENT STATE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "The partial-observability axiom. Everything in F-01/F-02/F-03 follows from it. Arguably the load-bearing proposition of the entire corpus.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A10",
+        "A16"
+      ]
+    },
+    {
+      "id": "P-20",
+      "statement": "HISTORICAL TRUTH != CURRENT STANDING",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Specimen M-07. Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A20"
+      ]
+    },
+    {
+      "id": "P-21",
+      "statement": "CONTROL APPLIED AT t1 DOES NOT ESTABLISH CONTROL HELD FOR t < t1",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Temporal scoping. Survives. Strengthened by attack 6: under hysteresis, current occupancy carries no information about entry conditions.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A6",
+        "A5"
+      ]
+    },
+    {
+      "id": "P-22",
+      "statement": "CONTAINMENT AFTER INITIALIZATION != CONTAINMENT OF INITIALIZATION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "DUPLICATES_EXISTING_PRIMITIVE",
+      "notes": "Special case of P-21. Retain as an applied instance, not as an independent law.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A6"
+      ]
+    },
+    {
+      "id": "P-23",
+      "statement": "ENTRY CONDITION != PERSISTENCE CONDITION != EXIT CONDITION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "NOVEL_SEMANTIC_RESIDUE",
+      "notes": "Attack 6 (hysteresis) does not merely fail to refute this - it makes it MANDATORY. Any state model storing a single predicate has already lost the distinction. Strongest confirmation in the review.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A6",
+        "A7",
+        "A5"
+      ]
+    },
+    {
+      "id": "P-24",
+      "statement": "STATIC REFERENCE != OBSERVED EFFECT",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A17",
+        "A24"
+      ]
+    },
+    {
+      "id": "P-25",
+      "statement": "POSSIBLE EFFECT != ACTUAL EFFECT",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Near-tautology given modal semantics. Survives trivially; low information content.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A17"
+      ]
+    },
+    {
+      "id": "P-26",
+      "statement": "PROJECTED EFFECT TOPOLOGY != OBSERVED EFFECT TOPOLOGY",
+      "mathematical_status": "WELL_FORMED_WITH_ASSUMPTIONS",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "CC-06. The claim is sound; the word 'topology' is not. No open sets, neighbourhood system, or continuity claim is present. The object is a reachability set / effect dependency graph. Rename or mark metaphorical.",
+      "attacks_failed": [
+        "CC-06 terminology"
+      ],
+      "attacks_notably_survived": [
+        "A10"
+      ]
+    },
+    {
+      "id": "P-27",
+      "statement": "MEMORY ACCUMULATION != LEARNING",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Attack 18 (response without learning) separates these OBSERVABLY: a system whose response distribution is invariant across a growing history is accumulating without learning. This joint survives identifiability.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A18"
+      ]
+    },
+    {
+      "id": "P-28",
+      "statement": "LEARNING != RESPONSE-LAW MUTATION",
+      "mathematical_status": "DEFINITION_CANDIDATE",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "Attack 19. NOT separable black-box: parameter adaptation inside a fixed F is indistinguishable from a change of F. Depends entirely on where the model draws the F/X boundary, which is a modelling choice, not an observation.",
+      "attacks_failed": [
+        "A19 - F/X boundary is a modelling choice"
+      ],
+      "attacks_notably_survived": []
+    },
+    {
+      "id": "P-29",
+      "statement": "RESPONSE-LAW MUTATION != SELF-MODIFICATION",
+      "mathematical_status": "DEFINITION_CANDIDATE",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "Attack 20. Requires the governed mechanism M to be a declared, inspectable object. Unwitnessable black-box.",
+      "attacks_failed": [
+        "A20"
+      ],
+      "attacks_notably_survived": []
+    },
+    {
+      "id": "P-30",
+      "statement": "SELF-MODIFICATION != AUTHORIZED SELF-MODIFICATION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "The one joint in the ladder that is NOT an identifiability problem: authorization is an institutional record, checkable independently of behaviour. This is the ladder's strongest rung.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A14",
+        "A15"
+      ]
+    },
+    {
+      "id": "P-31",
+      "statement": "RECORDED LAW != ENFORCED LAW",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "DUPLICATES_EXISTING_PRIMITIVE",
+      "notes": "Duplicate of P-14. Merge.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A11"
+      ]
+    },
+    {
+      "id": "P-32",
+      "statement": "IDENTITY != AUTHORITY != AUTHORIZATION != EXECUTION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Exactly the semantic type plane. Fully compatible with SELF-SCHEMA-01K3MSEMANTICTYPES00000000.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A14",
+        "A15"
+      ]
+    },
+    {
+      "id": "P-33",
+      "statement": "PROJECTION != CANONICAL REALITY",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "PROJECTION !<= STATE. Survives.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A10"
+      ]
+    },
+    {
+      "id": "P-34",
+      "statement": "PROJECTION != EPISTEMICALLY WORTHLESS",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "NOVEL_SEMANTIC_RESIDUE",
+      "notes": "Important guard against over-correction. A doctrine that only forbids promotion tends to drift into discarding projections entirely. This blocks that drift.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A10",
+        "A16"
+      ]
+    },
+    {
+      "id": "P-35",
+      "statement": "MACHINE NON-OBSERVATION DOES NOT FALSIFY A HUMAN OBSERVATION UNLESS THE MACHINE MODALITY HAD OBSERVABILITY OVER THE ASSERTED PROPOSITION",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "A modal statement about observability scope, correctly quantified. Attack 16 confirms. This review is itself an instance: it did not observe SELFPI, so its silence about SELFPI falsifies nothing.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A16",
+        "A10"
+      ]
+    },
+    {
+      "id": "P-36",
+      "statement": "BOUND FUTURE EFFECTS DOES NOT ERASE PRIOR PROCESS KNOWLEDGE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "DERIVED",
+      "institutional_status": "EXISTING_LAW_COMPATIBLE",
+      "notes": "Survives. Instance of P-20.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A20"
+      ]
+    },
+    {
+      "id": "P-37",
+      "statement": "SAME UI THRESHOLD != SAME RUNTIME STATE",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "REFINES_EXISTING_PRIMITIVE",
+      "notes": "Applied instance of P-18 + P-19.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A10"
+      ]
+    },
+    {
+      "id": "P-38",
+      "statement": "IDLE UI != IDLE RUNTIME",
+      "mathematical_status": "WELL_FORMED",
+      "epistemic_status": "OBSERVED_SPECIMEN_SUPPORTED",
+      "institutional_status": "DUPLICATES_EXISTING_PRIMITIVE",
+      "notes": "Applied instance of P-18. Merge into P-18 with an example.",
+      "attacks_failed": [],
+      "attacks_notably_survived": [
+        "A10"
+      ]
+    },
+    {
+      "id": "P-39",
+      "statement": "AUTHENTICATION STATE CHANGE MAY ALTER BACKGROUND BEHAVIOR",
+      "mathematical_status": "EMPIRICAL_HYPOTHESIS",
+      "epistemic_status": "UNTESTABLE_AS_WRITTEN",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "Existential and system-specific. Not testable without naming the system, the auth transition, and the probe set. As written it is a heuristic, not a proposition.",
+      "attacks_failed": [
+        "no system named"
+      ],
+      "attacks_notably_survived": []
+    },
+    {
+      "id": "P-40",
+      "statement": "DISCOVERY THROUGHPUT > INSTITUTIONALIZATION THROUGHPUT IS A POSSIBLE GOVERNANCE BACKPRESSURE CONDITION, NOT YET A UNIVERSAL LAW",
+      "mathematical_status": "DIMENSIONALLY_UNDEFINED",
+      "epistemic_status": "HYPOTHETICAL",
+      "institutional_status": "REQUIRES_FOUNDER_DECISION",
+      "notes": "Correctly self-limited ('not yet a universal law') - credit for that. But as an inequality it is dimensionally undefined: the units of discovery/time and institutionalization/time are unestablished, and comparison requires that each discovery consume exactly one institutionalization act. Currently directional guidance, not a measurable bound. Observed this session: 3 commands arrived while 1 was being institutionalized.",
+      "attacks_failed": [
+        "units unestablished"
+      ],
+      "attacks_notably_survived": []
+    }
+  ],
+  "summary": {
+    "reviewed": 40,
+    "by_mathematical_status": {
+      "DEFINITION_CANDIDATE": 6,
+      "DIMENSIONALLY_UNDEFINED": 1,
+      "EMPIRICAL_HYPOTHESIS": 1,
+      "UNDER_SPECIFIED": 1,
+      "WELL_FORMED": 30,
+      "WELL_FORMED_WITH_ASSUMPTIONS": 1
+    },
+    "by_institutional_status": {
+      "CONTRADICTS_EXISTING_LAW": 1,
+      "DUPLICATES_EXISTING_PRIMITIVE": 3,
+      "EXISTING_LAW_COMPATIBLE": 23,
+      "NOVEL_SEMANTIC_RESIDUE": 3,
+      "REFINES_EXISTING_PRIMITIVE": 3,
+      "REQUIRES_FOUNDER_DECISION": 7
+    },
+    "propositions_with_failed_attacks": [
+      "P-02",
+      "P-03",
+      "P-04",
+      "P-05",
+      "P-07",
+      "P-08",
+      "P-26",
+      "P-28",
+      "P-29",
+      "P-39",
+      "P-40"
+    ],
+    "load_bearing": "P-19 (partial observability). F-01, F-02 and F-03 are all consequences of it.",
+    "strongest_confirmation": "P-23 (entry != persistence != exit), made mandatory by the hysteresis attack.",
+    "weakest_items": [
+      "P-39 untestable as written",
+      "P-40 dimensionally undefined",
+      "P-03 contradicts E-02"
+    ],
+    "merge_candidates": [
+      [
+        "P-14",
+        "P-31"
+      ],
+      [
+        "P-18",
+        "P-38"
+      ],
+      [
+        "P-21",
+        "P-22"
+      ]
+    ]
+  }
+}
