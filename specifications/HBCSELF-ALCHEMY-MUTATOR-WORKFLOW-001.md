@@ -260,7 +260,7 @@ under which boot rule 7 overrides all other signals and this session fails close
 
 ## 14 · Authority Provenance of This Record
 
-**Distinction:** `SELF-DIST-01K3MDIRECTIVEAUTHORITY000` — declared in Delta-621 as D-1742, cited here
+**Distinction:** `SELF-DIST-01K3MDIRECTIVEAUTHORITY000` — declared in Delta-621 as D-1753, cited here
 
 This command carries **no** `*_SIGNAL` marker. The session's controlling signal remains
 `FOUNDATION_SIGNAL`, resolved from the preceding command

@@ -34,7 +34,9 @@ from pathlib import Path
 # SELF-<TYPE>-<26-CHARACTER TIME-SORTABLE TOKEN>
 # The lookbehind stops the pattern matching inside compound words such as
 # HBCSELF-EQUATION-CONFORMANCE-MATRIX-001, which are document titles, not IDs.
-ID_PATTERN = re.compile(r"(?<![A-Za-z0-9-])SELF-([A-Z][A-Z0-9]*)-([A-Z0-9]+)")
+ID_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9-])SELF-([A-Z][A-Z0-9]*)-([A-Z0-9]+(?:-[A-Z0-9]+)*)"
+)
 
 # A DECLARATION binds an ID to an entity. A CITATION merely references one.
 # Cross-file citation is correct and required; only multiple DECLARATIONS of the
@@ -49,7 +51,7 @@ DECLARATION_LABELS = (
 )
 DECLARATION_PATTERN = re.compile(
     r"(?:" + "|".join(DECLARATION_LABELS) + r")\s*[`\"]?"
-    r"((?<![A-Za-z0-9-])SELF-[A-Z][A-Z0-9]*-[A-Z0-9]+)[`\"]?"
+    r"((?<![A-Za-z0-9-])SELF-[A-Z][A-Z0-9]*-[A-Z0-9]+(?:-[A-Z0-9]+)*)[`\"]?"
 )
 TOKEN_LENGTH = 26
 
@@ -94,6 +96,17 @@ def scan(root: Path) -> dict:
             found = True
             occurrences[sid].append(rel)
 
+            if "-" in token:
+                # SELF-<TYPE>-<TOKEN>: the token is a single segment. Extra
+                # hyphen-separated segments are a distinct defect from a
+                # wrong-length token, and reporting only length would hide it.
+                malformed.append({
+                    "stable_id": sid,
+                    "file": rel,
+                    "defect": "TOKEN_CONTAINS_HYPHEN",
+                    "expected": "single segment",
+                    "actual": len(token),
+                })
             if len(token) != TOKEN_LENGTH:
                 malformed.append({
                     "stable_id": sid,

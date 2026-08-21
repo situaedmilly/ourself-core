@@ -112,22 +112,25 @@ Final run, whole repository:
 
 ```json
 {
-  "distinct_ids": 60,
-  "distinct_declared_ids": 56,
-  "files_scanned": 15,
-  "malformed": 15,
+  "distinct_ids": 63,
+  "distinct_declared_ids": 59,
+  "files_scanned": 16,
+  "malformed": 17,
   "duplicate_declarations": 0,
   "dangling_references": 4,
   "durable_files_without_any_id": 0,
-  "identity_debt_count": 15,
-  "advisory_non_crockford": 53
+  "identity_debt_count": 16,
+  "advisory_non_crockford": 56
 }
+
+`malformed: 17` counts **defect rows**; `identity_debt_count: 16` counts **distinct defective IDs**. One ID carries two defects. The two figures are not interchangeable.
 ```
 
-**All 15 malformed IDs are pre-existing.** Zero were minted in this session. Token lengths range from 21 to 28 where the Stable Identity Doctrine requires exactly 26:
+**Zero malformed IDs were minted in this session.** All 16 are pre-existing or arrived from the base branch:
 
 - 9 in `governance/proof-ledger/DAILY_INTRADAY_PROOF_LEDGER.md`
 - 6 in `governance/proof-ledger/entries/2026-07-29/SELF-DELTA-01K1C7Q8M4N2P6R9T3V5W7X0YZ.md`
+- 1 arriving from `main` — see the Base Advance section below
 
 Three of these sit inside the doctrine's own illustrative example block. The tool cannot distinguish an example from a live binding and reports both identically — recorded as a tool limitation, not repaired.
 
@@ -140,7 +143,7 @@ Three of these sit inside the doctrine's own illustrative example block. The too
 | `SELF-LAW-01JZXA2F8T5Y4U3I2O1P9L6K7J` | doctrine example — expected |
 | `SELF-SCHEMA-01K3MRESPONSEGEOM000000000` | **intentionally unassigned.** Reserved in a draft, never minted. MUST NOT be treated as an existing entity. |
 
-`advisory_non_crockford: 53` records that 53 IDs contain `I`, `O`, `L`, or `U`, which Crockford base32 excludes. Existing canon does this, so it is reported as advisory, not as a defect. Open question Q-05.
+`advisory_non_crockford: 56` records that 56 IDs contain `I`, `O`, `L`, or `U`, which Crockford base32 excludes. Existing canon does this, so it is reported as advisory, not as a defect. Open question Q-05.
 
 ### Verified · Self-correction during this session
 
@@ -158,7 +161,7 @@ It also caught three genuine defects in this session's own work.
 QuotingAnId  !=  DeclaringAnId
 ```
 
-**Third:** four distinctions had been **declared** both in this ledger and in the specification files that discuss them. Under D-1747 that is a genuine uniqueness violation. Resolved by making this ledger the single declaration site; the specification files now cite.
+**Third:** four distinctions had been **declared** both in this ledger and in the specification files that discuss them. Under D-1758 that is a genuine uniqueness violation. Resolved by making this ledger the single declaration site; the specification files now cite.
 
 All three were found by the tool this session created, run against this session's own output.
 
@@ -167,10 +170,61 @@ All three were found by the tool this session created, run against this session'
 - Local Git state on any other machine.
 - GitHub commit SHA at time of writing this entry — the commit had not yet been created.
 
+## Base Advance · 2026-08-21
+
+**Stable ID:** `SELF-DIST-01K3MALIASCOLLISION0100000`
+
+While this entry was open on its branch, `main` advanced `c715a26` → `0392a982`, adding `governance/proof-ledger/entries/2026-08-20/SELF-HTMLSELF-PREMSELF-DISTINCTIONS-20260820-0001.md`. The base was merged into this branch. No file conflicted.
+
+Two real defects surfaced, both recorded here rather than in the incoming record, which this entry has no authority to modify.
+
+### D-1759 · Display Aliases Collide; Stable IDs Do Not
+
+**Stable ID:** `SELF-DIST-01K3MALIASCOLLISION0100000`
+
+The incoming record declares `D-1742` … `D-1752`. This entry had declared `D-1742` … `D-1747`. Total overlap on six aliases, produced by two authors numbering independently against the same sequence with no shared allocator.
+
+`main` is canonical, so this branch's aliases moved to `D-1753` … `D-1758`. **No stable ID changed.** Every distinction kept the identifier it was minted with; only the human-readable alias was reassigned.
+
+This is D-1737 (*Sequence Is Not Identity*) demonstrated against live contention rather than asserted. Had the distinctions been identified by their aliases, this merge would have silently conflated six pairs of unrelated findings.
+
+```text
+AliasCollision  !=  IdentityCollision
+```
+
+**Open defect, not repaired here:** nothing prevents the next independent author from colliding again. Sequential aliases have no allocator. Recorded as a governance gap requiring its own decision.
+
+**Tier:** Verified by direct witness — the collision occurred and is visible in this branch's merge.
+
+### Incoming Record Carries Identity Debt
+
+`SELF-HTMLSELF-PREMSELF-DISTINCTIONS-20260820-0001` does not match the canonical form `SELF-<TYPE>-<26-CHARACTER TOKEN>`. Its token is 35 characters and contains hyphen-separated segments. Two defects: `TOKEN_CONTAINS_HYPHEN` and `TOKEN_LENGTH`.
+
+**Reported, not repaired.** The record belongs to another authoring pass, and repair requires separate authorization under Delta-619 law 9.
+
+### Validator Defect Found by This Data
+
+**Stable ID:** `SELF-DIST-01K3MVALIDATORTRUNC0100000`
+
+The incoming ID exposed a fourth defect in the validator this session created: its token pattern stopped at the first hyphen, so it reported only the first two segments of that identifier — a string that names no entity. Correct *detection*, wrong *identifier*.
+
+The truncated string is **not reproduced literally here**, for the reason already recorded in this entry: writing a malformed identifier into a durable record re-injects it into the identifier space. That defect recurred while drafting this very section, and the validator caught it. A report naming an ID that does not exist is worse than no report, because it cannot be acted on.
+
+Fixed: the pattern now captures the full hyphen-joined token, and `TOKEN_CONTAINS_HYPHEN` is emitted as a defect class distinct from `TOKEN_LENGTH`.
+
+```text
+DefectDetected  !=  DefectReportedCorrectly
+```
+
+The tool has now found four defects in its own author's work — three at authoring time, one under contact with data it did not anticipate.
+
+---
+
 ## Evidence Tiers
 
 ### Verified
-- File creation, validator execution and its output, the read-boundary blob SHA, and the three validator self-corrections.
+- File creation, validator execution and its output, the read-boundary blob SHA, and the four validator self-corrections.
+- The base advance to `0392a982`, the merge, and the display-alias collision it produced.
 
 ### Probable
 - None.
@@ -186,14 +240,14 @@ All three were found by the tool this session created, run against this session'
 
 ## New Distinctions
 
-### D-1742 · Directive-Derived Authority
+### D-1753 · Directive-Derived Authority
 **Stable ID:** `SELF-DIST-01K3MDIRECTIVEAUTHORITY000`
 
 Authority resolved from a natural-language operator directive is weaker provenance than authority resolved from an exact `*_SIGNAL` marker. Both may permit an act; only the latter is machine-resolvable. Artifacts inherit the weaker provenance of their authorizing act.
 
 **Tier:** Verified as governance doctrine recorded in this file.
 
-### D-1743 · Interpretation and Response-Law Morphs Are Observationally Equivalent
+### D-1754 · Interpretation and Response-Law Morphs Are Observationally Equivalent
 **Stable ID:** `SELF-DIST-01K3MIFNONIDENT01000000000`
 
 Only the composition `F ∘ I` is ever witnessed. For any invertible `g`, the pairs `(I, F)` and `(g∘I, F∘g⁻¹)` produce identical response trajectories for every input. The distinction between an interpretation morph and a response-function morph is therefore real inside a model and **unwitnessable from trajectory data**.
@@ -202,7 +256,7 @@ Consequence: `UNDETERMINED` is not a courtesy value in `witness_discrimination`.
 
 **Tier:** Verified as an analytic result; Symbolic as to any real system.
 
-### D-1744 · Capability–Admissibility Complementarity
+### D-1755 · Capability–Admissibility Complementarity
 **Stable ID:** `SELF-DIST-01K3MFCAPMASK0100000000000`
 
 Authority `A` is observable only where it binds. Capability `R_capability` is observable only where `A` does not bind. At no operating point are both observable. The capability surface and the admissibility surface are jointly unobservable everywhere, and mapping either requires accepting that each probe reveals exactly one side.
@@ -211,21 +265,21 @@ Not an uncertainty principle: no conjugate structure and no bound of the form `�
 
 **Tier:** Verified as an analytic result; Symbolic as to any real system.
 
-### D-1745 · The Derivative Is Wrong Where Sensitivity Matters Most
+### D-1756 · The Derivative Is Wrong Where Sensitivity Matters Most
 **Stable ID:** `SELF-DIST-01K3MSENSITIVITYTENSOR0000`
 
 For a threshold response, `∂R/∂S` is zero almost everywhere and undefined at the threshold. It reports maximal insensitivity for a system that flips state under an arbitrarily small perturbation. Notation that looks correct can invert the meaning it was chosen to express.
 
 **Tier:** Verified as an analytic result.
 
-### D-1746 · No Added Predictive Content
+### D-1757 · No Added Predictive Content
 **Stable ID:** `SELF-DIST-01K3MNOADDEDPREDICT0100000`
 
 A deep model that prescribes exactly the action its shallow rival prescribes has earned nothing, even if it is not wrong. This is a distinct verdict from refutation and must not be recorded as either success or failure.
 
 **Tier:** Verified as evidence policy recorded in this file.
 
-### D-1747 · Cited Is Not Declared
+### D-1758 · Cited Is Not Declared
 **Stable ID:** `SELF-DIST-01K3MCITEDNOTDECLARED01000`
 
 A stable ID appearing in many files is a cross-reference and is correct. Only multiple **declaration** sites violate uniqueness. A validator that conflates the two reports correct governance as a defect.

@@ -237,7 +237,7 @@ no information about where the threshold is.
 
 ### F-02 · Interpretation morph and response-function morph are observationally equivalent
 
-**Distinction:** `SELF-DIST-01K3MIFNONIDENT01000000000` — declared in Delta-621 as D-1743, cited here
+**Distinction:** `SELF-DIST-01K3MIFNONIDENT01000000000` — declared in Delta-621 as D-1754, cited here
 
 Only the composition is ever witnessed:
 
@@ -271,7 +271,7 @@ the institution may lawfully claim. `STATE_CHANGED = false` is therefore **alway
 
 ### F-04 · Capability–admissibility complementarity
 
-**Distinction:** `SELF-DIST-01K3MFCAPMASK0100000000000` — declared in Delta-621 as D-1744, cited here
+**Distinction:** `SELF-DIST-01K3MFCAPMASK0100000000000` — declared in Delta-621 as D-1755, cited here
 
 `A` is observable **only where it binds** (you see the block). `R_capability` is observable
 **only where `A` does not bind** (you see the unmasked response). At no operating point are
