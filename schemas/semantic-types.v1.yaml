@@ -1,0 +1,114 @@
+# OURSELF Semantic Type Plane · v1
+#
+# stable_id:   SELF-SCHEMA-01K3MSEMANTICTYPES00000000
+# entity_type: schema
+# status:      CANDIDATE_UNRATIFIED
+# evidence_tier: Symbolic
+# created_at:  2026-08-19
+# derived_from: SELF-SPEC-01K3MMORPHSEMANTICS0010000
+#
+# STANDING NOTE
+#   This file RECORDS a type plane. It does not ENFORCE one.
+#   No validator consumes it. Per P-14 / P-31: RECORDED LAW != ENFORCED LAW.
+#   Ratification requires a separate witnessed mutation.
+
+contract: OURSELF_SEMANTIC_TYPE_PLANE
+version: v1
+realm: ourself-core
+
+# ---------------------------------------------------------------------------
+# The second validation plane. Ordinary schemas validate shape
+# (string/integer/boolean/object). This plane validates STANDING.
+# ---------------------------------------------------------------------------
+semantic_types:
+  - DECLARATION      # something was said
+  - CLAIM            # something was asserted as so
+  - OBSERVATION      # something was looked at
+  - DISTINCTION      # two things were told apart
+  - SELECTION        # one option was chosen among candidates
+  - AUTHORIZATION    # an act was permitted
+  - OPERATION        # an act was performed
+  - EFFECT           # reality moved
+  - EVIDENCE         # a witness supports a claim
+  - ADJUDICATION     # standing was decided
+  - STANDING         # the current governed epistemic position
+
+# Auxiliary types referenced by non-promotion rules but not themselves
+# members of the core plane. Recorded to avoid silent invention.
+auxiliary_types:
+  - VERDICT
+  - SUCCESS
+  - RECONCILIATION
+  - CANONICALITY
+  - CAPABILITY
+  - ADMISSIBILITY
+  - PROJECTION
+  - STATE
+
+# ---------------------------------------------------------------------------
+# NON-PROMOTION RULES
+#   `from` may NOT be implicitly promoted into `to`.
+#   This is a barrier list, not a subtype lattice: absence of a pair here
+#   is NOT permission to promote. Unlisted pairs are UNDECIDED.
+# ---------------------------------------------------------------------------
+non_promotion:
+  - {from: DECLARATION,    to: AUTHORIZATION, reason: "saying a thing is permitted does not permit it"}
+  - {from: OBSERVATION,    to: VERDICT,       reason: "seeing is not deciding"}
+  - {from: EFFECT,         to: SUCCESS,       reason: "reality moved is not reality moved as intended"}
+  - {from: RECONCILIATION, to: CANONICALITY,  reason: "agreement between records is not authority"}
+  - {from: CLAIM,          to: EVIDENCE,      reason: "assertion is not its own witness"}
+  - {from: SELECTION,      to: AUTHORIZATION, reason: "choosing is not being permitted to choose"}
+  - {from: OPERATION,      to: EFFECT,        reason: "it ran is not it worked"}
+  - {from: EVIDENCE,       to: ADJUDICATION,  reason: "support is not a decision"}
+  - {from: CAPABILITY,     to: ADMISSIBILITY, reason: "can is not may"}
+  - {from: PROJECTION,     to: STATE,         reason: "a view is not the thing viewed"}
+
+undecided_pairs_note: >
+  Every ordered pair of types not listed under non_promotion is UNDECIDED, not
+  permitted. A promotion across an undecided pair requires an explicit promotion
+  act (below) and SHOULD also produce a proposal to extend this list.
+
+# ---------------------------------------------------------------------------
+# THE ONLY LAWFUL CAST
+#   SELF-LAW-01K3MNOIMPLICITSEMCAST0000
+#   "No implicit semantic casts across jurisdiction boundaries."
+#
+#   A promotion is an ACT, never a property of a field. The act is Matter.
+# ---------------------------------------------------------------------------
+promotion_act:
+  required_fields:
+    stable_id:            "SELF-PROMO-<26>"
+    from_type:            null
+    to_type:              null
+    subject_ref:          null
+    authority_ref:        null     # MUST resolve; a promotion may not self-authorize
+    justification:        null
+    evidence_refs:        []
+    evidence_tier:        null     # Verified | Probable | Unwitnessed | Symbolic | Speculative
+    witnessed_at:         null
+    reversible:           null
+  prohibitions:
+    - "A promotion act MUST NOT be inferred from field position, naming, or adjacency."
+    - "A promotion act MUST NOT authorize itself."
+    - "A promotion act MUST NOT be applied retroactively to records created before it."
+    - "A promotion act carries the LOWER of its own evidence tier and its subject's."
+
+# ---------------------------------------------------------------------------
+# GUARD RESOLUTION (MORPH-SEMANTICS-001 §2.1)
+# ---------------------------------------------------------------------------
+guard_values:
+  - "TRUE"
+  - "FALSE"
+  - GUARD_UNRESOLVED
+guard_law: >
+  GUARD_UNRESOLVED is not equivalent to FALSE. A conjunct whose guard is
+  unresolved may not be discharged, skipped, or defaulted. It halts the
+  admissibility evaluation at the standing already reached.
+
+open_questions:
+  - id: Q-05
+    text: "Do stable IDs require Crockford base32? Existing canon uses I and O, which Crockford excludes."
+    tier: Unwitnessed
+  - id: Q-11
+    text: "Is the non_promotion list closed under transitivity, or must each hop be listed?"
+    tier: Speculative
