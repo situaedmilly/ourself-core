@@ -1,7 +1,7 @@
 # OURSELF Daily / Intraday Proof Ledger
 
 **Stable ID:** `SELF-DELTA-01K3MMORPHCHAMBER621000000`
-**Display ID:** `Delta-621`
+**Display ID:** `Delta-623`
 **Date:** `2026-08-19`
 **Repository:** `situaedmilly/ourself-core`
 **Branch:** `claude/morph-formal-semantics-v9jmy8`
@@ -112,15 +112,15 @@ Final run, whole repository:
 
 ```json
 {
-  "distinct_ids": 63,
-  "distinct_declared_ids": 59,
-  "files_scanned": 16,
+  "distinct_ids": 82,
+  "distinct_declared_ids": 78,
+  "files_scanned": 18,
   "malformed": 17,
   "duplicate_declarations": 0,
   "dangling_references": 4,
   "durable_files_without_any_id": 0,
   "identity_debt_count": 16,
-  "advisory_non_crockford": 56
+  "advisory_non_crockford": 58
 }
 
 `malformed: 17` counts **defect rows**; `identity_debt_count: 16` counts **distinct defective IDs**. One ID carries two defects. The two figures are not interchangeable.
@@ -220,11 +220,68 @@ The tool has now found four defects in its own author's work — three at author
 
 ---
 
+## Base Advance · 2026-09-04
+
+**Stable ID:** `SELF-DIST-01K3MBASEADVANCE0200000000`
+
+While this entry remained open on its branch, `main` advanced a second time, `0392a982` → `3b444adc`, adding two entries authored by ChatGPT:
+
+- `SELF-DELTA-01M0VWTYC0W84GBP382VS8M555`, dated `2026-08-25`, display `Delta-621`
+- `SELF-DELTA-01M11JSHKR71JAE6P837877E8S`, dated `2026-08-27`, display `Delta-622`
+
+The base was merged into this branch. No file conflicted. Both incoming stable IDs are well-formed; neither adds identity debt.
+
+The validator was re-run against the merged tree and the Verified block above was updated. Two runs are involved and they differ, so both are stated rather than blended:
+
+- **At the merge**, before this section existed: `distinct_ids` 63 → 79, `distinct_declared_ids` 59 → 75, `files_scanned` 16 → 18. Every defect figure held — `malformed` 17, `identity_debt_count` 16, `dangling_references` 4, `advisory_non_crockford` 56. The incoming records added population and no debt.
+- **After this section**, which mints three distinctions of its own: `distinct_ids` 82, `distinct_declared_ids` 78, `advisory_non_crockford` 58. The block above carries these, being the final state of the tree.
+
+The two new advisories are this section's own IDs: `ALIASRECUR` and `ALIASNOTVALIDATED` contain characters outside Crockford base32. That is open question Q-05 and consistent with existing canon, not a defect — but it is this entry's own contribution to a count it elsewhere reports, and blending it into the merge figures would have misattributed it to `main`.
+
+### D-1760 · The Predicted Collision Recurred
+
+**Stable ID:** `SELF-DIST-01K3MALIASRECUR00000000000`
+
+D-1759 closed with an open defect: *nothing prevents the next independent author from colliding again. Sequential aliases have no allocator.*
+
+Sixteen days later it recurred, one scope higher. The first collision was on distinction aliases inside entries. This one is on the **entry alias itself**: `main` now carries a `Delta-621` that is not this entry, minted by a different author against the same unallocated sequence.
+
+`main` is canonical, so this entry's display alias moved `Delta-621` → `Delta-623`, taking the next free number after main's `Delta-622`. Four citations in the specification and review files moved with it.
+
+**The stable ID did not change, and must not.** It remains `SELF-DELTA-01K3MMORPHCHAMBER621000000` — a token that now contains the literal substring `621` while the entry displays as `Delta-623`. The mismatch is not a defect to repair. It is D-1737 (*Sequence Is Not Identity*) at its sharpest: the token was never a description, and the moment it is read as one it becomes wrong. The canonical path is likewise unchanged.
+
+```text
+PredictedGap  +  Elapsed Time  =  RealizedGap
+```
+
+A governance gap that was argued for is weaker evidence than a governance gap that recurred on schedule. This one recurred, unprompted, from an independent author who had no way to see this branch.
+
+**Tier:** Verified by direct witness — both `Delta-621` records exist and are visible in this branch's merge.
+
+### D-1761 · The Validator Does Not See Display Aliases
+
+**Stable ID:** `SELF-DIST-01K3MALIASNOTVALIDATED0000`
+
+Through a real, two-record alias collision, `duplicate_declarations` stayed `0` across every run.
+
+That is not a validator bug. The tool checks stable-ID uniqueness, and stable-ID uniqueness genuinely held — two distinct well-formed IDs, no duplication. The alias namespace is simply outside its scope, and no tool in this repository checks it.
+
+```text
+StableIdUnique  !=  DisplayAliasUnique
+```
+
+Both collisions this branch has survived were found by a human reading a merge, not by a check. The alias namespace has no allocator and no validator, so it has no mechanism that would fail loudly on the third collision either.
+
+**Not repaired here.** Extending the validator to alias uniqueness is a tool mutation and requires a `MUTATION_SIGNAL`. Recorded as a standing governance gap, now with two witnessed instances rather than one.
+
+---
+
 ## Evidence Tiers
 
 ### Verified
 - File creation, validator execution and its output, the read-boundary blob SHA, and the four validator self-corrections.
 - The base advance to `0392a982`, the merge, and the display-alias collision it produced.
+- The second base advance to `3b444adc`, the merge, the entry-scope alias collision, and the re-alias to `Delta-623`.
 
 ### Probable
 - None.

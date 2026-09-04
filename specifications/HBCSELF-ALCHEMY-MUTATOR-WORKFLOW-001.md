@@ -237,7 +237,7 @@ Substantive Matter returns all ten, unflattened:
 
 ## 13 · Recorded Ambiguity · The Terminal `STOP.`
 
-**Distinction:** `SELF-DIST-01K3MSTOPAMBIGUITY01000000` — declared in Delta-621, cited here
+**Distinction:** `SELF-DIST-01K3MSTOPAMBIGUITY01000000` — declared in Delta-623, cited here
 
 The source command terminates with the bare token `STOP.`
 
@@ -260,7 +260,7 @@ under which boot rule 7 overrides all other signals and this session fails close
 
 ## 14 · Authority Provenance of This Record
 
-**Distinction:** `SELF-DIST-01K3MDIRECTIVEAUTHORITY000` — declared in Delta-621 as D-1753, cited here
+**Distinction:** `SELF-DIST-01K3MDIRECTIVEAUTHORITY000` — declared in Delta-623 as D-1753, cited here
 
 This command carries **no** `*_SIGNAL` marker. The session's controlling signal remains
 `FOUNDATION_SIGNAL`, resolved from the preceding command
