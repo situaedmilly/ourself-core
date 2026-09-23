@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Observation meta-code
+        run: node tunnel1/observation.test.mjs
       - name: Authorized transition
         run: node tunnel1/membrane.mjs
       - name: Hostile probes
