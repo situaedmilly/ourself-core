@@ -1,0 +1,20 @@
+name: tunnel1-membrane
+
+on:
+  push:
+    branches:
+      - "tunnel1/constitutional-membrane"
+  workflow_dispatch:
+
+jobs:
+  membrane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Authorized transition
+        run: node tunnel1/membrane.mjs
+      - name: Hostile probes
+        run: node tunnel1/attack.mjs
