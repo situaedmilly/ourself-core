@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const ROOT = path.resolve("tunnel1/runtime");
@@ -41,17 +41,16 @@ function determine(t) {
   return { decision: reasons.length === 0 ? "ADMIT" : "DENY", reasons };
 }
 
-async function observe(target) {
-  try {
-    return await readFile(target, "utf8");
-  } catch {
-    return null;
-  }
+async function observe(target, observed_ref) {
+  return observeFile({ target, observed_ref });
 }
 
 export async function executeProposal(input) {
   const transition = normalize(input);
-  const before = await observe(path.join(WORKSPACE, transition.resource.replace(/^tunnel1\//, "")));
+  const before = await observe(
+    path.join(WORKSPACE, transition.resource.replace(/^tunnel1\//, "")),
+    transition.resource
+  );
   const determination = determine(transition);
   let actuation = "NOT_ACTUATED";
   let after = before;
@@ -61,7 +60,7 @@ export async function executeProposal(input) {
     await mkdir(path.dirname(target), { recursive: true });
     await writeFile(target, transition.proposed_transition.to, "utf8");
     actuation = "ACTUATED";
-    after = await observe(target);
+    after = await observe(target, transition.resource);
   }
 
   const receipt = {
@@ -71,6 +70,7 @@ export async function executeProposal(input) {
     determination,
     actuation,
     observed_effect: after,
+    observation_fingerprint: observationFingerprint(after),
     evidence_hash: hash(JSON.stringify({ transition, determination, actuation, after }))
   };
 
