@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { observeFile, observationFingerprint } from "./observation.mjs";
 
 const ROOT = path.resolve("tunnel1/runtime");
 const WORKSPACE = path.join(ROOT, "workspace");
@@ -37,6 +38,12 @@ function determine(t) {
   if (t.authority_ref !== POLICY.authority) reasons.push("AUTHORITY_NOT_ADMITTED");
   if (!POLICY.operations.has(t.operation)) reasons.push("OPERATION_NOT_ADMITTED");
   if (!t.resource.startsWith("tunnel1/")) reasons.push("RESOURCE_OUTSIDE_BOUNDARY");
+  else {
+    const relative = t.resource.slice("tunnel1/".length);
+    const target = path.resolve(WORKSPACE, relative);
+    const workspacePrefix = WORKSPACE.endsWith(path.sep) ? WORKSPACE : WORKSPACE + path.sep;
+    if (!target.startsWith(workspacePrefix)) reasons.push("RESOURCE_PATH_ESCAPE");
+  }
   if (t.proposed_transition.from === t.proposed_transition.to) reasons.push("NO_STATE_CHANGE");
   return { decision: reasons.length === 0 ? "ADMIT" : "DENY", reasons };
 }
