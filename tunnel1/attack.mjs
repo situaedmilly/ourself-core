@@ -44,5 +44,12 @@ for (const c of cases) {
     authority_ref: c.authority_ref,
     idempotency_key: "TB1-ATTACK-" + c.name
   });
-  console.log(c.name, receipt.determination.decision, receipt.determination.reasons.join(","));
+  const expected = c.name === "authorized" ? "ADMIT" : "DENY";
+  if (receipt.determination.decision !== expected) {
+    throw new Error(`T1_ATTACK_BYPASS:${c.name}:${receipt.determination.decision}`);
+  }
+  if (c.name !== "authorized" && receipt.actuation !== "NOT_ACTUATED") {
+    throw new Error(`T1_ATTACK_ACTUATED:${c.name}`);
+  }
+  console.log(c.name, receipt.determination.decision, receipt.actuation, receipt.determination.reasons.join(","));
 }
