@@ -1,0 +1,35 @@
+name: Tunnel 3 — OLLAMASELF self-hosted realization
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [tunnel-3-mutation-membrane-v0.1]
+
+permissions:
+  contents: read
+
+jobs:
+  ollamaself-boundary:
+    runs-on: [self-hosted, linux, ollamaself]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Execute mutation membrane tests
+        run: node --test ourselfd/mutation-membrane.test.mjs
+      - name: Execute OLLAMASELF boundary tests
+        run: node --test ourselfd/ollamaself-launch.test.mjs
+      - name: Emit bounded launch proposal
+        run: |
+          node --input-type=module <<'NODE'
+          import { normalizeOllamaLaunch, buildOllamaProposal } from './ourselfd/ollamaself-launch.mjs';
+          const launch = normalizeOllamaLaunch({
+            instance_id: 'OLLAMASELF-CI-001',
+            model: 'DECLARED_LOCAL_MODEL',
+            context_ref: 'T3-CI',
+            authority_ref: 'A-001',
+            requested_capabilities: ['inference']
+          });
+          console.log(JSON.stringify(buildOllamaProposal(launch)));
+          NODE
