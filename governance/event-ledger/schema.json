@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SELF-SCHEMA-01K8UNIVERSALEVENT000002",
+  "title": "OURSELF Universal Event Ledger v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "event_time",
+    "sequence",
+    "actor",
+    "subject",
+    "authority_ref",
+    "causation",
+    "state",
+    "evidence_refs",
+    "ledger_commit",
+    "status"
+  ],
+  "properties": {
+    "event_id": {"type":"string","pattern":"^SELF-EVENT-[A-Z0-9]{26}$"},
+    "event_type": {"type":"string","enum":["DECLARED","PROPOSED","DETERMINED","ACTUATED","OBSERVED","RECEIPTED","DENIED","SUPERSEDED","RECONTACTED","SEALED"]},
+    "event_time": {"type":"string","format":"date-time"},
+    "sequence": {"type":"integer","minimum":1},
+    "actor": {"type":"object","additionalProperties":false,"required":["id","kind"],"properties":{"id":{"type":"string"},"kind":{"type":"string"}}},
+    "subject": {"type":"object","additionalProperties":false,"required":["id","kind"],"properties":{"id":{"type":"string"},"kind":{"type":"string"}}},
+    "authority_ref": {"type":["string","null"]},
+    "causation": {"type":"object","additionalProperties":false,"required":["event_ids"],"properties":{"event_ids":{"type":"array","items":{"type":"string","pattern":"^SELF-EVENT-[A-Z0-9]{26}$"}}}},
+    "state": {"type":"object","additionalProperties":true,"required":["phase"],"properties":{"phase":{"type":"string"}}},
+    "evidence_refs": {"type":"array","items":{"type":"string"},"minItems":1},
+    "receipt_ref": {"type":["string","null"]},
+    "transition_ref": {"type":["string","null"]},
+    "realization_ref": {"type":["string","null"]},
+    "supersedes": {"type":["string","null"]},
+    "notes": {"type":["string","null"]},
+    "ledger_commit": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+    "status": {"type":"string","enum":["VERIFIED","PROBABLE","UNWITNESSED","SYMBOLIC","SPECULATIVE"]}
+  }
+}

@@ -1,0 +1,33 @@
+name: Tunnel 3 — Mutation Membrane
+
+on:
+  push:
+    branches: [main, tunnel-3-mutation-membrane-v0.1]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  mutation-membrane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Execute mutation membrane tests
+        run: node --test ourselfd/mutation-membrane.test.mjs
+      - name: Emit bounded birth receipt
+        run: |
+          node --input-type=module <<'NODE'
+          import { executeTransition } from './ourselfd/mutation-membrane.mjs';
+          const receipt = executeTransition({
+            transition_id: 'T3-CI-0001',
+            actor: { id: 'CI_TUNNEL_3' },
+            state_from: { governance_version:'0.1', authority:'A-001', identity:'SELF', capabilities:['state'], value:0 },
+            state_proposed: { governance_version:'0.1', authority:'A-001', identity:'SELF', capabilities:['state'], value:1 }
+          }, { ref:'A-001', explicit:false, subject:'OPERATOR' });
+          console.log(JSON.stringify(receipt));
+          NODE
