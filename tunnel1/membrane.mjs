@@ -54,16 +54,32 @@ async function observe(target, observed_ref) {
 
 export async function executeProposal(input) {
   const transition = normalize(input);
-  const before = await observe(
-    path.join(WORKSPACE, transition.resource.replace(/^tunnel1\//, "")),
-    transition.resource
-  );
+  const relative = transition.resource.replace(/^tunnel1\//, "");
+  const target = path.resolve(WORKSPACE, relative);
+  const workspacePrefix = WORKSPACE.endsWith(path.sep) ? WORKSPACE : WORKSPACE + path.sep;
+  const inBoundary = transition.resource.startsWith("tunnel1/") && target.startsWith(workspacePrefix);
+
+  const before = inBoundary
+    ? await observe(target, transition.resource)
+    : {
+        observer_ref: "OUT_OF_BOUNDARY",
+        observed_ref: transition.resource,
+        observation_type: "file_state",
+        method: "filesystem.readFile:utf8",
+        target,
+        observed_at: new Date().toISOString(),
+        exists: false,
+        byte_length: 0,
+        sha256: "",
+        value: null
+      };
+
   const determination = determine(transition);
   let actuation = "NOT_ACTUATED";
   let after = before;
 
   if (determination.decision === "ADMIT") {
-    const target = path.join(WORKSPACE, transition.resource.replace(/^tunnel1\//, ""));
+    if (!inBoundary) throw new Error("ACTUATION_BOUNDARY_INVARIANT_VIOLATION");
     await mkdir(path.dirname(target), { recursive: true });
     await writeFile(target, transition.proposed_transition.to, "utf8");
     actuation = "ACTUATED";
