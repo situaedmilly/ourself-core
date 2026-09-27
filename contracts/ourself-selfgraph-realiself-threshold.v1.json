@@ -1,0 +1,66 @@
+{
+  "contract_id": "OURSELF-SELFGRAPH-REALISELF-THRESHOLD-001",
+  "version": "1.0.0",
+  "era": "2051",
+  "purpose": "Determine the minimum witnessed instance set required before the SELFGRAPH realization claim may transition from NOT_REALIZED to REALIZED.",
+  "constitutional_rule": "REALIZED is a claim about witnessed graph instances, not a declaration that runtime machinery or external effects exist.",
+  "inputs": {
+    "declared_instances": "Array<GraphInstance>",
+    "witnessed_instances": "Array<GraphInstance>"
+  },
+  "required_instance_count": 17,
+  "realization_rule": {
+    "predicate": "witnessed_instance_count == required_instance_count",
+    "fail_closed": true,
+    "duplicate_instance_ids_rejected": true,
+    "unknown_instance_ids_rejected": true,
+    "missing_instance_ids_are_unresolved_witness_obligations": true
+  },
+  "states": [
+    "DECLARED",
+    "REGISTERED",
+    "PERSISTED",
+    "INITIALIZED",
+    "RUNNING",
+    "WITNESSED",
+    "ADMITTED",
+    "ACTUATED",
+    "EFFECTED",
+    "CUSTODIED",
+    "CURRENT",
+    "PERMANENT"
+  ],
+  "non_implications": {
+    "REALIZED": "does_not_imply",
+    "effects": [
+      "ADMITTED",
+      "ACTUATED",
+      "EFFECTED",
+      "CUSTODIED",
+      "PERMANENT"
+    ],
+    "runtime": [
+      "RUNNING"
+    ],
+    "authority": [
+      "AUTHORITY"
+    ]
+  },
+  "witness_contract": {
+    "witness_status": "WITNESSED",
+    "witness_ref_required": true,
+    "observed_at_required": true,
+    "evidence_ref_required": true
+  },
+  "cross_graph_rule": "A graph jurisdiction may not establish a foreign-jurisdiction claim without an explicit witnessed cross-graph relation.",
+  "output": {
+    "status_enum": [
+      "NOT_REALIZED",
+      "REALIZED"
+    ],
+    "unresolved_witness_obligations": "Array<instance_id>",
+    "witnessed_instance_count": "integer",
+    "required_instance_count": "integer",
+    "threshold_met": "boolean"
+  }
+}
