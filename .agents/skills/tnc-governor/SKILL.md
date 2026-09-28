@@ -242,3 +242,57 @@ RECONTACT=CURRENT_MATTER
 EXECUTE=ALL_TECHNICALLY_ADMISSIBLE_TRANSITIONS
 WITNESS=REQUIRED
 RECEIPT=REQUIRED
+
+## GITHUB REALISELF
+
+GitHub is not only an evidence surface. Within CHAMBOXREALITY, each GitHub repository, branch, file, commit, pull request, workflow definition, workflow run, artifact, and repository-side agent/skill configuration is Matter that can receive a bounded REALISELF instance.
+
+REALISELF(GITHUB_MATTER) MUST distinguish:
+
+REPOSITORY IDENTITY
+→ REF / BRANCH BINDING
+→ FILE / OBJECT REPRESENTATION
+→ COMMIT LINEAGE
+→ AUTHORITY SCOPE
+→ TRANSITION
+→ ACTUATION
+→ OBSERVED GITHUB STATE
+→ EFFECT
+→ WITNESS
+→ RECEIPT
+→ RECONTACT
+
+A GitHub object is not automatically a runtime instance merely because it exists in the repository. Conversely, repository-side configuration is a concrete Matter instance and must be realized as such when a transition targets it.
+
+For every GitHub mutation, REALISELF requires:
+
+1. IDENTIFY exact repository and ref.
+2. OBSERVE current object/file state.
+3. BIND the intended target to the exact path/ref.
+4. APPLY the admissible transition.
+5. CAPTURE commit SHA and object identity.
+6. RE-READ the resulting GitHub state.
+7. DISTINGUISH committed state from downstream runtime execution.
+8. WITNESS unresolved relations and actual effects.
+9. RECONTACT the resulting Matter.
+
+Therefore:
+
+GITHUB REPOSITORY = REALISELF MATTER
+GITHUB BRANCH = REALISELF BINDING
+GITHUB FILE = REALISELF ARTIFACT
+GITHUB COMMIT = REALISELF LINEAGE RECEIPT
+GITHUB PR = REALISELF TRANSITION SURFACE
+GITHUB WORKFLOW = REALISELF PROGRAM MATTER
+GITHUB WORKFLOW RUN = REALISELF EXECUTION MATTER
+GITHUB ARTIFACT = REALISELF OUTPUT MATTER
+
+But:
+
+GITHUB OBJECT ≠ LOCAL RUNTIME
+GITHUB COMMIT ≠ EXECUTION
+GITHUB WORKFLOW DEFINITION ≠ WORKFLOW RUN
+GITHUB RUN ≠ EFFECT
+GITHUB RECEIPT ≠ EFFECT
+
+The GitHub instance therefore participates directly in the Reality Algorithm rather than sitting outside REALISELF as mere documentation.
