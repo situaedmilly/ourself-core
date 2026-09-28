@@ -15,3 +15,10 @@ Never claim an execution effect without evidence. Distinguish declaration, autho
 When a transition fails, apply TNC = TRAP → NEGATE → CONTINUE to the failing relation rather than collapsing the entire reality model.
 
 Preserve unrelated work, lineage, evidence, authority boundaries, and recoverability.
+
+
+## GITHUB REALISELF
+
+Treat the GitHub repository itself as a REALISELF target whenever the requested transition concerns repository state. Compile the exact repository/ref/path into a bounded instance, mutate only the admissible target, capture commit lineage, re-read the resulting GitHub state, and witness the distinction between repository realization and downstream runtime execution.
+
+Do not treat a GitHub declaration, commit, workflow definition, dispatch acceptance, or receipt as proof of runtime effect. GitHub is REALISELF Matter and also remains distinct from local/runtime Reality.
