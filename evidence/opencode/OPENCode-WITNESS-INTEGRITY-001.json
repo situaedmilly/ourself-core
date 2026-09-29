@@ -1,0 +1,28 @@
+{
+  "state": "BLOCKED",
+  "blocker_id": "OPENCode-WITNESS-INTEGRITY-001",
+  "transition": "OPENCode_MODELSELFWITNESS",
+  "failed_relation": "REQUESTED_OBSERVATION_TO_TRUSTWORTHY_WITNESS",
+  "observed": {
+    "opencode_session": "EXECUTED",
+    "model": "ollama/qwen2.5-coder:latest",
+    "session_record": "PRESENT",
+    "requested_inspection": "NOT_OBSERVED",
+    "reality_witness": "UNTRUSTWORTHY",
+    "tool_results": "ABSENT",
+    "contradictory_claims": "OBSERVED"
+  },
+  "authority": "NONE",
+  "actuation": "NOT_EXECUTED",
+  "external_effect": "NOT_ESTABLISHED",
+  "preserved_matter": [
+    "AGENTS.md",
+    "opencode.jsonc",
+    ".opencode/agents/reality-witness.md",
+    "opencode-master-environment-v1",
+    "Ollama",
+    "qwen2.5-coder:latest"
+  ],
+  "negation": "DO_NOT_ADMIT_MODEL_CLAIMS_AS_OBSERVED_REALITY",
+  "next_transition": "INDEPENDENT_RUNTIME_RECONTACT"
+}
