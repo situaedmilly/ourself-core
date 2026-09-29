@@ -1,0 +1,53 @@
+name: TNC Governor REALISELF Runtime Verification
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  realiself-runtime-verification:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout realized main
+        uses: actions/checkout@v4
+
+      - name: Verify consumer artifacts are present
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .agents/skills/tnc-governor/SKILL.md
+          test -f .agents/skills/tnc-governor/README.md
+          test -f .github/agents/tnc-governor.md
+
+      - name: Verify REALISELF declarations
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '## GITHUB REALISELF' .agents/skills/tnc-governor/SKILL.md
+          grep -q '## GITHUB REALISELF' .github/agents/tnc-governor.md
+          grep -q 'GITHUB WORKFLOW RUN = REALISELF EXECUTION MATTER' .agents/skills/tnc-governor/SKILL.md
+          grep -q 'GITHUB COMMIT ≠ EXECUTION' .agents/skills/tnc-governor/SKILL.md
+
+      - name: Emit execution witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "REALISELF_RUNTIME_WITNESS=VERIFIED"
+            echo "REPOSITORY=situaedmilly/ourself-core"
+            echo "REF=${GITHUB_REF_NAME}"
+            echo "COMMIT=${GITHUB_SHA}"
+            echo "RUN_ID=${GITHUB_RUN_ID}"
+            echo "WORKFLOW=${GITHUB_WORKFLOW}"
+            echo "SKILL_SHA256=$(sha256sum .agents/skills/tnc-governor/SKILL.md | cut -d' ' -f1)"
+            echo "AGENT_SHA256=$(sha256sum .github/agents/tnc-governor.md | cut -d' ' -f1)"
+          } | tee realiseLF-runtime-witness.txt
+
+      - name: Publish witness artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnc-governor-realiseLF-witness
+          path: realiseLF-runtime-witness.txt
