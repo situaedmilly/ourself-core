@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ourself
+      POSTGRES_PASSWORD: ourself
+      POSTGRES_DB: ourself
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ourself -d ourself"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - ourself-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  ourself-postgres-data:
