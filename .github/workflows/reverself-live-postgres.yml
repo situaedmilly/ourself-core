@@ -1,0 +1,45 @@
+name: REVERSELF live PostgreSQL vertical slice
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "reality/reverself-live-postgres-v0.1"
+    paths:
+      - "supabase/**"
+      - "packages/crop-order-proof/**"
+      - "scripts/reverself-live-postgres.mjs"
+      - ".github/workflows/reverself-live-postgres.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  live-postgres:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install PostgreSQL client library
+        run: npm install --no-save pg
+      - name: Require live database credential
+        run: |
+          test -n "$SUPABASE_DB_URL" || {
+            echo "SUPABASE_DB_URL is not configured; live DB verification is BLOCKED, not PASSED."
+            exit 78
+          }
+      - name: Apply canonical migration
+        run: npx --yes supabase@latest db push --db-url "$SUPABASE_DB_URL" --yes
+      - name: Execute REVERSELF vertical slice
+        run: node scripts/reverself-live-postgres.mjs | tee governed-messaging-receipt.json
+      - name: Validate machine receipt
+        run: node -e 'const fs=require("fs"); const r=JSON.parse(fs.readFileSync("governed-messaging-receipt.json","utf8")); if(r.result!=="PASSED") process.exit(1);'
+      - name: Upload receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: reverself-live-postgres-receipt
+          path: governed-messaging-receipt.json
