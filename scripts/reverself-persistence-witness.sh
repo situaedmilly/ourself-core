@@ -79,7 +79,7 @@ for i in $(seq 1 30); do
 done
 
 echo "READING_COMMITTED_WITNESS"
-FOUND="$(docker compose exec -T postgres psql -U ourself -d ourself -At -v witness_id="$WITNESS_ID" -c "SELECT count(*) FROM public.matter_intents WHERE intent_id = :'witness_id';" | tr -d '[:space:]')"
+FOUND="$(docker compose exec -T postgres psql -U ourself -d ourself -At -c "SELECT count(*) FROM public.matter_intents WHERE intent_id = '$WITNESS_ID';" | tr -d '[:space:]')"
 
 if [ "$FOUND" != "1" ]; then
   echo "PERSISTENCE_WITNESS_FAILED"
