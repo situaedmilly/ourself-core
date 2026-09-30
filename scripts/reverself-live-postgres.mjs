@@ -2,12 +2,12 @@ import pg from "pg";
 import { proveOrder } from "../packages/crop-order-proof/src/index.mjs";
 
 const { Client } = pg;
-const dbUrl = process.env.SUPABASE_DB_URL;
-if (!dbUrl) throw new Error("SUPABASE_DB_URL is required for live verification");
+const dbUrl = process.env.DATABASE_URL;
+if (!dbUrl) throw new Error("DATABASE_URL is required for live verification");
 
 const client = new Client({
   connectionString: dbUrl,
-  ssl: { rejectUnauthorized: false },
+  
 });
 
 const now = new Date().toISOString();
