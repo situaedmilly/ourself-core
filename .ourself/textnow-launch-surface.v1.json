@@ -1,0 +1,37 @@
+{
+  "schema": "OURSELF.TEXTNOW.LAUNCH_SURFACE.v1",
+  "result": "ADMITTED",
+  "subject": "OURSELF-TEXTNOW",
+  "reality": "REVERSELF",
+  "repository": "situaedmilly/ourself-core",
+  "branch": "reality/reverself-live-postgres-v0.1",
+  "entry_runtime": {
+    "jurisdiction": "REPOSITORY-OWNED-POSTGRESQL",
+    "runtime": "PostgreSQL 17",
+    "runtime_launch_surface": "docs/reality/reverself-repository-postgres-runtime-launch.md",
+    "execution_command": "npm run reverself:postgres"
+  },
+  "proof": {
+    "runtime_receipt": "proof/reverself-repository-postgres-20260930T045956Z.json",
+    "persistence_receipt": "proof/reverself-persistence-witness.json",
+    "persistence_witness_id": "be1c93cf-f856-4c92-9f88-351e153c01d2"
+  },
+  "launch_pointer": {
+    "kind": "REPOSITORY_REALITY_ENTRY",
+    "target": "REVERSELF",
+    "target_surface": "REPOSITORY-OWNED-POSTGRESQL",
+    "pointer_is_execution": false,
+    "pointer_is_authority": false
+  },
+  "authority": {
+    "status": "NONE",
+    "execution_requires_explicit_admission": true
+  },
+  "invariants": [
+    "DECLARATION != AUTHORITY",
+    "POINTER != EXECUTION",
+    "PROOF != AUTHORITY",
+    "ACK != DELIVERY",
+    "RECEIPT != EFFECT"
+  ]
+}
