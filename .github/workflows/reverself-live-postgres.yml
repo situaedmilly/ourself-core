@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Initialize ephemeral Node workspace
+        run: npm init -y
       - name: Install PostgreSQL client library
         run: npm install --no-save pg
       - name: Require live database credential
