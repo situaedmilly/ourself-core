@@ -1,0 +1,12 @@
+name: Actions Probe
+
+on:
+  push:
+    branches:
+      - ci-actions-probe-20260930
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ACTIONS_PROBE_OK
