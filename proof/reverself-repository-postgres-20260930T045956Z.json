@@ -1,0 +1,20 @@
+{
+  "schema": "OURSELF.REVERSELF.REPOSITORY_POSTGRES_RECEIPT.v0.1",
+  "result": "PASSED",
+  "repository": "situaedmilly/ourself-core",
+  "jurisdiction": "REPOSITORY-OWNED-POSTGRESQL",
+  "runtime": "PostgreSQL 17",
+  "intent_id": "2be7438f-dbbd-4c4b-bd3f-32dd1a239f75",
+  "event_chain": [
+    "72efda23-f11c-4d88-8619-f96e3fdf18c6",
+    "9766ed3c-c550-42b9-a29f-a9526c418c60",
+    "d5662c9e-8cfa-49b7-8cda-d5a57cd6c075",
+    "9307e30d-ada8-4e95-8e49-790dbc5fab3a",
+    "3a931fd8-a4cd-4073-bce0-bb1edb6e5e85"
+  ],
+  "crop_result": "ORDER_PROVEN",
+  "transport_ack": "ACCEPTED",
+  "transport_ack_is_delivery": false,
+  "final_state": "COMPLETED",
+  "observed_at": "2026-09-30T04:59:56.652Z"
+}
