@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tunnel1 Observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["observer_ref","observed_ref","observation_type","method","target","observed_at","exists","byte_length","sha256","value"],
+  "properties": {
+    "observer_ref": {"type":"string","minLength":1},
+    "observed_ref": {"type":"string","minLength":1},
+    "observation_type": {"const":"file_state"},
+    "method": {"const":"filesystem.readFile:utf8"},
+    "target": {"type":"string","minLength":1},
+    "observed_at": {"type":"string","format":"date-time"},
+    "exists": {"type":"boolean"},
+    "byte_length": {"type":"integer","minimum":0},
+    "sha256": {"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "value": {"type":["string","null"]}
+  }
+}

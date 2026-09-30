@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tunnel1 Proposed Transition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["request_id", "actor", "operation", "resource", "proposed_transition", "authority_ref", "idempotency_key"],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "actor": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "enum": ["write_file"]},
+    "resource": {"type": "string", "pattern": "^tunnel1/[A-Za-z0-9._/-]+$"},
+    "proposed_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": {"type": "string"},
+        "to": {"type": "string"}
+      }
+    },
+    "authority_ref": {"type": "string", "minLength": 1},
+    "idempotency_key": {"type": "string", "minLength": 1}
+  }
+}
