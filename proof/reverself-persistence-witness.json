@@ -1,0 +1,15 @@
+{
+  "schema": "OURSELF.REVERSELF.REPOSITORY_POSTGRES_PERSISTENCE_RECEIPT.v0.1",
+  "result": "PASSED",
+  "repository": "situaedmilly/ourself-core",
+  "jurisdiction": "REPOSITORY-OWNED-POSTGRESQL",
+  "runtime": "PostgreSQL 17",
+  "witness_id": "be1c93cf-f856-4c92-9f88-351e153c01d2",
+  "witness_key": "reverself-persistence-witness-be1c93cf-f856-4c92-9f88-351e153c01d2",
+  "boundary": "CONTAINER_LIFECYCLE_REPLACEMENT",
+  "committed_before_replacement": true,
+  "container_removed": true,
+  "container_recreated": true,
+  "same_named_volume_reused": true,
+  "witness_row_found_after_recreation": true
+}
