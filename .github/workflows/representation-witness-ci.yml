@@ -1,0 +1,20 @@
+name: Representation Witness CI
+
+on:
+  push:
+    branches:
+      - feat/representation-witness-v0.1
+  workflow_dispatch:
+
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run representation witness tests
+        run: node --experimental-strip-types --test tests/representation-witness.test.ts
