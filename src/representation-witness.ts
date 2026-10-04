@@ -146,16 +146,12 @@ export function makeNode(identity:string,type:SemanticType,value:unknown,childre
     authority:p.authority??"OURSELF",jurisdiction:p.jurisdiction??"LOCAL",relation:p.relation??[],
     value,children};
 }
-export function representationWitness(source:SemanticNode,format:TargetFormat,timestamp=new Date().toISOString()):WitnessReceipt {
+export function witnessArtifact(source:SemanticNode, artifact:string, format:TargetFormat, timestamp=new Date().toISOString()):WitnessReceipt {
   const semanticHash=sha256(canonical(projection(source,true)));
   const structuralHash=sha256(canonical(projection(source,false)));
-  const artifactValue={
-    [META]:{IDENTITY:source.identity,HIERARCHY:source.hierarchy,TYPE:source.type,CARDINALITY:source.cardinality,
-      AUTHORITY:source.authority,JURISDICTION:source.jurisdiction,RELATION:source.relation,VALUE:source.value},
-    value:source.value
-  };
-  const artifact=serialize(artifactValue,format), serializationHash=sha256(new TextEncoder().encode(artifact));
-  let parsed:unknown;try{parsed=parseArtifact(artifact,format);}catch{
+  const serializationHash=sha256(new TextEncoder().encode(artifact));
+  let parsed:unknown;
+  try { parsed=parseArtifact(artifact,format); } catch {
     const coverage=Object.fromEntries(PROPERTIES.map(p=>[p,"ABSENT"])) as Record<Property,"PRESENT"|"ABSENT">;
     return {witness:"REPRESENTATION_WITNESS",version:"0.1",semantic_id:semanticHash,serialization_id:serializationHash,
       parse_id:null,semantic_hash:semanticHash,structural_hash:structuralHash,serialization_hash:serializationHash,target_format:format,
@@ -163,13 +159,20 @@ export function representationWitness(source:SemanticNode,format:TargetFormat,ti
       semantic_equality:"NOT_ESTABLISHABLE",decision:"REPRESENTATION_INCOMPLETE",timestamp,
       artifact:{bytes:Buffer.byteLength(artifact),sha256:serializationHash}};
   }
-  const obs=observeArtifact(parsed),coverage=Object.fromEntries(PROPERTIES.map(p=>[p,obs.coverage.has(p)?"PRESENT":"ABSENT"])) as Record<Property,"PRESENT"|"ABSENT">;
+  const obs=observeArtifact(parsed);
+  const coverage=Object.fromEntries(PROPERTIES.map(p=>[p,obs.coverage.has(p)?"PRESENT":"ABSENT"])) as Record<Property,"PRESENT"|"ABSENT">;
   const observations:PropertyRecord[]=[],losses:string[]=[],drift:string[]=[];
   for(const p of PROPERTIES){
     const expected=sourceValue(source,p),present=obs.coverage.has(p),actual=obs.values[p];
-    if(!present){losses.push(p+"_LOSS");observations.push({property:p,source_present:true,source_value:expected,artifact_present:false,observable_value:undefined,status:"PROPERTY_LOSS",loss_classification:p+"_LOSS"});}
-    else if(canonical(expected)===canonical(actual))observations.push({property:p,source_present:true,source_value:expected,artifact_present:true,observable_value:actual,status:"PRESERVED",loss_classification:null});
-    else{drift.push(p+"_DRIFT");observations.push({property:p,source_present:true,source_value:expected,artifact_present:true,observable_value:actual,status:"DRIFT",loss_classification:p+"_DRIFT"});}
+    if(!present){
+      losses.push(p+"_LOSS");
+      observations.push({property:p,source_present:true,source_value:expected,artifact_present:false,observable_value:undefined,status:"PROPERTY_LOSS",loss_classification:p+"_LOSS"});
+    } else if(canonical(expected)===canonical(actual)){
+      observations.push({property:p,source_present:true,source_value:expected,artifact_present:true,observable_value:actual,status:"PRESERVED",loss_classification:null});
+    } else {
+      drift.push(p+"_DRIFT");
+      observations.push({property:p,source_present:true,source_value:expected,artifact_present:true,observable_value:actual,status:"DRIFT",loss_classification:p+"_DRIFT"});
+    }
   }
   const complete=losses.length===0, equal=complete&&drift.length===0;
   return {witness:"REPRESENTATION_WITNESS",version:"0.1",semantic_id:semanticHash,serialization_id:serializationHash,
@@ -178,4 +181,13 @@ export function representationWitness(source:SemanticNode,format:TargetFormat,ti
     semantic_equality:complete?(equal?"PASS":"FAIL"):"NOT_ESTABLISHABLE",
     decision:complete?(equal?"ADMIT":"REJECT"):"REPRESENTATION_INCOMPLETE",timestamp,
     artifact:{bytes:Buffer.byteLength(artifact),sha256:serializationHash}};
+}
+
+export function representationWitness(source:SemanticNode,format:TargetFormat,timestamp=new Date().toISOString()):WitnessReceipt {
+  const artifactValue={
+    [META]:{IDENTITY:source.identity,HIERARCHY:source.hierarchy,TYPE:source.type,CARDINALITY:source.cardinality,
+      AUTHORITY:source.authority,JURISDICTION:source.jurisdiction,RELATION:source.relation,VALUE:source.value},
+    value:source.value
+  };
+  return witnessArtifact(source,serialize(artifactValue,format),format,timestamp);
 }
