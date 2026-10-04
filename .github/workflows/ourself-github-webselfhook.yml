@@ -1,0 +1,53 @@
+name: OURSELF GitHub WebSelfHook
+
+on:
+  workflow_dispatch:
+    inputs:
+      intent:
+        description: "OURSELF intent carried to Bubble terminal_dispatch"
+        required: true
+        default: "github_webselfhook_probe"
+      payload_json:
+        description: "JSON payload forwarded as payload_json"
+        required: true
+        default: '{"probe":"github-webselfhook-v0.1","mode":"bounded"}'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Build governed envelope
+        id: envelope
+        shell: bash
+        env:
+          REQUEST_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          INTENT: ${{ inputs.intent }}
+          PAYLOAD_JSON: ${{ inputs.payload_json }}
+        run: |
+          set -euo pipefail
+          jq -n \
+            --arg request_id "$REQUEST_ID" \
+            --arg source "github" \
+            --arg intent "$INTENT" \
+            --arg payload_json "$PAYLOAD_JSON" \
+            '{
+              request_id: $request_id,
+              source: $source,
+              intent: $intent,
+              payload_json: $payload_json
+            }' > envelope.json
+          cat envelope.json
+
+      - name: POST to Bubble terminal_dispatch
+        env:
+          BUBBLE_TERMINAL_DISPATCH_URL: https://ureel---freed-self-realit.bubbleapps.io/version-test/api/1.1/wf/terminal_dispatch
+        run: |
+          set -euo pipefail
+          response="$(curl --fail-with-body --silent --show-error \
+            --request POST \
+            --header 'Content-Type: application/json' \
+            --data-binary @envelope.json \
+            "$BUBBLE_TERMINAL_DISPATCH_URL")"
+          printf '%s\n' "$response" | tee bubble-response.json
