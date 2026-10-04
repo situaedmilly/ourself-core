@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { makeNode, parseArtifact, serialize, type SemanticNode } from "../src/representation-witness.ts";
+import { makeNode, parseArtifact, representationWitness, serialize, witnessArtifact, type SemanticNode } from "../src/representation-witness.ts";
 
 function source(): SemanticNode {
   return makeNode("openapi","OBJECT",{version:"3.1.0"},[],{
@@ -8,48 +8,67 @@ function source(): SemanticNode {
     jurisdiction:"LOCAL",relation:[{kind:"CONTRACT",target:"WEBSELFHOOK"}]
   });
 }
-
-function fullArtifact(s:SemanticNode):string {
+function completeArtifact(s:SemanticNode):string {
   return serialize({__ourself:{
     IDENTITY:s.identity,HIERARCHY:s.hierarchy,TYPE:s.type,CARDINALITY:s.cardinality,
     AUTHORITY:s.authority,JURISDICTION:s.jurisdiction,RELATION:s.relation,VALUE:s.value
   },value:s.value},"json");
 }
 
-test("ordinary parse does not infer authority",()=>{
-  const parsed=parseArtifact(JSON.stringify({value:source().value}),"json") as Record<string,unknown>;
-  assert.equal(Object.prototype.hasOwnProperty.call(parsed,"__ourself"),false);
+test("complete preservation is admissible",()=>{
+  const s=source(), r=witnessArtifact(s,completeArtifact(s),"json","2026-10-04T00:00:00.000Z");
+  assert.equal(r.syntax,"PASS"); assert.equal(r.representation,"COMPLETE");
+  assert.equal(r.semantic_equality,"PASS"); assert.equal(r.decision,"ADMIT");
+  assert.deepEqual(r.losses,[]); assert.deepEqual(r.drift,[]);
 });
 
-test("complete artifact can carry all eight properties",()=>{
+test("property loss is not drift and cannot be admitted",()=>{
+  const s=source(), artifact=serialize({value:s.value},"json");
+  const r=witnessArtifact(s,artifact,"json","2026-10-04T00:00:00.000Z");
+  assert.equal(r.syntax,"PASS");
+  assert.equal(r.coverage.AUTHORITY,"ABSENT");
+  assert.ok(r.losses.includes("AUTHORITY_LOSS"));
+  assert.equal(r.semantic_equality,"NOT_ESTABLISHABLE");
+  assert.equal(r.decision,"REPRESENTATION_INCOMPLETE");
+});
+
+test("anti-inference: absent authority remains absent",()=>{
+  const s=source(), parsed=parseArtifact(serialize({value:s.value},"json"),"json") as Record<string,unknown>;
+  assert.equal((parsed as any).__ourself,undefined);
+  const r=witnessArtifact(s,JSON.stringify(parsed,null,2)+"\n","json","2026-10-04T00:00:00.000Z");
+  const auth=r.observations.find(x=>x.property==="AUTHORITY");
+  assert.equal(auth?.artifact_present,false);
+  assert.equal(auth?.status,"PROPERTY_LOSS");
+  assert.equal(r.decision,"REPRESENTATION_INCOMPLETE");
+});
+
+test("represented authority drift is classified as drift",()=>{
   const s=source();
-  const parsed=parseArtifact(fullArtifact(s),"json") as Record<string,unknown>;
-  const meta=parsed.__ourself as Record<string,unknown>;
-  assert.equal(meta.AUTHORITY,"OURSELF");
-  assert.equal(meta.JURISDICTION,"LOCAL");
-  assert.deepEqual(meta.HIERARCHY,["openapi"]);
+  const parsed=parseArtifact(completeArtifact(s),"json") as Record<string,any>;
+  parsed.__ourself.AUTHORITY="EXTERNAL";
+  const r=witnessArtifact(s,JSON.stringify(parsed,null,2)+"\n","json","2026-10-04T00:00:00.000Z");
+  assert.equal(r.coverage.AUTHORITY,"PRESENT");
+  assert.ok(r.drift.includes("AUTHORITY_DRIFT"));
+  assert.equal(r.observations.find(x=>x.property==="AUTHORITY")?.status,"DRIFT");
+  assert.equal(r.decision,"REJECT");
 });
 
-test("syntax validity is not constitutional admission",()=>{
-  const ordinary=serialize({value:source().value},"json");
-  const parsed=parseArtifact(ordinary,"json");
-  assert.ok(parsed);
-  assert.equal((parsed as Record<string,unknown>).__ourself,undefined);
+test("syntax pass does not imply constitutional admission",()=>{
+  const artifact=serialize({openapi:"3.1.0",paths:{}}, "json");
+  const r=witnessArtifact(source(),artifact,"json","2026-10-04T00:00:00.000Z");
+  assert.equal(r.syntax,"PASS");
+  assert.equal(r.decision,"REPRESENTATION_INCOMPLETE");
 });
 
-test("deliberate authority drift remains observable as drift",()=>{
+test("YAML parse-back preserves explicit metadata without inference",()=>{
   const s=source();
-  const parsed=parseArtifact(fullArtifact(s),"json") as Record<string,unknown>;
-  (parsed.__ourself as Record<string,unknown>).AUTHORITY="EXTERNAL";
-  assert.equal((parsed.__ourself as Record<string,unknown>).AUTHORITY,"EXTERNAL");
-  assert.notEqual((parsed.__ourself as Record<string,unknown>).AUTHORITY,s.authority);
-});
-
-test("YAML serializer preserves explicit metadata structure",()=>{
-  const s=source();
-  const parsed=parseArtifact(serialize({__ourself:{
+  const artifact=serialize({__ourself:{
     IDENTITY:s.identity,HIERARCHY:s.hierarchy,TYPE:s.type,CARDINALITY:s.cardinality,
     AUTHORITY:s.authority,JURISDICTION:s.jurisdiction,RELATION:s.relation,VALUE:s.value
-  },value:s.value},"yaml"),"yaml");
+  },value:s.value},"yaml");
+  const parsed=parseArtifact(artifact,"yaml");
   assert.ok(parsed);
+  const r=witnessArtifact(s,artifact,"yaml","2026-10-04T00:00:00.000Z");
+  assert.equal(r.syntax,"PASS");
+  assert.equal(r.coverage.AUTHORITY,"PRESENT");
 });
