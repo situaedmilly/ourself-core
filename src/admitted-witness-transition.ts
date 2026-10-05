@@ -6,6 +6,7 @@ export type ActuationStatus = "ACTUATION_REQUESTABLE" | "ACTUATION_REQUESTED" | 
 export type ExecutionStatus = "EXECUTED";
 export type EffectStatus = "EFFECT_WITNESSED" | "EFFECT_UNWITNESSED";
 export type EffectAdmission = "EFFECT_ADMITTED" | "EFFECT_NOT_ADMITTED";
+export interface EffectAdmissionDecision { eligible: boolean; reason: string; }
 
 export interface AuthorizationGrant {
   grant_id: string;
@@ -194,13 +195,22 @@ export function witnessEffect(
   };
 }
 
-export function admitWitnessedEffect(effect: EffectWitness): EffectAdmissionReceipt {
+export function admitWitnessedEffect(effect: EffectWitness, decision: EffectAdmissionDecision): EffectAdmissionReceipt {
   if (effect.status !== "EFFECT_WITNESSED" || effect.evidence_id === null) {
     return {
       admission: "EFFECT_NOT_ADMITTED",
       execution_id: effect.execution_id,
       evidence_id: effect.evidence_id,
       reason: "EFFECT_WITNESS_REQUIRED",
+    };
+  }
+
+  if (!decision.eligible) {
+    return {
+      admission: "EFFECT_NOT_ADMITTED",
+      execution_id: effect.execution_id,
+      evidence_id: effect.evidence_id,
+      reason: decision.reason || "EFFECT_ADMISSION_DECISION_FALSE",
     };
   }
 
