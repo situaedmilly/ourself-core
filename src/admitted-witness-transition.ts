@@ -144,13 +144,23 @@ export function requestActuation(
   request_id: string,
   transition: string,
 ): ActuationRequest {
-  if (decision.status !== "AUTHORIZED" || decision.transition !== transition) {
+  if (decision.status !== "AUTHORIZED") {
     return {
       status: "ACTUATION_FORBIDDEN",
       request_id,
       transition,
       grant_id: decision.grant_id,
       reason: decision.reason ?? "AUTHORIZATION_REQUIRED",
+    };
+  }
+
+  if (decision.transition !== transition) {
+    return {
+      status: "ACTUATION_FORBIDDEN",
+      request_id,
+      transition,
+      grant_id: decision.grant_id,
+      reason: "TRANSITION_MISMATCH",
     };
   }
 
