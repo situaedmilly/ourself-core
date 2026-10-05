@@ -1,0 +1,59 @@
+{
+  "schema": "OURSELFECOSYSTEM-BOOT-v1",
+  "instance": "RME-001.1",
+  "reality": "CHAMBOXREALITY",
+  "boot_transition": "ECOSYSTEM_WIDE_SELFSHIFT",
+  "status": "SUBSTRATE_MUTATED",
+  "github_matter": {
+    "ourself_core": {
+      "repository": "situaedmilly/ourself-core",
+      "ref": "main",
+      "governor_skill": ".agents/skills/tnc-governor/SKILL.md",
+      "governance_status": "OBSERVED"
+    },
+    "self_protocol_suite": {
+      "repository": "situaedmilly/self-protocol-suite",
+      "ref": "main",
+      "rme_recontact_commit": "20ac5b19b1af1ab274a03d81babb5bf9b602ac95",
+      "rme_compiler_commit": "ff64723e54d3f447f588c3ea6f006dd55d2250ba",
+      "status": "MUTATED"
+    }
+  },
+  "selfpi_matter": {
+    "status": "FOREIGN_RECONTACT_CLAIM",
+    "runtime": "Android / SELFPI",
+    "authority": "NOT_RECONTACTED_BY_CURRENT_EXECUTION_SURFACE",
+    "matter": [
+      "LOCAL_AUDIO_ACTUATION",
+      "OURSELFD_POLICY",
+      "ADMISSION_PROBE",
+      "ACTION_ID_MISMATCH"
+    ]
+  },
+  "mcb06": {
+    "35_vector_claim": "UNCORROBORATED",
+    "materialized_instance": "MCB-06-DIFF-001",
+    "previously_observed": {
+      "vectors": 80,
+      "exact_match": 80,
+      "unresolved": 0,
+      "historical_forensics": 3
+    },
+    "current_local_recontact": "NOT_FOUND"
+  },
+  "terminal_predicate": {
+    "id": "FOUNDER_USER_CAPABLE_UTILIZATION",
+    "required": [
+      "DISCOVERABLE",
+      "BOOTABLE",
+      "EXECUTABLE",
+      "OBSERVABLE",
+      "EVIDENCE_BOUND",
+      "REPEATABLE",
+      "RECOVERABLE"
+    ]
+  },
+  "current_boundary": "T7_GATE_TO_T8_ACTUATE",
+  "actuation_status": "NOT_ESTABLISHED_FOR_SELFPI_RUNTIME",
+  "next_transition": "RECONTACT_SELFPI_RUNTIME_FROM_A_SUPPORTED_EXECUTION_SURFACE"
+}
