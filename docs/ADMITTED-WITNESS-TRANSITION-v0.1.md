@@ -88,7 +88,16 @@ The authorization decision receives a `Clock` interface. Tests use `fixedClock()
 
 ## Effect admission
 
-`admitWitnessedEffect()` is a separate decision. A witnessed effect is evidence for admission; it is not automatically admitted.
+`admitWitnessedEffect()` requires a separate `EffectAdmissionDecision`. A witnessed effect is evidence for admission; it is not automatically admitted.
+
+The independent decision contains:
+
+```text
+eligible = true  -> EFFECT_ADMITTED
+eligible = false -> EFFECT_NOT_ADMITTED
+```
+
+The function does not derive eligibility from `EFFECT_WITNESSED` or `evidence_id` alone.
 
 ## Failure classes
 
@@ -102,6 +111,7 @@ The implementation uses explicit reasons for:
 - `AUTHORIZATION_REQUIRED`
 - `ACTUATION_REQUEST_REQUIRED`
 - `EFFECT_WITNESS_REQUIRED`
+- `EFFECT_ADMISSION_DECISION_FALSE`
 
 ## Non-authority of foreign surfaces
 
