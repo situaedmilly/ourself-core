@@ -32,6 +32,7 @@ export interface AuthorizationDecision {
   actuation: ActuationStatus;
   reason: string | null;
   grant_id: string;
+  transition: string;
 }
 
 export interface ActuationRequest {
@@ -95,6 +96,7 @@ export function authorizationDecision(
       actuation: "ACTUATION_FORBIDDEN",
       reason: "AUTHORIZATION_REVOKED",
       grant_id: grant.grant_id,
+      transition,
     };
   }
 
@@ -104,6 +106,7 @@ export function authorizationDecision(
       actuation: "ACTUATION_FORBIDDEN",
       reason: "TRANSITION_MISMATCH",
       grant_id: grant.grant_id,
+      transition,
     };
   }
 
@@ -113,6 +116,7 @@ export function authorizationDecision(
       actuation: "ACTUATION_FORBIDDEN",
       reason: "AUTHORIZATION_EXPIRED",
       grant_id: grant.grant_id,
+      transition,
     };
   }
 
@@ -122,6 +126,7 @@ export function authorizationDecision(
       actuation: "ACTUATION_FORBIDDEN",
       reason: "AUTHORIZATION_NOT_ACTIVE",
       grant_id: grant.grant_id,
+      transition,
     };
   }
 
@@ -130,6 +135,7 @@ export function authorizationDecision(
     actuation: "ACTUATION_REQUESTABLE",
     reason: null,
     grant_id: grant.grant_id,
+    transition,
   };
 }
 
@@ -138,7 +144,7 @@ export function requestActuation(
   request_id: string,
   transition: string,
 ): ActuationRequest {
-  if (decision.status !== "AUTHORIZED") {
+  if (decision.status !== "AUTHORIZED" || decision.transition !== transition) {
     return {
       status: "ACTUATION_FORBIDDEN",
       request_id,
