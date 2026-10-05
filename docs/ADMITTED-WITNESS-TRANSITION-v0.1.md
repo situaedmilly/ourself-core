@@ -76,7 +76,11 @@ The authorization decision receives a `Clock` interface. Tests use `fixedClock()
 
 ## Actuation boundary
 
-`requestActuation()` can only produce `ACTUATION_REQUESTED` from an `AUTHORIZED` decision. It never executes an actuator.
+`requestActuation()` can only produce `ACTUATION_REQUESTED` from an `AUTHORIZED` decision whose transition exactly matches the requested transition. It never executes an actuator.
+
+## Transition binding
+
+Authorization and actuation are bound to the same transition identifier. A decision for transition A cannot produce an actuation request for transition B; mismatches are forbidden with `TRANSITION_MISMATCH`.
 
 ## Execution boundary
 
@@ -110,6 +114,7 @@ The implementation uses explicit reasons for:
 - `AUTHORIZATION_NOT_ACTIVE`
 - `AUTHORIZATION_REQUIRED`
 - `ACTUATION_REQUEST_REQUIRED`
+- `TRANSITION_MISMATCH`
 - `EFFECT_WITNESS_REQUIRED`
 - `EFFECT_ADMISSION_DECISION_FALSE`
 
@@ -162,3 +167,7 @@ AUTHORIZATION_REQUIRED
                                       v
                               EFFECT_ADMITTED
 ```
+
+## Test coverage
+
+The repository-native test artifact declares 13 tests, including temporal expiry, witness intake, effect-admission independence, and transition-binding hostile cases.
