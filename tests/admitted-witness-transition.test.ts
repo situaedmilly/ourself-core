@@ -10,6 +10,7 @@ import {
   requestActuation,
   witnessEffect,
   type AuthorizationGrant,
+  type EffectAdmissionDecision,
 } from "../src/admitted-witness-transition.ts";
 
 function admittedReceipt(): WitnessReceipt {
@@ -154,12 +155,32 @@ test("external evidence is required to witness effect", () => {
   assert.equal(effect.status, "EFFECT_WITNESSED");
 });
 
-test("witnessed effect has a separate admission step", () => {
+test("witnessed effect does not automatically become admitted", () => {
   const effect = {
     status: "EFFECT_WITNESSED" as const,
     execution_id: "EXEC-5",
     evidence_id: "EVID-5",
   };
-  const admission = admitWitnessedEffect(effect);
+  const decision: EffectAdmissionDecision = {
+    eligible: false,
+    reason: "EFFECT_NOT_ELIGIBLE",
+  };
+  const admission = admitWitnessedEffect(effect, decision);
+  assert.equal(admission.admission, "EFFECT_NOT_ADMITTED");
+  assert.equal(admission.reason, "EFFECT_NOT_ELIGIBLE");
+});
+
+test("witnessed effect becomes admitted only after an independent positive decision", () => {
+  const effect = {
+    status: "EFFECT_WITNESSED" as const,
+    execution_id: "EXEC-6",
+    evidence_id: "EVID-6",
+  };
+  const decision: EffectAdmissionDecision = {
+    eligible: true,
+    reason: "INDEPENDENT_ADMISSION_OK",
+  };
+  const admission = admitWitnessedEffect(effect, decision);
   assert.equal(admission.admission, "EFFECT_ADMITTED");
+  assert.equal(admission.reason, null);
 });
