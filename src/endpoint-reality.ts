@@ -1,0 +1,1 @@
+export const ENDPOINT_REALITY_VERSION = "0.1";
