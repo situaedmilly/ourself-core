@@ -101,6 +101,17 @@ test("authorization boundary does not actuate", () => {
   assert.notEqual(request.status, "EXECUTED");
 });
 
+test("authorized transition cannot actuate a different transition", () => {
+  const d = authorizationDecision(
+    grant(),
+    "REPRESENTATION-NEXT",
+    fixedClock("2026-10-04T20:09:00.000Z"),
+  );
+  const request = requestActuation(d, "REQ-MISMATCH", "OTHER-TRANSITION");
+  assert.equal(request.status, "ACTUATION_FORBIDDEN");
+  assert.equal(request.reason, "TRANSITION_MISMATCH");
+});
+
 test("expired authorization forbids actuation request", () => {
   const d = authorizationDecision(
     grant(),
