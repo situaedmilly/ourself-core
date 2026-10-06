@@ -10,8 +10,15 @@
   "network_registry": "situaedmilly/ourself-cloud-server-network",
   "address_registry": "situaedmilly/SELFVEREIGN-ADDRESSELF",
   "execution_node": "situaedmilly/FLOWACTIONSELFWORK",
-  "cognitive_core": "situaedmilly/Cognitive-Transmutation-Core",
+  "cognitive_core": "Cognitive-Transmutation-Core",
+  "mcp_model_server": {
+    "launch_id": "OURSELF-MCP-MODEL-LAUNCH-0001",
+    "launch_graph": "Cognitive-Transmutation-Core:selfgraph/OURSELF-MCP-MODEL-SERVER-LAUNCH.json",
+    "runtime_process": "FLOWACTIONSELFWORK:runtime/ourself-mcp-model-server.mjs",
+    "transport": "STREAMABLE_HTTP",
+    "runtime_endpoint": null
+  },
   "ollama_endpoint": null,
-  "runtime_status": "DECLARED_NOT_LIVE",
+  "runtime_status": "LAUNCH_DECLARED_NOT_LIVE",
   "authority": "OURSELF"
 }
