@@ -1,0 +1,12 @@
+{
+  "name": "ourself-core",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "reverself:postgres": "bash scripts/reverself-repository-postgres.sh",
+    "textnow:runtime": "bash scripts/textnow-runtime.sh"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}

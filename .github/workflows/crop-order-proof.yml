@@ -1,0 +1,29 @@
+name: CROP v0.1 tests
+
+on:
+  pull_request:
+    paths:
+      - "packages/crop-order-proof/**"
+      - ".github/workflows/crop-order-proof.yml"
+  push:
+    branches:
+      - "reality/crop-order-proof-v0.1"
+    paths:
+      - "packages/crop-order-proof/**"
+      - ".github/workflows/crop-order-proof.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  crop-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run CROP tests
+        run: node --test packages/crop-order-proof/test/index.test.mjs
