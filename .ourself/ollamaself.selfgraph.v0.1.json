@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1",
+  "graph_id": "SELFGRAPH-OLLAMASELF-T3-0001",
+  "name": "OLLAMASELF realization graph",
+  "constitutional_boundary": {
+    "cognition_is_not_authority": true,
+    "proposal_is_not_actuation": true,
+    "runner_is_not_authority": true,
+    "github_is_not_constitutional_authority": true
+  },
+  "nodes": [
+    {"id":"OURSELF","kind":"authority_subject"},
+    {"id":"AGENTBRIDGE","kind":"proposal_router"},
+    {"id":"HERMES","kind":"cognitive_agent"},
+    {"id":"OURSELFD","kind":"mutation_membrane"},
+    {"id":"SELF_HOSTED_RUNNER","kind":"execution_chamber"},
+    {"id":"OLLAMASELF","kind":"cognitive_realization"},
+    {"id":"UNIVERSAL_EVENT_LEDGER","kind":"durable_event_memory"}
+  ],
+  "edges": [
+    ["OURSELF","AGENTBRIDGE","intent"],
+    ["AGENTBRIDGE","HERMES","cognition"],
+    ["HERMES","OURSELFD","PROPOSED_TRANSITION"],
+    ["OURSELFD","SELF_HOSTED_RUNNER","AUTHORIZED_EXECUTION"],
+    ["SELF_HOSTED_RUNNER","OLLAMASELF","COGNITIVE_REALIZATION"],
+    ["OLLAMASELF","AGENTBRIDGE","INFERENCE_RECONTACT"],
+    ["SELF_HOSTED_RUNNER","OURSELFD","OBSERVATION"],
+    ["OURSELFD","UNIVERSAL_EVENT_LEDGER","RECEIPT_EVENT"],
+    ["UNIVERSAL_EVENT_LEDGER","OURSELF","STATE_LINEAGE"]
+  ],
+  "mutation_classes": {
+    "STATE_MUTATION": "admit_only_under_tunnel_3_policy",
+    "CAPABILITY_MUTATION": "explicit_authority_required",
+    "AUTHORITY_MUTATION": "explicit_authority_required",
+    "IDENTITY_MUTATION": "explicit_authority_required",
+    "GOVERNANCE_MUTATION": "explicit_authority_required_and_never_self_authorized"
+  }
+}
