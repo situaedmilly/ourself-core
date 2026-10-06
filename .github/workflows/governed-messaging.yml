@@ -1,0 +1,65 @@
+name: OURSELF governed messaging evidence
+
+on:
+  pull_request:
+    paths:
+      - "packages/crop-order-proof/**"
+      - "packages/authority-gated-actuation/**"
+      - ".github/workflows/governed-messaging.yml"
+  push:
+    branches:
+      - "reality/authority-gated-actuation-v0.1"
+    paths:
+      - "packages/crop-order-proof/**"
+      - "packages/authority-gated-actuation/**"
+      - ".github/workflows/governed-messaging.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  governed-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run CROP tests
+        run: node --test packages/crop-order-proof/test/index.test.mjs
+      - name: Run authority-gated actuation tests
+        run: node --test packages/authority-gated-actuation/test/index.test.mjs
+      - name: Generate verification receipt
+        env:
+          WORKFLOW_RUN: ${{ github.run_id }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          COMMIT_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          mkdir -p evidence
+          node <<'NODE'
+          const fs = require('node:fs');
+          const receipt = {
+            verification: 'CROP+AUTHORITY_GATED_ACTUATION',
+            version: '0.1',
+            commit: process.env.COMMIT_SHA,
+            runtime: process.version,
+            test_commands: [
+              'node --test packages/crop-order-proof/test/index.test.mjs',
+              'node --test packages/authority-gated-actuation/test/index.test.mjs'
+            ],
+            result: 'PASSED',
+            observed_at: new Date().toISOString(),
+            workflow_run: process.env.WORKFLOW_RUN,
+            workflow: process.env.WORKFLOW_NAME,
+            repository: process.env.REPOSITORY
+          };
+          fs.writeFileSync('evidence/governed-messaging-receipt.json', JSON.stringify(receipt, null, 2) + '\\n');
+          NODE
+      - name: Upload verification receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: governed-messaging-receipt
+          path: evidence/governed-messaging-receipt.json
