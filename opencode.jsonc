@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "ollama/qwen2.5-coder:latest",
+  "providers": {
+    "ollama": {
+      "name": "Ollama — OURSELF Local Cognitive Runtime",
+      "settings": {
+        "baseURL": "http://127.0.0.1:11434/v1"
+      }
+    }
+  },
+  "permissions": [
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    { "action": "shell", "resource": "git status *", "effect": "allow" },
+    { "action": "shell", "resource": "git diff *", "effect": "allow" },
+    { "action": "shell", "resource": "git log *", "effect": "allow" },
+    { "action": "shell", "resource": "git show *", "effect": "allow" },
+    { "action": "shell", "resource": "git push *", "effect": "deny" },
+    { "action": "edit", "resource": "*.env", "effect": "deny" },
+    { "action": "edit", "resource": "*.env.*", "effect": "deny" }
+  ],
+  "agents": {
+    "ourself": {
+      "description": "OURSELF constitutional cognitive orchestrator",
+      "mode": "primary",
+      "system": "Operate as the OURSELF master cognitive orchestrator. Preserve the distinctions in AGENTS.md. PEEP before mutation. Treat model output as proposal, never as authority. Require explicit admission before consequential execution. Produce evidence and recontact material mutations.",
+      "permissions": [
+        { "action": "shell", "resource": "git push *", "effect": "deny" },
+        { "action": "subagent", "resource": "reality-witness", "effect": "allow" }
+      ]
+    },
+    "reality-witness": {
+      "description": "Read-only reality inspection and provenance reviewer",
+      "mode": "subagent",
+      "system": "Inspect repository, runtime, model, instruction, permission, and evidence reality. Do not modify files. Report observed facts, uncertainties, provenance gaps, and boundary violations.",
+      "permissions": [
+        { "action": "*", "resource": "*", "effect": "deny" },
+        { "action": "read", "resource": "*", "effect": "allow" },
+        { "action": "glob", "resource": "*", "effect": "allow" },
+        { "action": "grep", "resource": "*", "effect": "allow" },
+        { "action": "shell", "resource": "git status *", "effect": "allow" },
+        { "action": "shell", "resource": "git diff *", "effect": "allow" },
+        { "action": "shell", "resource": "git log *", "effect": "allow" }
+      ]
+    }
+  },
+  "default_agent": "ourself"
+}
