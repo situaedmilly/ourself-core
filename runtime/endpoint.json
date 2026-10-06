@@ -1,0 +1,17 @@
+{
+  "instance_id": "OURSELF-INSTANCE-0001",
+  "server_id": "OURSELF-SERVER-0001",
+  "service": "OURSELF",
+  "endpoint": "https://raw.githubusercontent.com/situaedmilly/ourself-core/main/runtime/endpoint.json",
+  "endpoint_kind": "GITHUB_RAW_CONTENT",
+  "transport": "HTTPS",
+  "method": "GET",
+  "status": "SERVING",
+  "network_registry": "situaedmilly/ourself-cloud-server-network",
+  "address_registry": "situaedmilly/SELFVEREIGN-ADDRESSELF",
+  "execution_node": "situaedmilly/FLOWACTIONSELFWORK",
+  "cognitive_core": "situaedmilly/Cognitive-Transmutation-Core",
+  "ollama_endpoint": null,
+  "runtime_status": "DECLARED_NOT_LIVE",
+  "authority": "OURSELF"
+}
