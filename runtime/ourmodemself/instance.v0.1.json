@@ -1,7 +1,7 @@
 {
   "schema": "OURMODEMSELF-INSTANCE-v0.1",
   "instance_id": "OURMODEMSELF-001",
-  "status": "PHYSICAL_IDENTITY_ESTABLISHED",
+  "status": "USB_SUBSYSTEM_WITNESSED_TMO_G4AR_NOT_ENUMERATED",
   "authority": "OURSELF",
   "hardware": {
     "manufacturer": "T-Mobile",
@@ -44,9 +44,22 @@
   },
   "evidence_invariants": {
     "physical_identity": true,
+    "rawmac_usb_subsystem": true,
+    "tmo_g4ar_usb_identity": false,
     "usb_link": false,
     "network_link": false,
     "admin_endpoint_reachable": false,
     "boot_access": false
-  }
+  },
+  "observations": {
+    "usb_enumeration": "EXECUTED",
+    "rawmac_usb_subsystem": "OBSERVED",
+    "tmo_g4ar_usb_identity": "NOT_OBSERVED",
+    "tmo_usb_network_function": "NOT_OBSERVED",
+    "tmo_usb_serial_debug_function": "NOT_OBSERVED",
+    "network_interfaces": "INVENTORIED",
+    "local_admin_reachability": "NOT_PROBED"
+  },
+  "next_witness": "POWER_GATEWAY_AND_PROBE_USB_C_LAN_INTERFACE_READ_ONLY",
+  "notes": "T-Mobile documentation identifies one USB-C port as a data/other-USB port and one USB-C port as power. The present gateway power-off state means absence from USB enumeration does not establish cable disconnection or port failure."
 }
