@@ -1,0 +1,52 @@
+{
+  "schema": "OURMODEMSELF-INSTANCE-v0.1",
+  "instance_id": "OURMODEMSELF-001",
+  "status": "PHYSICAL_IDENTITY_ESTABLISHED",
+  "authority": "OURSELF",
+  "hardware": {
+    "manufacturer": "T-Mobile",
+    "model": "TMO-G4AR",
+    "part_number": "FMNT033AX000J",
+    "hardware_version": "R01",
+    "manufacture_window": "2024-WK41"
+  },
+  "physical_state": {
+    "presence": "OBSERVED",
+    "power_state": "OFF_AT_PROBE_DESIGN",
+    "host_connection": {
+      "host": "RAWMAC",
+      "transport": "USB-C",
+      "transport_role": "UNRESOLVED",
+      "ethernet_over_usb": "UNVERIFIED",
+      "serial_or_debug_interface": "UNVERIFIED"
+    }
+  },
+  "local_management": {
+    "documented_admin_ip": "192.168.12.1",
+    "protocol": "HTTP",
+    "reachability": "NOT_YET_PROBED",
+    "credential_material": "EXCLUDED"
+  },
+  "probe_order": [
+    "USB_ENUMERATION",
+    "USB_INTERFACE_CLASSIFICATION",
+    "NETWORK_INTERFACE_INVENTORY",
+    "LOCAL_ROUTE_AND_NEIGHBOR_PROBE",
+    "192.168.12.1_REACHABILITY",
+    "HTTP_MANAGEMENT_SURFACE"
+  ],
+  "authority_boundaries": {
+    "read_only_probe_first": true,
+    "power_or_reset": "NOT_AUTHORIZED_BY_THIS_CONFIGURATION",
+    "firmware_mutation": "NOT_AUTHORIZED",
+    "credential_mutation": "NOT_AUTHORIZED",
+    "bootloader_access": "UNESTABLISHED"
+  },
+  "evidence_invariants": {
+    "physical_identity": true,
+    "usb_link": false,
+    "network_link": false,
+    "admin_endpoint_reachable": false,
+    "boot_access": false
+  }
+}
