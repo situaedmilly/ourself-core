@@ -1,0 +1,26 @@
+{
+  "schema": "SELFgateway/v0.1",
+  "gateway": {
+    "model_name": "HB5GGW_TMO-G4AR",
+    "model_number": "JT737656C",
+    "firmware_version": "1.00.18"
+  },
+  "identity": {
+    "imei": {"source_env": "SELFGATEWAY_IMEI", "persist": false},
+    "imsi": {"source_env": "SELFGATEWAY_IMSI", "persist": false},
+    "iccid": {"source_env": "SELFGATEWAY_ICCID", "persist": false},
+    "msisdn": {"source_env": "SELFGATEWAY_MSISDN", "persist": false}
+  },
+  "network": {
+    "wan_address": null,
+    "address_family": null,
+    "nat_state": "UNKNOWN",
+    "inbound_reachability": "UNPROVEN"
+  },
+  "authority": {
+    "status": "NONE",
+    "rule": "identity_is_not_addressability_and_addressability_is_not_reachability"
+  },
+  "lifecycle": ["DECLARE","RECEIVE","VALIDATE","ROUTE","EXECUTE","RECORD","STOP"],
+  "execution": {"mode": "LOCAL_ALCHEMY", "github_is_custody_only": true, "external_effect_default": false}
+}
