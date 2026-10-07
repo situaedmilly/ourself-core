@@ -16,9 +16,24 @@
     "launch_graph": "Cognitive-Transmutation-Core:selfgraph/OURSELF-MCP-MODEL-SERVER-LAUNCH.json",
     "runtime_process": "FLOWACTIONSELFWORK:runtime/ourself-mcp-model-server.mjs",
     "transport": "STREAMABLE_HTTP",
-    "runtime_endpoint": null
+    "runtime_endpoint": "http://127.0.0.1:3000/mcp",
+    "runtime_server_id": "OURSELF-MCP-MODEL-SERVER",
+    "model_endpoint": "http://127.0.0.1:8080/v1",
+    "model": "ourself-qwen38-27b-iq2s-80k:latest",
+    "observed_context_tokens": 2048
   },
   "ollama_endpoint": null,
-  "runtime_status": "LAUNCH_DECLARED_NOT_LIVE",
+  "runtime_status": "LIVE",
+  "runtime_scope": "LOCAL_LOOPBACK_ONLY",
+  "public_runtime_reachability": "NOT_CLAIMED",
+  "runtime_verified_at": "2026-10-07T11:24:53Z",
+  "runtime_evidence": {
+    "health": "HTTP_200",
+    "mcp_initialize": "VERIFIED",
+    "tools_list": "VERIFIED",
+    "selfthought_roundtrip": "VERIFIED",
+    "thought_hash": "INDEPENDENTLY_VERIFIED",
+    "model_context_tokens": 2048
+  },
   "authority": "OURSELF"
 }
