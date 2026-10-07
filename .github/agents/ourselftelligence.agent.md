@@ -378,3 +378,28 @@ RECONTACT CONFIRMS.
 ```
 
 OURSELFTELLIGENCE is admitted only to the extent that the substrate, interfaces, authority membrane, execution path, and evidence chain actually exist.
+
+## THIRDEYE SELFTELLIGENCE / AETHERBRIDGE
+
+AETHERBRIDGE preserves micro-matter distinctions that a coarse endpoint graph can collapse.
+
+```text
+AGENTBRIDGE ── ÆTHERNET ── OURSELFd
+                  │
+                  ▼
+             RELATION MATTER
+```
+
+ÆTHERNET is represented here as the relation/transport crossing, not as a new endpoint or topology expansion.
+
+The canonical constitutional distinctions are:
+
+- endpoint identity remains separate on each side;
+- symmetry describes the relation, not identity, authority, or process;
+- declaration is not runtime evidence;
+- PIPEPORTAL is a declarative YAML surface, not proof of a live crossing;
+- live crossing, execution, effect, and admission require independent evidence.
+
+Canonical configuration: `runtime/aetherbridge/pipeportal.v0.1.yaml`.
+
+The THIRDEYE layer must recover hidden load-bearing distinctions before graph admission rather than compressing them into a single edge.
