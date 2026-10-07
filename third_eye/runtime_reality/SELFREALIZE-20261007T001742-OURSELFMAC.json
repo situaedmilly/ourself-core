@@ -1,0 +1,100 @@
+{
+  "schema": "OURSELF-THIRD-EYE-RUNTIME-REALITY-SNAPSHOT-v0.1",
+  "snapshot_id": "SELFREALIZE-20261007T001742-OURSELFMAC",
+  "captured_at": "2026-10-07T00:17:42-04:00",
+  "capture_authority": "OURSELF",
+  "capture_agent": "Desktop Commander Remote",
+  "scope": ["RAW_MAC","SELFPI","GITHUB_DECLARATIONS"],
+  "mac": {
+    "host": "OURSELFMAC.lan",
+    "platform": "macOS",
+    "architecture": "arm64",
+    "primary_ipv4": ["192.168.12.185","192.168.12.169"],
+    "listeners": [
+      {"process":"rapportd","pid":663,"bind":"*","port":51467,"protocol":"tcp"},
+      {"process":"rapportd","pid":663,"bind":"*","port":60741,"protocol":"tcp6"},
+      {"process":"rapportd","pid":663,"bind":"*","port":60742,"protocol":"tcp6"},
+      {"process":"ControlCe","pid":675,"bind":"*","port":7000,"protocol":"tcp"},
+      {"process":"ControlCe","pid":675,"bind":"*","port":5000,"protocol":"tcp"},
+      {"process":"node","pid":2237,"bind":"127.0.0.1","port":49308,"protocol":"tcp"},
+      {"process":"ARDAgent","pid":3212,"bind":"*","port":3283,"protocol":"tcp6"},
+      {"process":"ollama","pid":10984,"bind":"127.0.0.1","port":11434,"protocol":"tcp"},
+      {"process":"llama-server","pid":70370,"bind":"127.0.0.1","port":11435,"protocol":"tcp"}
+    ],
+    "ourself_processes": [
+      {"pid":2187,"command":"/Users/millysituated/OURSELF/daemon/ourselfd.zsh"},
+      {"pid":2237,"command":"/Users/millysituated/.nvm/versions/node/v22.17.1/bin/node /Users/millysituated/.copilot/session-state/7bc55404-16ac-4216-932e-395908d9f4d0/files/ourself-core-consumer-proof/ourselfd/service/server.mjs"},
+      {"pid":70370,"command":"./build/bin/llama-server -hf NousResearch/Hermes-3-Llama-3.2-3B-GGUF:Q4_K_M --host 127.0.0.1 --port 11435 --ctx-size 32768 --gpu-layers 99 --jinja"}
+    ],
+    "network": {
+      "default_gateway": "192.168.12.1",
+      "interfaces": [
+        {"name":"en0","ipv4":"192.168.12.185/24"},
+        {"name":"en1","ipv4":"192.168.12.169/24"},
+        {"name":"lo0","ipv4":"127.0.0.1/8"}
+      ],
+      "known_selfpi_ipv4": "192.168.12.112"
+    }
+  },
+  "selfpi": {
+    "host": "OURSELFPIMAC",
+    "platform": "Debian Linux",
+    "kernel": "6.18.39+rpt-rpi-2712",
+    "architecture": "aarch64",
+    "primary_ipv4": "192.168.12.112",
+    "interfaces": {"eth0":"192.168.12.112/24","wlan0":"DOWN","docker0":"172.17.0.1/16 (DOWN)"},
+    "listeners": [
+      {"bind":"0.0.0.0","port":80,"protocol":"tcp"},
+      {"bind":"0.0.0.0","port":22,"protocol":"tcp"},
+      {"bind":"0.0.0.0","port":443,"protocol":"tcp"},
+      {"bind":"127.0.0.1","port":9229,"pid":939,"process":"MainThread","protocol":"tcp"},
+      {"bind":"127.0.0.1","port":3000,"pid":939,"process":"MainThread","protocol":"tcp"},
+      {"bind":"0.0.0.0","port":19999,"protocol":"tcp"},
+      {"bind":"127.0.0.1","port":44871,"pid":2316,"process":"workerd","protocol":"tcp"},
+      {"bind":"127.0.0.1","port":11434,"process":"ollama","protocol":"tcp"},
+      {"bind":"127.0.0.1","port":37137,"pid":2316,"process":"workerd","protocol":"tcp"},
+      {"bind":"127.0.0.1","port":4317,"protocol":"tcp"},
+      {"bind":"127.0.0.1","port":46255,"pid":939,"process":"MainThread","protocol":"tcp"},
+      {"bind":"127.0.0.1","port":46089,"pid":2316,"process":"workerd","protocol":"tcp"},
+      {"bind":"127.0.0.1","port":39573,"protocol":"tcp"},
+      {"bind":"127.0.0.1","port":8125,"protocol":"tcp"}
+    ],
+    "ourself_processes": [
+      {"pid":939,"command":"/home/selfadmin/.local/board-tools/node-v24.20.0-linux-arm64/bin/node /home/selfadmin/ourself-environment-board/node_modules/vinext/dist/cli.js dev --hostname 127.0.0.1 --port 3000"},
+      {"pid":971,"command":"/usr/local/bin/ollama serve"},
+      {"pid":2316,"command":"/home/selfadmin/ourself-environment-board/node_modules/@cloudflare/workerd-linux-arm64/bin/workerd serve"}
+    ],
+    "routes": ["default via 192.168.12.1 dev eth0 src 192.168.12.112","192.168.12.0/24 dev eth0 src 192.168.12.112"],
+    "ollama": {
+      "endpoint": "http://127.0.0.1:11434",
+      "loaded_models": [],
+      "resident_models": [
+        {"name":"ourself-qwen25-7b-kernel:latest","digest":"01e3e742426a75140f03d34e315d5eaea2a8808ce3d3939538ed2f330aa07141","size_bytes":4683087652,"format":"gguf","parameter_size":"7.6B","quantization_level":"Q4_K_M","context_length":32768},
+        {"name":"ourself-qwen25-7b:latest","digest":"60e0d3216fd933b15b1b245ec54113ff02fe596a5a55b967634f2b2fda671fbf","size_bytes":4683087225,"format":"gguf","parameter_size":"7.6B","quantization_level":"Q4_K_M","context_length":32768},
+        {"name":"ourself-qwen25-7b-80k:latest","digest":"0edc739fdc1d54e0d0a991ab4616479823a59fadaa6d72cb5bee2ae682949977","size_bytes":4683087226,"format":"gguf","parameter_size":"7.6B","quantization_level":"Q4_K_M","context_length":32768},
+        {"name":"ourself-qwen38-27b-iq2s-80k:latest","digest":"a5d046b2b585d0ce3b49315f5b466bd580486e3e8310b629fa157f7e529e0af6","size_bytes":10190658825,"format":"gguf","parameter_size":"26.9B","quantization_level":"IQ3_XXS","context_length":262144}
+      ]
+    }
+  },
+  "github_declarations": {
+    "registry_repository": "situaedmilly/ALTONUMBUSELF",
+    "registry_branch": "feat/alchemyselfrver01-genesis-v0.1",
+    "registry_file": "runtime/ourself-ecosystem-paths.json",
+    "registry_blob_sha_before_snapshot": "5e2632fc63512e55ab5c80bf5b51572b6ffbcccf",
+    "declared_server": "ALCHEMYSELFRVER01",
+    "declared_cognition_substrate": "GENESIS_LLAMA_SERVER",
+    "declared_model_target": "GENESIS_MODEL_ID_FROM_SERVER",
+    "reconciliation": "DECLARATION_DOES_NOT_OVERRIDE_OBSERVED_RUNTIME"
+  },
+  "reconciliation": {
+    "active_mac_ollama": "127.0.0.1:11434",
+    "active_mac_llama_server": "127.0.0.1:11435",
+    "active_selfpi_ollama": "127.0.0.1:11434",
+    "selfpi_qwen25_kernel_resident": true,
+    "selfpi_qwen25_kernel_loaded_now": false,
+    "alchemyselfrver01_live_boot_verified": false,
+    "genesis_model_identity_verified": false,
+    "registry_is_projection_not_runtime_authority": true
+  },
+  "invariants": ["DECLARATION != OBSERVATION","REGISTRY != PROCESS RUNTIME","PROCESS != SOCKET IDENTITY","SOCKET != AUTHORITY","PORT OPEN != SERVICE HEALTH","MODEL PRESENT != MODEL LOADED","RECEIPT != EFFECT"]
+}
