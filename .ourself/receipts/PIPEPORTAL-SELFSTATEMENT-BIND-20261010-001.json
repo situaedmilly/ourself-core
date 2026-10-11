@@ -1,0 +1,52 @@
+{
+  "receipt_id": "OURSELF-PIPEPORTAL-SELFSTATEMENT-BIND-20261010-001",
+  "timestamp_local": "2026-10-10T19:35:00-0400",
+  "operation": "RECONCILE_EXISTING_VERIFIED_EVALUATION_INTO_PIPEPORTAL_SELFSTATEMENT_EVIDENCE_NOT_INVENTED",
+  "target": {
+    "host": "Mac.lan",
+    "pipeportal": "127.0.0.1:49320 (PID 18480, cwd ~/OURSELF/ourself-core/runtime/aetherbridge)",
+    "matter_ref": "bubble-sourcebytes-20261009-1544",
+    "selfstatement_ref": "ss_a0de7b2b-edaf-47da-8cf3-df418e436b5a"
+  },
+  "peep_findings": {
+    "pipeportal_live": "OBSERVED: health endpoint BUBBLESELF-ALCHEMY, external_effect false, bearer admission boundary enforced (401 CALLER_UNBOUND without token).",
+    "integration_gap_real": "OBSERVED in server source: POST /v1/selfstatement only creates PENDING_EVALUATION records; no cognition route exists in the server.",
+    "custody_chain_verified_by_hash": "MATTER-ADMISSION sha 7b303fff3db0314eaaaebb1571a42bcac38cecb457d8e0ba480bb32eebef79ad -> COGNITIVE-EVALUATION sha 55deb5fdb74b32fd4b4b4a32e6bcbe3f3d8d3faa46e2e5a411bed6c9e2521238 -> MATTER-READBACK sha 6c24c79016a1afb2d3b8f1f0ed0022cbac51a36dfefff180277de11dd26bd23a; payload hash 04ef5e23490a8f29fbd61e81e0ea1278dea9be95e0f9de7373fc857b07aafb2d chains through all; source bytes 0909467e2f8976b8e073a2aec5c53aae1c9d352d74db7f2ede700c1b69d40b86 (246 bytes) re-read and re-hashed.",
+    "telegram_claim_not_witnessed": "NOT OBSERVED: Hermes gateway state shows telegram platform connected, but bot_relay claimed/ and outbox/ are empty since Oct 3, roster agents [], channel_directory telegram [], and no bubble/ACTIMANIRUN correlation artifacts exist anywhere in Hermes. The matter's preserved source bytes are an HTTP POST body (message_id/conversation_id/input form), not a witnessed Telegram event. TELEGRAM PROVENANCE FOR THIS MATTER IS UNVERIFIED.",
+    "oct10_ledger_entry_absent": "NOT OBSERVED: no 2026-10-10 entry exists in governance/proof-ledger (local). Prior claim of a recorded October 10 disposition entry is NOT CONFIRMED.",
+    "remote_custody_absent": "OBSERVED: workspace is in detached HEAD at fb1ef284a4a79921f763dfdb0c0bcdc361b61f6 which exists on NO remote branch; remote HEAD is cc10b735c7c61a96ccfc82eb1dffe764ce0a342a. Remote GitHub custody NOT ESTABLISHED."
+  },
+  "changes": [
+    {
+      "path": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/selfstatement-adapter.mjs",
+      "action": "created (exclusive new file)",
+      "role": "evidence-reconciliation adapter: binds an existing hash-verified COGNITIVE-EVALUATION receipt into a PENDING SELFStatement after re-verifying intake payload hash, canonical admission chain, and exact source bytes; makes no model call; fails closed on any chain mismatch."
+    },
+    {
+      "path": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/data/selfstatements.json",
+      "action": "one record transitioned",
+      "record": "key fbedf4a231d19a0b6b8283390cf131996131077a3cb54ccba7558591b39a899d",
+      "transition": "PENDING_EVALUATION -> COMPLETED",
+      "completion_kind": "BOUND_EXISTING_VERIFIED_LOCAL_EVALUATION",
+      "preserved": "prior_standing recorded inside the record; frozen intake matter.json residue strings left untouched as historical evidence."
+    },
+    {
+      "action": "SELFStatement ss_a0de7b2b-edaf-47da-8cf3-df418e436b5a created via canonical POST /v1/selfstatement route (authenticated bearer) prior to binding"
+    }
+  ],
+  "verification": {
+    "api_readback": "VERIFIED: GET /v1/matter/bubble-sourcebytes-20261009-1544 returns evaluation_standing COMPLETED, 1 selfstatement, standing COMPLETED, eval EVAL-bubble-sourcebytes-20261009-1544, custody MATTER-ADMISSION-bubble-sourcebytes-20261009-1544, evaluation_receipt_sha256 55deb5fd... (server reads store fresh per request; this is an independent readback, not a cached claim).",
+    "adapter_readback_check": "internal readback re-read persisted bytes and verified standing, evaluation_ref, custody_ref, eval sha, prior_standing before returning.",
+    "new_cognition_run": false,
+    "external_effect": false
+  },
+  "limits": [
+    "Completion is LOCAL EVIDENCE RECONCILIATION ONLY: the bound evaluation was produced by qwen3.5:4b via local Ollama 127.0.0.1:11434, recorded as bounded local evaluation, not canonical cognition.",
+    "Remote GitHub custody remains NOT ESTABLISHED; no commit, push, or branch creation was performed (workspace is detached HEAD; would require explicit push authorization and a branch decision).",
+    "HOLLABACK NOT DELIVERED: no Telegram delivery was attempted. Telegram provenance for the originating event is unverified, and delivery is an external effect requiring its own authorization.",
+    "The other two matters (bubble-smoke-20261009T142951, bubble-init-matter-20261009-1830) remain NOT_STARTED with no evaluation receipts; they were not touched.",
+    "PipePortal /v1/reality standings are computed constants inside the server and still report PENDING_ADAPTER/UNRESOLVED; the server has no notion of external custody receipts — updating its capability model is a code change, not done here."
+  ],
+  "next_admissible_transition": "EXPLICITLY_AUTHORIZE_ONE_OF: (A) APPEND_THIS_RECEIPT_AND_CHAIN_HASHES_TO_GOVERNANCE_PROOF_LEDGER_AND_ESTABLISH_A_REMOTE_BRANCH_WITH_PUSH, (B) BIND_TELEGRAM_INGRESS_WITH_A_WITNESSED_EVENT_BEFORE_ANY_HOLLABACK, (C) EXTEND_PIPEPORTAL_SERVER_CAPABILITY_MODEL_TO_REFLECT_EXTERNAL_CUSTODY_RECEIPTS",
+  "external_effect": false
+}

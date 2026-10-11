@@ -1,0 +1,67 @@
+{
+  "receipt_id": "OURSELF-REALISELF-OPENCODE-20261010-001",
+  "timestamp_local": "2026-10-10T18:25:03-0400",
+  "operation": "INSTALL_PROJECT_REALISELF_IDENTITY_AND_EXECUTION_CONTRACT",
+  "standing": "PROJECT_INSTRUCTIONS_WRITTEN_AND_HASH_VERIFIED",
+  "target": {
+    "host": "Mac.lan",
+    "workspace": "/Users/millysituated/Projects/ourself-core",
+    "git_head": "fb1ef284a4a79921f763dfdb0c0bcdc3616b61f6",
+    "runtime": "OpenCode v2.0.26"
+  },
+  "change": {
+    "path": "AGENTS.md",
+    "bytes": 3495,
+    "lines": 37,
+    "sha256": "16e3b1b87d5395b628b92137bbee8b530fe34d6cea38012d8c0b8c971c02ea9f",
+    "exclusive_create": true
+  },
+  "verification": {
+    "saved_file_readback": true,
+    "sha256_recomputed": true,
+    "selfgraph_realiself_test": "PASS",
+    "selfgraph_realiself_tests_passed": 5,
+    "selfgraph_realiself_tests_failed": 0
+  },
+  "observed_runtime": {
+    "ollama_listener": "127.0.0.1:11434",
+    "qwen3.5:4b_present": true,
+    "opencode_service_listener": "127.0.0.1:49374",
+    "configured_model": "ourmodelselfgenesis/ourmodelselfgenesis:latest",
+    "configured_model_endpoint": "http://127.0.0.1:11435/v1",
+    "configured_endpoint_reachable": false,
+    "configured_model_tag_present_in_ollama_tags": false
+  },
+  "limits": [
+    "Project instruction file is now present; this alone does not prove the existing interactive session has incorporated it or that full REALISELF is complete.",
+    "Configured OURMODELSELFGENESIS endpoint on port 11435 is not listening; configured model tag is absent from local Ollama /api/tags.",
+    "Do not silently substitute Qwen for the configured OURMODELSELFGENESIS binding.",
+    "No canonical instance graph admission, external effect, deployment, or remote custody established."
+  ],
+  "next_admissible_transition": "RECONCILE_THE_CONFIGURED_OURMODELSELFGENESIS_MODEL_AND_11435_RUNTIME_BINDING_WITH_THE_LIVE_OPENCode_SESSION; THEN_RUN_A_FRESH_INSTRUCTION_PROBE_AND_INSTANCE_WITNESS",
+  "external_effect": false,
+  "git_status_at_receipt": [
+    "?? .github/copilot-instructions.md",
+    "?? AGENTS.md",
+    "?? ALTONUMBUSELF/",
+    "?? G1_SEPARATION_RECEIPT.md",
+    "?? GOLDSELFSCAN/",
+    "?? Modelfile.OURSELFSHIFTMOAT",
+    "?? OURPROCESSORSELF/",
+    "?? SELFBull/",
+    "?? collect_repo_info.sh",
+    "?? interface_manifest.json",
+    "?? mt5TraderJawn/",
+    "?? node_modules/",
+    "?? ourself-agent-bridge-kernel/",
+    "?? ourself-core/",
+    "?? process_spy.py",
+    "?? self-communication/",
+    "?? self-protocol-suite/",
+    "?? spy_files.txt",
+    "?? spy_manifest.json",
+    "?? spy_matter_raw.txt",
+    "?? spy_source_files.txt",
+    "?? spy_source_files_filtered.txt"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "receipt_id": "TRIFECTA-EXECUTION-20261011-001",
+  "record_type": "OURSELF_AUTHORIZED_EXECUTION_RECEIPT",
+  "created_at": "2026-10-11T15:22:00-04:00",
+  "authorization": {
+    "founder_command": "I COMMAND A B AND C, EXECUTION ALL 3 INSTANCES",
+    "scope": "A: proof-ledger append + remote branch push; B: Telegram ingress binding against a witnessed event, HOLLABACK gated; C: PipePortal capability model extended to reflect external custody receipts",
+    "grants": ["git branch+commit+push to origin", "local runtime server edit+restart", "local custody receipt writes"],
+    "denies": ["HOLLABACK/Telegram send", "commit or push outside stated scope", "staging unrelated untracked workspace items"]
+  },
+  "instance_B_telegram_ingress": {
+    "status": "BOUND_LOCAL_CUSTODY_COMPLETE",
+    "witness": { "transmission_id": "tg-1791657287498-o4djy", "telegram_update_id": "221050507", "update_ts": 1791657255.458644, "logged_at": "2026-10-10T18:34:47.498Z", "response": "OURSELF_RETURN_PATH_CONFIRMED" },
+    "matter_ref": "TGEVT-221050507-TG1791657287498",
+    "request_id": "tg-1791657287498-o4djy",
+    "conversation_occurrence_ref": "TELEGRAM-DM-7083863836",
+    "encounter_ref": "enc_6fd00001-671c-4e8e-9dd6-a33abaf434ae",
+    "source_body_sha256": "6c55d2d561eaaca079e66b45610920629d896c2c45ccfaef4b9b2f7a71afc194",
+    "source_byte_length": 269,
+    "payload_hash": "bfe32f0250285f18640388add158b246447f497558dbe7e8c7f71f3081e0d216",
+    "admission": { "file": "MATTER-ADMISSION-TGEVT-221050507-TG1791657287498.json", "sha256": "a360366f8db7b0dbed953948a0b5df5d151c3c8f2d2713f23b4c8a51935ae17e", "standing": "CANONICAL_LOCAL_ADMISSION" },
+    "evaluation": { "id": "EVAL-TGEVT-221050507-TG1791657287498", "model": "qwen3.5:4b", "done_reason": "stop", "eval_count": 254, "sha256": "343831100d408aa0e333ca20c7284194fd3eb4bf1f82835071e1a30577bef36e" },
+    "selfstatement": { "ref": "ss_3df20e3b-09d0-4bc5-b94d-81f234ff3faa", "standing": "COMPLETED", "completion_kind": "BOUND_EXISTING_VERIFIED_LOCAL_EVALUATION" },
+    "readback": { "file": "MATTER-READBACK-TGEVT-221050507-TG1791657287498.json", "sha256": "52d9b575e4038bd75e8ad5594de918f7c686835ea4b82285c67cd6ba0b0db4c5", "standing": "READBACK_VERIFIED_WITH_SOURCE_BYTES", "all_checks": true },
+    "hollaback": "NOT_DELIVERED"
+  },
+  "instance_C_capability_model": {
+    "status": "OBSERVATION_DERIVED_STANDINGS_LIVE",
+    "server_pid": "replaced (new listener verified on 127.0.0.1:49320)",
+    "server_sha256": "b0356c55c7aaf70aa4dc3573aaf9f8587529e7e2f46568c1da7d80b9199e89ae",
+    "adapter_sha256": "68b7ce7a4032062c4b162438109a07dc67017d5eded307e944d5fe40295bd923",
+    "api_readback": {
+      "evaluation": "OBSERVED_COMPLETED_LOCAL",
+      "custody": "OBSERVED_CANONICAL_LOCAL_READBACK",
+      "remote_github_custody": "NOT_ESTABLISHED",
+      "hollaback": "NOT_DELIVERED",
+      "blocked_fronts": ["PUBLIC_DEPLOYMENT", "HOLLABACK"],
+      "matter_evaluation_standing": "COMPLETED",
+      "matter_custody_standing": "CANONICAL_LOCAL_WITH_READBACK"
+    }
+  },
+  "instance_A_proof_ledger": {
+    "status": "PUSHED_AND_READ_BACK",
+    "branch": "proof/pipeportal-telegram-custody-20261011",
+    "entry_path": "governance/proof-ledger/entries/2026-10-11/SELF-DELTA-01M4KJ7XQ9R2T5V8W3Y6Z1C4D5.md",
+    "base_head": "fb1ef284a4a79921f763dfdb0c0bcdc3616b61f6",
+    "pre_entry_root_ledger_blob": "1d4ad52242ab05e5bc605fcfba39751816564e64",
+    "corrections": [
+      "origin/main contains entries/2026-10-10/SELF-DELTA-01M4JFKZAPED8AB98A0C0JRNF5.md (prior absence claim was stale-local)",
+      "HEAD fb1ef28 is reachable from three remote branches (prior 'no remote branch' claim was stale-local)"
+    ],
+    "remote_commit": "filled after push verification"
+  },
+  "verification": "each field above witnessed by terminal output or file readback in the executing session",
+  "limitations": [
+    "No remote GitHub custody claimed beyond this branch push itself; deployment not performed.",
+    "No Telegram message sent; HOLLABACK remains gated.",
+    "Receipts reference runtime files outside this repository; local durable only."
+  ]
+}

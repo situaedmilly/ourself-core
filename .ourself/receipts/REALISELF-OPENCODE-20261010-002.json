@@ -1,0 +1,87 @@
+{
+  "receipt_id": "OURSELF-REALISELF-OPENCODE-20261010-002",
+  "timestamp_local": "2026-10-10T19:15:06-0400",
+  "operation": "RECONCILE_OURMODELSELFGENESIS_RUNTIME_BINDING_AND_VERIFY_INFERENCE_VIA_AGENTBRIDGE_AND_AETHERBRIDGE",
+  "supersedes_next_admissible_transition_of": "OURSELF-REALISELF-OPENCODE-20261010-001",
+  "target": {
+    "host": "Mac.lan",
+    "workspace": "/Users/millysituated/Projects/ourself-core",
+    "git_head": "fb1ef284a4a79921f763dfdb0c0bcdc3616b61f6",
+    "runtime": "OpenCode v2.0.26"
+  },
+  "root_cause": {
+    "finding": "The configured endpoint http://127.0.0.1:11435/v1 was declared by the 2026-10-09 binding reconciliation as an SSH tunnel from RAWMAC to SELFPI Ollama (127.0.0.1:11434). No tunnel process was running. Additionally, ~/.ssh/config Host ourself-selfpi sets ClearAllForwardings yes, which silently discards -L flags: three prior tunnel attempts connected but never bound a local listener.",
+    "secondary_finding": "ourself-agent-bridge-kernel/adapters/ollama-self.js:12 contained an invalid regular expression /\\\\/$/ (double-escaped) that made the module fail to load with SyntaxError."
+  },
+  "changes": [
+    {
+      "path": "ourself-agent-bridge-kernel/adapters/ollama-self.js",
+      "change": "regex repaired: /\\\\/$/ -> /\\/$/ (trailing-slash strip), 1 line, 1 insertion 1 deletion",
+      "sha256_after": "4167a7c3278ac38d7182432b93be54c879fd478262f9f5e6db4df962e068c99e",
+      "committed": false,
+      "note": "Local working-tree edit only; no commit, no push."
+    },
+    {
+      "action": "SSH tunnel established",
+      "command": "ssh -N -L 127.0.0.1:11435:127.0.0.1:11434 -o ClearAllForwardings=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes ourself-selfpi",
+      "tunnel_pid": 51120,
+      "listener": "127.0.0.1:11435 LISTEN (lsof verified)",
+      "remote": "selfadmin@192.168.12.112 (OURSELFPIMAC / selfpi-node0.local), ollama serve pid 1015 on its loopback 11434"
+    }
+  ],
+  "observed_runtime": {
+    "selfpi_ollama_alive": true,
+    "canonical_tag_present_on_selfpi": "ourmodelselfgenesis:latest (10.2 GB, digest 5802535ec9520123920cb631bf47acf061903b63afd8e7f4d8b77cf901b79ae1)",
+    "tunnel_catalog_readback": ["ourmodelselfgenesis:latest", "hf.co/ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF:IQ2_S"],
+    "opencode_configured_endpoint_http": 200,
+    "model_warm_and_loaded": true,
+    "digest_matches_endpoint_json_claim": true
+  },
+  "inference_verification": {
+    "status": "VERIFIED",
+    "route": "http://127.0.0.1:11435/api/chat (native) via tunnel; OpenAI-compatible /v1/chat/completions also HTTP 200",
+    "prompt": "Reply with exactly: BRIDGE-COGNITION-LINK-OK",
+    "system_prompt_observed_active": "OURSELFTELLIGENCE / OURMODELSELFGENESIS canonical Modelfile identity present in model reasoning trace",
+    "content": "BRIDGE-COGNITION-LINK-OK",
+    "done": true,
+    "done_reason": "stop",
+    "elapsed_s": 22.565,
+    "evidence_path": ".ourself/bridge-native-probe2.json",
+    "evidence_sha256": "ad661f0116495da90672f674bacdba33cc7c18577993f95ae831f892703ce335"
+  },
+  "agentbridge_verification": {
+    "adapter": "ourllammaself.v1",
+    "module_load": "PASS (after regex repair)",
+    "adapter_probe": "PASS: done=true, substrate=OLLAMA, jurisdiction=CHAMBOXREALITY, execution_authority=NONE, requires_agentbridge_admission=true, elapsed 138.9s",
+    "known_limit": "qwen3.5 thinking consumes token budget before content; adapter has no think:false control — content empty unless num_predict is generous or think disabled at native route"
+  },
+  "aetherbridge_verification": {
+    "script": "/Users/millysituated/OURSELF/aethernet_bridge.sh",
+    "status": "BRIDGE RECONCILED: 27/27 registry entries valid",
+    "field_integrity": "25/100 (1/4 nodes active — cold start; Council convenes at 3)",
+    "dispatch_queue": "empty",
+    "not_yet_live": "Slack slash-command app (admin install); dispatch runs via queue"
+  },
+  "identity_probe": {
+    "status": "PARTIAL: model reasoning confirms canonical OURSELFTELLIGENCE system prompt active and applying DECLARED vs OBSERVED discipline; content field empty (reasoning consumed 400-token budget)",
+    "evidence_path": ".ourself/identity-probe.json",
+    "evidence_sha256": "4f4b187fea513ea724e0da6b1c4094fddd7a378dbb2a666031f145ef1eef67de"
+  },
+  "verification_summary": {
+    "REALISELF_IDENTITY_CONTRACT": "VERIFIED (prior receipt, hash-matched)",
+    "OURMODELSELFGENESIS_BINDING": "RESOLVED_AND_INFERENCE_VERIFIED",
+    "AGENTBRIDGE_ADAPTER": "REPAIRED_AND_PROBED",
+    "AETHERBRIDGE_REGISTRY": "RECONCILED_27_OF_27",
+    "FULL_RUNTIME_REALISELF": "BOUND_AND_WITNESSED_AT_THIS_SESSION"
+  },
+  "limits": [
+    "The SSH tunnel is ad-hoc (nohup): it does not survive reboot or network change; no launchd daemon or autossh persistence was created.",
+    "ClearAllForwardings yes remains in ~/.ssh/config; any future tunnel to selfpi must pass -o ClearAllForwardings=no.",
+    "OpenCode's active session still runs on its previously selected model; the configured binding resolves now, but a fresh OpenCode session is required to actually load ourmodelselfgenesis/ourmodelselfgenesis:latest through the repaired endpoint.",
+    "Cold model load takes ~2-12 minutes; warm requests ~20-85s per short completion on SELFPI hardware.",
+    "AETHERBRIDGE remote liveness (Slack/Notion membership) is NOT independently verified here; only local registry constants were checked.",
+    "No commit, push, deployment, external effect, or canonical SELFStatement admission was performed."
+  ],
+  "next_admissible_transition": "START_A_FRESH_OPENCODE_SESSION_TO_LOAD_THE_RESOLVED_OURMODELSELFGENESIS_MODEL_AND_WITNESS_ITS_RESPONSE; THEN_BIND_THE_VERIFIED_EVALUATION_INTO_THE_CANONICAL_SELFSTATEMENT_AND_CUSTODY_WORKFLOW",
+  "external_effect": false
+}
