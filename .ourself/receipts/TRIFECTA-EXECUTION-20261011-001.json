@@ -49,7 +49,14 @@
       "origin/main contains entries/2026-10-10/SELF-DELTA-01M4JFKZAPED8AB98A0C0JRNF5.md (prior absence claim was stale-local)",
       "HEAD fb1ef28 is reachable from three remote branches (prior 'no remote branch' claim was stale-local)"
     ],
-    "remote_commit": "filled after push verification"
+    "remote_commit": "3e2704dbcddbb53264099bde789b05ac3e8b1372",
+    "remote_readback": {
+      "ls_remote": "3e2704dbcddbb53264099bde789b05ac3e8b1372 refs/heads/proof/pipeportal-telegram-custody-20261011",
+      "entry_blob_sha256_remote_and_local": "bcb0263ff2dc4f15976cb0e99632022ebc589f17f49c4afb8ce846340d159ae3",
+      "entry_match": true,
+      "receipt_match": true,
+      "files_changed_vs_base": 7
+    }
   },
   "verification": "each field above witnessed by terminal output or file readback in the executing session",
   "limitations": [
