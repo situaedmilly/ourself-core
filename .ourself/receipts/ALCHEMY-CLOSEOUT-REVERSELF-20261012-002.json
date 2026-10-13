@@ -1,0 +1,57 @@
+{
+  "receipt_id": "ALCHEMY-CLOSEOUT-REVERSELF-20261012-002",
+  "ts_utc": "2026-10-13T03:05:00Z",
+  "operator": "sohocode4",
+  "authority": "Founder directive 'EXECUTE Next admissible transitions' (the three transitions listed in -001 closeout: bridge-restart decision, canonical capacity options, OURSELF push if authority extended)",
+  "transitions": [
+    {
+      "id": "T1-BRIDGE-REBOOT-SAFETY",
+      "status": "VERIFIED (executed as recommended: pin to RAWMAC, do NOT flip Telegram to canonical)",
+      "problem": "The T3 rebind had left a latent break: config.yaml default pointed at canonical-via-gateway; the launchd bridge (ai.hermes.gateway) reads config.yaml at startup, so the NEXT reboot/crash restart would have switched Telegram-driven inference to the canonical path and hit the measured 600s capacity boundary.",
+      "action": "Reverted the model: block of ~/.hermes/config.yaml verbatim from the pre-bind backup (provider ollama-launch, default qwen3.5:4b, base_url 127.0.0.1:11434, context 65536, original api_key); RETAINED additively: providers.ourself-gateway (api 49320, ingress token, canonical + policy models) and agent.reasoning_overrides canonical->medium. Canonical via gateway is now an explicit per-run choice: hermes --provider ourself-gateway -m ourmodelselfgenesis:latest. No bridge restart performed or needed (bridge config already matched pre-bind state; PID 46170 uptime preserved 2d6h).",
+      "shas": {"config_final": "63e25143d5569725...", "backup_lineage": "2a411d0e (pre-bind) / f2d85d89 (interim gateway-default)"},
+      "verification": [
+        "yaml valid; model block byte-identical to backup (provider/default/base_url/context verified by parse)",
+        "default one-shot 'hermes -z ... --cli -t clarify' returned exactly BRIDGE_DEFAULT_OK in ~30s via direct RAWMAC qwen3.5:4b",
+        "gateway receipt log unchanged (70->70) during the default run: default inference does NOT traverse the gateway",
+        "bridge process healthy (uptime 2d06h, gateway.log tail shows normal Telegram network retry/recovery pattern, no new errors)"
+      ],
+      "class": "OBSERVED+VERIFIED"
+    },
+    {
+      "id": "T2-CANONICAL-CAPACITY-INVESTIGATION",
+      "status": "MEASURED + COSTED (execution = Founder decisions)",
+      "selfpi": "Raspberry Pi 5 class: aarch64 4x Cortex-A76, 16GB RAM, 2GB swap, CPU-only inference (journal inference compute library=cpu, total_vram=0, /dev/dri present but ollama Vulkan falls back to cpu), clean-measured 0.77 tok/s prompt processing for the 26.9B canonical (252 tokens in 328.73s). Structural: no prompt >~450 tokens can traverse the 600s gateway budget on this host.",
+      "rawmac": "Mac mini (Mac16,10) Apple M4, 10 cores, 16GB unified RAM, Metal inference, currently serving 7 small fallback models (max 3.3GB).",
+      "options_costed": [
+        "RECOMMENDED: host the canonical model on RAWMAC by additive same-digest copy (identical sha256 blob + same Modelfile = same canonical identity; no model deletion) + gateway policy upstream swap canonical SELFPI->RAWMAC. Estimated M4 Metal prompt processing 20-40 tok/s -> hermes-scale prompts (5-8K tokens) become feasible within budget; OpenCode warm calls drop from ~87s to ~5-15s. Requires: RAWRAM headroom check at load (12.2GB weights + ~2GB KV on 16GB), Founder authorization for policy swap; SELFPI remains the canonical COLD-STANDBY upstream.",
+        "smaller canonical quant on SELFPI (e.g. 14B-class or deeper IQ): 2-4x speedup, changes the canonical model artifact -> Modelfile governance decision",
+        "GPU enablement on Pi5 (VideoCore VII Vulkan): marginal for LLM workloads, not recommended as primary lever"
+      ],
+      "class": "OBSERVED+VERIFIED (measurements); INFERRED (M4 estimates from hardware class, not yet benchmarked on this host)"
+    },
+    {
+      "id": "T3-OURSELF-REPO-PUSH",
+      "status": "VERIFIED",
+      "action": "Pushed local commit dd87450 (gateway source sha 796aabff + canonical-matter adapter + selfstatement adapter + openapi + adapters-replay test) to origin, creating branch alchemy/mergecer-self-20261007174434 (absent on remote before).",
+      "remote_readback": "dd874505d0a16ea8cb9e5b9418b4215448530100 refs/heads/alchemy/mergecer-self-20261007174434",
+      "preserved": "runtime/endpoint.json modification, runtime data/, logs/, and all 3 rollback backups remain untracked/untouched in worktree",
+      "class": "OBSERVED+VERIFIED"
+    }
+  ],
+  "receipts_log_note": "line 70 explained: probe3 non-stream attempt-2 (gateway retry tolerance max_attempts=2) aborted at 02:49:03, dur=600002 - honest receipt of the retry path, not a new fault",
+  "external_effects_this_batch": [
+    "~/.hermes/config.yaml reverted model block (backup lineage retained; additive gateway provider preserved)",
+    "git push creating OURSELF branch alchemy/mergecer-self-20261007174434 on origin",
+    "this receipt + ledger append + push on proof/pipeportal-telegram-custody-20261011"
+  ],
+  "prohibitions_honored": [
+    "no model deletions or additions (canonical copy proposal NOT executed - awaiting Founder decision)",
+    "no Telegram sends; bridge never restarted; Telegram chain continuity preserved",
+    "no SELFPI mutations; no gateway source mutation (sha 796aabff unchanged)"
+  ],
+  "next_admissible_transitions": [
+    "Founder decision: canonical hosting on RAWMAC (additive same-digest copy + policy upstream swap; SELFPI demoted to cold standby) - the single highest-leverage capacity lever, fully costed above",
+    "optional: benchmark the M4 canonical estimate before committing (requires Founder-authorized one-time model copy)"
+  ]
+}
