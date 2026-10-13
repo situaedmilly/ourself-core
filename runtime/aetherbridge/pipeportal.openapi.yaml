@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: AETHERBRIDGE PIPEPORTAL
+  version: 0.1.0
+  description: >-
+    Development ingress for BubbleSelf ALCHEMY. A local durable intake receipt
+    is not canonical Matter custody, cognitive evaluation, SELFStatement completion,
+    HOLLABACK delivery, or proof of external effect.
+servers:
+  - url: https://necessity-versions-associate-argue.trycloudflare.com
+    description: Temporary Cloudflare Quick Tunnel; development only, not production-stable
+security:
+  - BearerAuth: []
+paths:
+  /health:
+    get:
+      security: []
+      operationId: pipeportalHealth
+      responses:
+        '200':
+          description: Local PipePortal is listening
+  /v1/capabilities:
+    get:
+      operationId: getCapabilities
+      responses:
+        '200':
+          description: Available and unresolved ingress capabilities
+        '401':
+          description: Caller not authenticated
+  /v1/matter:
+    post:
+      operationId: submitMatter
+      description: Idempotent intake. Returns a local receipt only.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/MatterIntake'
+                - $ref: '#/components/schemas/BubbleMatterIntake'
+      responses:
+        '202':
+          description: Local receipt accepted, not canonical custody
+        '200':
+          description: Idempotent replay of existing receipt
+        '400':
+          description: Invalid matter preimage
+        '401':
+          description: Caller not authenticated
+        '409':
+          description: Identity or preimage conflict
+  /v1/selfstatement:
+    post:
+      operationId: requestSelfStatement
+      description: Creates a pending evaluation record; does not fabricate a completed statement.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [matter_ref, requested_operation]
+              properties:
+                matter_ref:
+                  type: string
+                requested_operation:
+                  type: string
+                  enum: [PEEP, PRESSURE, RECONCILE, TRAJECT, DARKMATTER]
+      responses:
+        '202':
+          description: Evaluation is pending
+        '400':
+          description: Invalid evaluation request
+        '401':
+          description: Caller not authenticated
+        '404':
+          description: Matter is not visible
+  /v1/matter/{matter_ref}:
+    get:
+      operationId: readMatterReceipt
+      parameters:
+        - in: path
+          name: matter_ref
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Correlated local receipt and pending evaluation status
+        '401':
+          description: Caller not authenticated
+        '404':
+          description: Matter is not visible
+  /v1/reality:
+    get:
+      operationId: getPipeportalReality
+      responses:
+        '200':
+          description: Current runtime, standing, and unresolved bindings
+        '401':
+          description: Caller not authenticated
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    MatterIntake:
+      type: object
+      required: [matter_ref, conversation_occurrence_ref, founder_input, requested_cognition_scope]
+      properties:
+        matter_ref:
+          type: string
+        conversation_occurrence_ref:
+          type: string
+        founder_input:
+          type: string
+          maxLength: 100000
+        requested_cognition_scope:
+          type: string
+        request_id:
+          type: [string, 'null']
+    BubbleMatterIntake:
+      type: object
+      required: [request_id, conversation_id, message_id, input]
+      properties:
+        request_id:
+          type: string
+        conversation_id:
+          type: string
+        message_id:
+          type: string
+        input:
+          type: string
+          maxLength: 100000
