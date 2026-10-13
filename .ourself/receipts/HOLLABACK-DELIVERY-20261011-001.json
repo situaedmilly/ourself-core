@@ -1,0 +1,62 @@
+{
+  "receipt_id": "HOLLABACK-DELIVERY-20261011-001",
+  "record_type": "OURSELF_TELEGRAM_HOLLABACK_DELIVERY_RECEIPT",
+  "created_at": "2026-10-11T17:47:30Z",
+  "reality": "OURSELF_TELEGRAM_HOLLABACK",
+  "campaign": "ALCHEMY two-reality execution, Reality 2",
+  "authorization": {
+    "founder_command": "AUTHORIZE HOLLABACK: OURSELF_RETURN_PATH_CONFIRMED",
+    "scope": "Permits exactly one Telegram send of the text OURSELF_RETURN_PATH_CONFIRMED to the founder DM; no unrelated action authorized.",
+    "gate_was_respected": "Dispatch occurred only after explicit authorization; booting the campaign did not itself authorize the send.",
+    "exactly_one_send": true
+  },
+  "delivery_path_resolution": {
+    "bot_identity": { "api": "getMe", "ok": true, "id": 8605198495, "username": "SELFJAWNBOT", "verified_against": "telegram_update_receipts_8605198495.json (same bot that witnessed the inbound events)" },
+    "target_chat": { "api": "getChat", "ok": true, "id": 7083863836, "type": "private", "username": "GameWinna", "first_name": "TripleDuble", "matches_witnessed_authority_subject": true },
+    "token_source": "~/.hermes/.env TELEGRAM_BOT_TOKEN (length 46; value never printed or persisted in any receipt)"
+  },
+  "dispatch": {
+    "endpoint": "https://api.telegram.org/bot<REDACTED>/sendMessage",
+    "method": "POST application/json",
+    "text_sent": "OURSELF_RETURN_PATH_CONFIRMED",
+    "text_sha256": "0c15c8ade7f499705317feed3cbaad6f2044ea6b9d6a6147cc19b88396dce11b",
+    "request_body_sha256": "ad7b1fcf30dc31180223acab72fa4779d0a4ea5915c480858fb737a900ca2316",
+    "chat_id_sent": "7083863836",
+    "dispatched_at_utc": "2026-10-11T17:46:50.811187Z"
+  },
+  "telegram_result": {
+    "ok": true,
+    "message_id": 29,
+    "date": 1791740810,
+    "date_iso": "2026-10-11T17:46:50+00:00",
+    "chat_id_returned": "7083863836",
+    "text_returned": "OURSELF_RETURN_PATH_CONFIRMED",
+    "text_roundtrip_exact": true,
+    "chat_match": true,
+    "server_assigned_ids": "message_id and date assigned by Telegram servers; authoritative delivery receipt"
+  },
+  "verification": {
+    "telegram_ok_true": true,
+    "exact_text_roundtrip": true,
+    "target_chat_match": true,
+    "local_and_server_timestamps_agree": true,
+    "artifact_file": ".ourself/hollaback-dispatch-result.json",
+    "artifact_sha256": "6b09492b6e0829471835121e26c148153a160b75db5158665caf49b94ea20886"
+  },
+  "correlation": {
+    "delivered_in_response_to_witnessed_event": "TGEVT-221050507-TG1791657287498",
+    "telegram_update_id": "221050507",
+    "witnessed_probe": "OURSELF_RETURN_PATH_PROBE_20261010",
+    "witnessed_response": "OURSELF_RETURN_PATH_CONFIRMED",
+    "delivery_text_equals_witnessed_response": true,
+    "custody_chain_matter": "MATTER-READBACK-TGEVT-221050507-TG1791657287498.json standing READBACK_VERIFIED_WITH_SOURCE_BYTES"
+  },
+  "standing": "HOLLABACK_DELIVERED_VERIFIED",
+  "limitations": [
+    "Delivery verified by Telegram's ok:true response with server-assigned message_id and date; no separate readback API (e.g. getUpdates re-fetch) was used to re-pull message 29.",
+    "Token value never persisted; endpoint recorded redacted.",
+    "This receipt authorizes and records one send only; it grants no standing for further sends."
+  ],
+  "external_effect": true,
+  "next_admissible_transition": "Append a proof-ledger entry referencing this receipt if Founder directs durable remote custody of the delivery; no further Telegram send without new explicit authorization."
+}

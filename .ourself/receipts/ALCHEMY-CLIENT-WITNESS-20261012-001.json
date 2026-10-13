@@ -1,0 +1,43 @@
+{
+  "receipt_id": "ALCHEMY-CLIENT-WITNESS-20261012-001",
+  "campaign": "Gate 4 CLIENT WITNESS + gateway timeout repair + Gate 2 fault injection",
+  "executed_at_utc": "2026-10-12T19:40:04Z",
+  "authority": "Founder ALCHEMY transition directive: resolve the CLI startup stall, establish a fresh canonical OpenCode session, verify the resulting inference receipt; then fault-inject the recovery path; gather keep-warm evidence. Scope: local gateway source (additive/repair), local restarts, local inference calls. No commits, pushes, model deletions, Telegram, or client-config changes.",
+  "diagnosis": {
+    "not_a_startup_stall": "Live instrumentation (lsof connection sampling + opencode debug logs) showed OpenCode connecting to the gateway and the gateway proxying to SELFPI; requests died at exactly ~301.2-301.5s on every cold canonical load (4 observed) while a 289s call survived.",
+    "root_cause_G1": "undici default headersTimeout=300s on the gateway's global fetch aborts upstream requests whose first token takes >300s (every cold ourmodelselfgenesis load). AbortSignal.timeout(600000) cannot override the dispatcher default. Streaming calls have max_attempts=1, so OpenCode (always streaming) got no retry.",
+    "root_cause_G2": "On stream-path upstream failure the gateway receipted but answered nothing -> OpenCode held orphaned connections (observed: receipt 12 followed by a still-ESTABLISHED client socket for minutes).",
+    "root_cause_G3": "Client-abort vs final-chunk race called h.digest() then h.update() -> ERR_CRYPTO_HASH_FINALIZED crashed PID 19646 (server.out.log).",
+    "in_flight_bug_found_and_fixed": "First node:http rewrite misused req.setTimeout as a connect timeout (socket idle timeout) -> killed header-slow requests at exactly 10s (receipt UPSTREAM_TIMEOUT 10004ms). Corrected to a socket 'connect'-event timer before finalizing."
+  },
+  "repairs": {
+    "file": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/pipeportal-server.mjs",
+    "backup_pre_fix": {"path": "pipeportal-server.mjs.pre-timeout-fix-backup-20261012", "sha256": "f13b47cddbb08b0e3967240eee80410486a3096126b1f4511708b3728b44d5e5"},
+    "final_sha256": "796aabffcf4de94a05068a143a9e92d0ca13ef82c9126304b39eb9827d02e493",
+    "changes": [
+      "G1: upstream calls via node:http upstreamPost (explicit UPSTREAM_HEADER_TIMEOUT_MS=600000; no hidden 300s cap); connect timeout bound to socket 'connect' event (10s)",
+      "G2: stream-path upstream failure answers SSE-shaped 502 error event so stream clients unblock; non-stream body phase guarded and receipted (UPSTREAM_BODY_FAILED)",
+      "G3: hash finalization guard (hashFinalized flag) + truthful transport_note CLIENT_ABORTED_OR_TRUNCATED on truncated streams"
+    ]
+  },
+  "gate4_client_witness": {
+    "binding_under_test": "~/.config/opencode/opencode.json sha e5284974..., provider ourmodelselfgenesis, baseURL http://127.0.0.1:49320/v1, apiKey {file:...} 44-char substitution form, timeouts 720000",
+    "clean_room": "Fresh project dir with ONLY a tool-less genesisproof agent (no provider override; global gateway binding applies). Prior scratch dir (genesis-binding-proof) carries stale direct baseURL 11435 and no apiKey -> would bypass the gateway; excluded.",
+    "warm_witness": {"text": "GATEWAY_WITNESS_OK", "session": "ses_ece89145effe0JzctfoIuhL1Ot", "message": "msg_13176ec28001bieWaYC4UMeKF7", "receipt": "upstream_status 200, stream, 86.6s, STREAM_PASSTHROUGH", "class": "VERIFIED"},
+    "full_cold_witness": {"text": "FULL_COLD_WITNESS_OK", "session": "ses_ece7de6f6ffewBlAJErCNz5QYW", "message": "msg_13182198f001Txjss7JfJw3oaA", "receipt": "upstream_status 200, stream, duration_ms 555269 (555s = 9.25 min, nearly 2x the old 300s wall), STREAM_PASSTHROUGH, clean", "preceded_by": "forced keep_alive:0 unload (done_reason: unload) for a true cold load", "class": "VERIFIED"},
+    "hash_chain": {"prompt": "CANONICAL_HASH_OK", "delivered_sha256": "2fa8d6a1952b19c60a35d911dcd52e2cef10ef302072ca7674ca1a546a8407d3", "receipt_response_sha256": "2fa8d6a1952b19c60a35d911dcd52e2cef10ef302072ca7674ca1a546a8407d3", "match": "byte-exact", "class": "VERIFIED"}
+  },
+  "gate2_fault_injection": {
+    "method": "TEST-ONLY FAULTMOCK upstream (127.0.0.1:11444) fail-once TCP relay -> RAWMAC; TEST policy entry; both removed after verification (final sha == pre-test sha 796aabff..., fault-test model 400s again)",
+    "relay_defect_found": "padding math: 'fault-test:latest' is 19 bytes incl quotes; a 4-space pad made the rewritten body 1 byte short of Content-Length -> RAWMAC silent hang; 5-space pad (JSON-valid whitespace) fixed; raw byte capture + nc replay diagnosed it (400 unexpected EOF)",
+    "result": {"attempt1": "UPSTREAM_REQUEST_FAILED UPSTREAM_UNREACHABLE duration_ms 2, retry_scheduled true", "attempt2": "upstream_status 200 duration_ms 121ms, usage recorded, client served", "class": "VERIFIED"}
+  },
+  "live_state": {"gateway_pid": 23826, "source_final_sha": "796aabffcf4de94a05068a143a9e92d0ca13ef82c9126304b39eb9827d02e493", "proxy_log_entries": 30, "receipts_path": "runtime/aetherbridge/logs/inference-proxy.jsonl"},
+  "keep_warm_evidence": {"selfpi": "16218 MB total, 14590 MB available, load 0.21; model size 12.16 GB -> resident keep-warm fits with ~2.4 GB headroom; /api/ps currently empty (auto-expiry working)", "rawmac": "59% memory free", "recommendation": "Feasible on SELFPI; decision reserved for Founder. Note: streaming clients get no gateway retry, so keep-warm materially protects OpenCode cold starts"},
+  "flagged": [
+    "opencode.json model limit.context=2048 and label 'runtime context 2048' contradict the canonical Modelfile (num_ctx 32768 / num_predict 2048, verified 2026-10-11). Suggests ctx/predict were confused. Does not block the witness; recommend correcting context to 32768 with Founder authorization.",
+    "Hermes binding to the gateway: NOT_DONE.",
+    "Tunnel 11435 remains ad-hoc (SSH PID 10125); no reboot survival."
+  ],
+  "not_done": ["client config changes", "commits/pushes", "model deletions", "Telegram", "keep-warm activation"]
+}

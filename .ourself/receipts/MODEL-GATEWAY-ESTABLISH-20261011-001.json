@@ -1,0 +1,50 @@
+{
+  "receipt_id": "MODEL-GATEWAY-ESTABLISH-20261011-001",
+  "campaign": "OURSELF CANONICAL MODEL GATEWAY — additive inference proxy on PipePortal",
+  "executed_at_utc": "2026-10-11T21:55:29Z",
+  "authority": "Founder PEEP directive: identify PID 8937 actual source, inspect routes, implement and verify the additive gateway in the actual running service. Scope: local additive routes + one governed local restart. No model deletion, no commit, no push, no Telegram, no client rebinding.",
+  "target_resolution": {
+    "founder_expected_path_absent": "/Users/millysituated/Projects/ourself-core/pipeportal-server.mjs -> NOT_FOUND (negative control verified)",
+    "actual_running_source": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/pipeportal-server.mjs",
+    "resolution_basis": "lsof -p 8937 cwd = /Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge (OBSERVED, OS-level)",
+    "pre_edit_sha256": "b0356c55c7aaf70aa4dc3573aaf9f8587529e7e2f46568c1da7d80b9199e89ae",
+    "post_edit_sha256": "fcb34b76998558637f565442f9235805a3e249ed853995c205deea154215ca08",
+    "rollback": "pipeportal-server.mjs.pre-gateway-backup-20261011 (byte-identical to running pre-edit sha, re-verified after edits)"
+  },
+  "change": {
+    "type": "ADDITIVE",
+    "new_routes": ["GET /v1/models", "POST /v1/chat/completions"],
+    "policy": {
+      "canonical": "ourmodelselfgenesis:latest -> SELFPI 127.0.0.1:11435 (CANONICAL)",
+      "fallbacks": "qwen3.5:4b + tnc-r2 family + smollm2:135m -> RAWMAC 127.0.0.1:11434 (FALLBACK)",
+      "enforcement": "model not in allowlist -> HTTP 400 MODEL_NOT_IN_POLICY"
+    },
+    "receipting": "logs/inference-proxy.jsonl — one line per proxied call: ts, model, policy_class, upstream, stream flag, upstream status, duration, response sha256, usage, finish_reason. No message content, no headers, no token (grep for token value = 0 matches)."
+  },
+  "governed_restart": {
+    "old_pid_8937": "SIGTERM -> clean exit via server's own handler (OBSERVED_EXITED)",
+    "new_pid": 39184,
+    "env": "AETHERBRIDGE_BIND_HOST=127.0.0.1 AETHERBRIDGE_PORT=49320 (identical to prior)",
+    "health": "LISTENING (OBSERVED)"
+  },
+  "verification_battery": [
+    { "test": "GET /v1/models", "result": "VERIFIED — observed registry; SELFPI reachable (ourmodelselfgenesis digest listed), RAWMAC reachable (7 models); policy embedded" },
+    { "test": "negative control: llama3:latest (not in policy)", "result": "VERIFIED — HTTP 400 MODEL_NOT_IN_POLICY with allowed list" },
+    { "test": "FALLBACK route: qwen3.5:4b", "result": "VERIFIED — HTTP 200, real usage observed (18/16 then 12/4 tokens), receipted" },
+    { "test": "CANONICAL route: ourmodelselfgenesis:latest", "result": "VERIFIED (attempt 2) — exact content 'GATEWAY_CANONICAL_OK', finish_reason stop, usage 273/44/317, response_sha256 eee1d042... matches sha256 of delivered content" },
+    { "test": "capabilities enumeration", "result": "VERIFIED — both gateway routes listed" },
+    { "test": "token leak scan of proxy log", "result": "VERIFIED — 0 occurrences" }
+  ],
+  "observed_defect_or_risk": {
+    "canonical_cold_start_flakiness": "Canonical attempt 1 FAILED honestly: UPSTREAM_UNREACHABLE after 301519ms during cold model load; receipted as UPSTREAM_REQUEST_FAILED in the proxy log; retry succeeded in 233268ms with 252 cached prompt tokens. Implication: cold canonical calls need retry tolerance or a keep-warm policy; single-shot callers will see 502 on upstream reset.",
+    "stale_registry_preserved": "runtime/reality/model-registry.json (2026-09-29 THIRDEYE snapshot, describes qwen2.5-coder/llama3 which are no longer installed) left untouched as lineage; /v1/models is the live superseding surface."
+  },
+  "chain_status_after": {
+    "registry": "ESTABLISHED (live-observed, request-time)",
+    "canonical_endpoint": "ESTABLISHED (localhost, bearer-auth, policy-routed, receipted)",
+    "authenticated_client_binding": "NOT_DONE — clients still bind upstream directly; rebinding ~/.config/opencode/opencode.json baseURL -> 127.0.0.1:49320/v1 is the next gate and requires separate authorization",
+    "observed_model_response": "VERIFIED on both policy classes",
+    "verified_execution_receipt": "ESTABLISHED (inference-proxy.jsonl + this receipt)"
+  },
+  "not_done": ["client rebinding (OpenCode/Hermes)", "model deletions (explicitly deferred by Founder)", "commits/pushes", "Telegram", "keep-warm policy"]
+}

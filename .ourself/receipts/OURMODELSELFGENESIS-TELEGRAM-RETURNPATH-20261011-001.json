@@ -1,0 +1,34 @@
+{
+  "receipt_id": "OURMODELSELFGENESIS-TELEGRAM-RETURNPATH-20261011-001",
+  "recorded_at_local": "2026-10-11T11:55:15.575122-04:00",
+  "reality": "OURSELF / TELEGRAM RETURN PATH",
+  "source": {
+    "event_id": "TGEVT-221050507-TG1791657287498",
+    "request_id": "tg-1791657287498-o4djy",
+    "conversation_ref": "TELEGRAM-DM-7083863836",
+    "source_sha256": "6c55d2d561eaaca079e66b45610920629d896c2c45ccfaef4b9b2f7a71afc194",
+    "input_sha256": "0d6767b1f2f3e2b8a86d96c1dec5bf8e67f627834bd0621a4bc139e9e61d7bc2"
+  },
+  "model": {
+    "name": "ourmodelselfgenesis:latest",
+    "digest": "5802535ec9520123920cb631bf47acf061903b63afd8e7f4d8b77cf901b79ae1",
+    "endpoint": "SELFPI Ollama native /api/chat via verified SSH tunnel 127.0.0.1:11435",
+    "http_status": 200,
+    "done": true,
+    "done_reason": "stop",
+    "prompt_eval_count": 164,
+    "eval_count": 7,
+    "total_seconds": 346.820763,
+    "response": "OURSELF_RETURN_PATH_CONFIRMED",
+    "response_exact_match": true,
+    "response_stream_sha256": "46c570a8472a3165624c4b1bb94d590bd74340ef89349c45d3583e1a5bbbaf48",
+    "response_stream_bytes": 1266
+  },
+  "hollaback": {
+    "message_body": "OURSELF_RETURN_PATH_CONFIRMED",
+    "delivery_status": "NOT_SENT",
+    "reason": "External Telegram send remains gated on explicit founder authorization for this exact message and originating conversation."
+  },
+  "repository_mutation": "NO_TRACKED_REPOSITORY_FILES_CHANGED",
+  "open_code_binding": "UNVERIFIED_SEPARATE_GATE"
+}

@@ -1,0 +1,85 @@
+{
+  "receipt_id": "ALCHEMY-CLOSEOUT-REVERSELF-20261012-001",
+  "ts_utc": "2026-10-13T02:50:00Z",
+  "operator": "sohocode4",
+  "authority": "Founder directive 'ENGINEER IN REVERSELF' (items: 1 rebind client configs + verify, 2 canonical retry tolerance or keep-warm, 3 ledger append + push, 4 standing prohibitions: no model deletions, no Telegram sends, no client-config mutations beyond scoped)",
+  "execution_order": "keep-warm/tunnel (2) -> Hermes rebind+witness (1) -> ledger append+push (3), so the push carries every receipt of the batch",
+  "transitions": [
+    {
+      "id": "T1-TUNNEL-PERSISTENCE",
+      "status": "VERIFIED",
+      "action": "Replaced ad-hoc ssh tunnel (PID 10125, uptime 1d09h) with launchd agent com.ourself.selfpi.tunnel (RunAtLoad + KeepAlive, ThrottleInterval 10).",
+      "command": "ssh -N -L 127.0.0.1:11435:127.0.0.1:11434 -o ClearAllForwardings=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -o BatchMode=yes ourself-selfpi",
+      "plist": "~/Library/LaunchAgents/com.ourself.selfpi.tunnel.plist",
+      "plist_sha256": "c62f64d4e733be4f...",
+      "evidence": "launchctl state=running pid=40645 never-exited; /api/tags served via 11435; gateway /v1/models upstream probe SELFPI reachable observed_status=200; survived two SELFPI ollama restarts with auto-reconnect",
+      "class": "OBSERVED+VERIFIED"
+    },
+    {
+      "id": "T2-KEEP-WARM",
+      "status": "VERIFIED",
+      "action": "Server-side keep-alive: SELFPI systemd drop-in ourself-genesis.conf gains Environment OLLAMA_KEEP_ALIVE=-1 (backup ourself-genesis.conf.pre-keepwarm-20261012, sha 1ff4c9c6...). Runtime renders -1 as OLLAMA_KEEP_ALIVE=2562047h47m16s.",
+      "verification": [
+        "canonical load receipt 2026-10-13T00:56:21Z: duration_ms=524390, upstream_status=200, usage prompt=271 completion=32, model pinned",
+        "/api/ps expires_at=2319-01-22 (ollama never-sentinel) immediately after completion and on every subsequent check, incl. after 2 ollama restarts + repeated checks past the old 5-minute default expiry window",
+        "service active; env confirmed via systemctl show (KEEP_ALIVE=-1, CONTEXT_LENGTH=65536, MAX_LOADED_MODELS=1, NUM_PARALLEL=1)"
+      ],
+      "caveat": "pins ~12.16GB of 15.8GB RAM until ollama restarts; Founder maintenance choice",
+      "class": "OBSERVED+VERIFIED"
+    },
+    {
+      "id": "T3-HERMES-REBIND",
+      "status": "CONFIG-VERIFIED; INFERENCE-WITNESS-PARTIAL",
+      "action": "Rebound ~/.hermes/config.yaml from direct RAWMAC (127.0.0.1:11434, qwen3.5:4b) to the governed gateway. Additive: providers.ourself-gateway (api http://127.0.0.1:49320/v1, api_key=ingress token in-file mode 0600, canonical default, 8 policy models); model.base_url/provider/default rebound; model.context_length=65536 + ollama_num_ctx=65536; agent.reasoning_overrides.ourmodelselfgenesis:latest=medium. Existing providers.ollama-launch (direct RAWMAC fallback) preserved untouched.",
+      "shas": {"final": "f2d85d894d20569f...", "backup_pre_bind": "2a411d0e513bf163..."},
+      "empirically-verified hermes constraints (upgrade stale registry claims)": [
+        "Hermes Agent hard-requires declared context >= 64000: pre-flight error 'context window of 32,768 ... below the minimum 64,000 required by Hermes Agent' (was DECLARED/Founder-supplied in model-registry.json; now VERIFIED)",
+        "For custom endpoints hermes does not send model.api_key as bearer; provider-entry api_key is the working credential location (gateway 401 CALLER_UNBOUND until set)"
+      ],
+      "witness_evidence": "auth+policy+routing VERIFIED: after provider api_key set, hermes requests pass the gateway auth gate and are receipted policy_class=CANONICAL upstream=SELFPI (receipts 32-69 series).",
+      "unverified": "terminal text response through the canonical path - see T4 boundary",
+      "class": "OBSERVED+VERIFIED (config/auth/routing); DECLARED-BOUNDED (end-to-end text)"
+    },
+    {
+      "id": "T4-HERMES-TEXT-WITNESS-BOUNDARY",
+      "status": "BLOCKED-BY-MEASURED-HOST-CAPACITY",
+      "finding": "SELFPI is a CPU-only inference host (journal: inference compute library=cpu, total_vram=0 at every service start today; no GPU used). Clean probe (fresh ollama, no queue, no other clients): llama-server prompt processing n_tokens=252 in t=328.73s = 0.77 tokens/second. At this rate no prompt > ~450 tokens completes within the gateway's verified 600s upstream budget.",
+      "attempts": [
+        "hermes full profile: stream attempt dur=600004ms + non-stream retry dur=600004ms (UPSTREAM_REQUEST_FAILED, runner observed at 295-350% CPU actively processing both times)",
+        "hermes minimal profile (-t clarify): dur=599997ms stream=False, same boundary",
+        "clean 1500-token curl probe x2 through gateway on fresh ollama: 600005ms / 600004ms, zero first byte"
+      ],
+      "reasoning_effort fix VERIFIED by contrast": "pre-fix hermes calls died in ~30ms with Jinja template 500 'Unexpected reasoning effort max. Supported types are xhigh (default), medium, and low'; post-fix (override=medium) calls no longer produce template 500s - they proceed into real prompt processing (600s budget path).",
+      "collateral_findings": [
+        "hermes -z retries indefinitely on upstream failure (witness runtime held one connection and looped stream->non-stream pairs for >60 min, orphaning server-side generations that blocked the NUM_PARALLEL=1 slot); runtime killed, ollama restarted to clear queue (2 restarts this batch, env re-verified)",
+        "gateway aborts do reach ollama ('aborting chat request due to client closing the connection' in journal) but generation teardown is not instantaneous"
+      ],
+      "class": "OBSERVED+VERIFIED"
+    },
+    {
+      "id": "T5-OPENCODE-GATEWAY-BINDING",
+      "status": "ALREADY-VERIFIED (previous batch, cited not repeated)",
+      "evidence": "GATE 4 client witness: GATEWAY_WITNESS_OK + FULL_COLD_WITNESS_OK (555269ms cold), hash chain content sha == receipt response_sha256; config ~/.config/opencode/opencode.json sha bda4bbcc... (context 32768/2048 canonical) - unchanged this batch",
+      "class": "VERIFIED (carried)"
+    }
+  ],
+  "external_effects_this_batch": [
+    "launchd agent installed (com.ourself.selfpi.tunnel)",
+    "SELFPI systemd drop-in edited + ollama restarted x2 (keep-warm activation + queue clearance)",
+    "~/.hermes/config.yaml rebound (backup kept)",
+    "git commit + push of receipts ledger on branch proof/pipeportal-telegram-custody-20261011 (authorized item 3)",
+    "local git commit of gateway source + adapters in OURSELF repo (authorized item 3 'consider committing'; local only, no push)"
+  ],
+  "prohibitions_honored": [
+    "no model deletions",
+    "no Telegram sends (bridge ai.hermes.gateway left running on its pre-edit startup config; NO restart performed - it will pick up the new binding only on its next restart, Founder decision)",
+    "no OpenCode config mutation this batch",
+    "no gateway source mutation this batch (sha unchanged 796aabff...)"
+  ],
+  "receipts_log": "runtime/aetherbridge/logs/inference-proxy.jsonl lines 31-69 (keep-warm load, hermes auth-fix series, boundary attempts, clean probes) - no secrets, transport-note honest",
+  "next_admissible_transitions": [
+    "Founder decision: restart ai.hermes.gateway to adopt gateway binding (will switch Telegram-driven inference from direct RAWMAC/qwen to canonical via gateway - EXPECT the T4 capacity boundary on full hermes prompts; recommend keeping bridge on ollama-launch until canonical host capacity improves)",
+    "capacity options: smaller canonical quant on SELFPI, larger-RAM SELFPI, or GPU-equipped canonical host",
+    "OURSELF repo push of the local source commit if Founder extends push authority beyond the receipts ledger"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "receipt_id": "CODERBULL-QUADRANT-EXECUTION-20261011-001",
+  "campaign": "OURSELF ALCHEMY COMMAND: FOUR AUTONOMOUS CODERBULLS, ONE LINKED OPENCODE SESSION",
+  "executed_at_utc": "2026-10-11T20:43:14Z",
+  "coordinator_model": "opencode/mimo-v2.6-flash-free",
+  "execution_topology": "ONE linked OpenCode session -> ALCHEMY coordinator -> 4 subagent workers (Wave 1: BASELINE+TRACE read-only in parallel; Wave 2: TEST+FIX in parallel with strict non-overlapping file ownership) -> independent coordinator review -> tests+diff -> this receipt",
+  "worker_invocations": [
+    {
+      "role": "CODERBULL-1 / BASELINE",
+      "agent": "general",
+      "session_id": "ses_ed3628364ffe63BTicumg8R6vx",
+      "mode": "READ-ONLY",
+      "result": "Files enumerated; node --check silent on all 4 source files; kernel suite 1480 pass / 0 fail / 2 skipped; adapters have no pre-existing tests"
+    },
+    {
+      "role": "CODERBULL-2 / TRACE",
+      "agent": "general",
+      "session_id": "ses_ed3628363ffeLvCbNCENpgbcWl",
+      "mode": "READ-ONLY",
+      "result": "Caller chains and contracts traced; replay-path defects D1/D3 (canonical-matter-adapter) and B (selfstatement-adapter) confirmed contract-violating with file:line evidence; ambiguous items flagged for no-guess"
+    },
+    {
+      "role": "CODERBULL-3 / TEST",
+      "agent": "general",
+      "session_id": "ses_ed35296bfffe52LYos12ARX2ZM",
+      "mode": "TEST FILES ONLY",
+      "result": "Created adapters-replay.test.mjs (5 tests, temp-dir fixtures only, real custody untouched); pre-fix run: 1 pass (conflict path), 4 fail (expected regression coverage)"
+    },
+    {
+      "role": "CODERBULL-4 / FIX",
+      "agent": "general",
+      "session_id": "ses_ed35296beffe0YodiGWQM66dxA",
+      "mode": "PRODUCTION SOURCE ONLY",
+      "result": "Two smallest contract-justified repairs applied; node --check silent on both; no test files touched; no commits"
+    }
+  ],
+  "honesty_note": "The four named finding labels (EMPTY_REALM_CONSTRAINT, TYPE_MISMATCH, EMPTY_THING_TO_CHANGE, PARENT_UNTYPED) are NOT literal strings in the code; coordinator reported this before spawning and workers targeted real defects instead of fabricating label matches.",
+  "files_changed": [
+    {
+      "path": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/canonical-matter-adapter.mjs",
+      "sha256": "fb348139f071b55ba689316ca84995bba1bcd0e577e92414a2b84bbe2accf650",
+      "owner": "CODERBULL-4",
+      "change": "replay guard now reads existing.subject.matter_ref / existing.subject.payload_hash (was top-level fields that are always undefined -> genuine replay always threw IMMUTABLE_ADMISSION_CONFLICT); missing subject treated as conflict"
+    },
+    {
+      "path": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/selfstatement-adapter.mjs",
+      "sha256": "d252445d392448a6a19f2e77e5d85dc091664ac49c9657cd57d25666b1b5cc83",
+      "owner": "CODERBULL-4",
+      "change": "COMPLETED replay branch now throws SELFSTATEMENT_EVALUATION_REF_CONFLICT when stored evaluation_ref != requested evaluationId (mirrors existing readback contract line ~125)"
+    },
+    {
+      "path": "/Users/millysituated/OURSELF/ourself-core/runtime/aetherbridge/test/adapters-replay.test.mjs",
+      "sha256": "252208579ad294cb5813d16e3d6423360e40278c1516528b84fff3d774669f21",
+      "owner": "CODERBULL-3",
+      "change": "NEW regression file: defect-A replay + conflict tests, defect-B cross-evaluation replay rejection + same-evaluation control + PENDING-path control"
+    }
+  ],
+  "verification": {
+    "post_worker_test_run": "node --test .../aetherbridge/test/adapters-replay.test.mjs -> 5 pass, 0 fail (coordinator-run, authoritative)",
+    "node_check": "both edited files exit 0 (coordinator-run)",
+    "diff_review": "coordinator read changed regions first-hand; matches worker reports exactly; only the 2 owned source files + 1 new test file modified since 16:00 local (find -newermt)",
+    "git_preservation": {
+      "projects_ourself_core": "HEAD d8dc0f0 unchanged; 0 staged/modified; 42 untracked (same as pre-campaign)",
+      "ourself_repo": "adapters remain untracked; runtime/endpoint.json worktree modification is PRE-EXISTING (mtime 2026-10-10T03:02, before campaign) and untouched"
+    },
+    "no_external_effects": "no commits, pushes, staging, deploys, Telegram sends, or remote calls by any worker"
+  },
+  "contract_basis": "Fix 1 justified by the same function's receipt schema (subject.matter_ref/payload_hash) and its readback verification (readback.subject.*). Fix 2 justified by the same file's readback enforcing evaluation_ref == evaluationId.",
+  "deferred_ambiguous_no_guess": [
+    "evaluation.result field-name variance (result.summary/distinctions vs result.response) -> statement/distinction stay null; Founder decision required",
+    "NaN/invalid env config silently disables realm gate (server.js, PARENT_UNTYPED family) -> fix shape ambiguous (fail-fast vs fail-closed)",
+    "hardcoded readback.verified:false in selfstatement completion; stale residue strings; readStore swallowing JSON errors; path traversal on artifact.ref; RUORA boundary in terminal.js -> all left per no-guess rule",
+    "real custody store never exercised with fixed code (all test runs used temp fixtures); a live replay against real stores requires separate authorization"
+  ],
+  "limits": [
+    "kernel suite not re-run post-campaign because zero kernel files changed (mtime-verified)",
+    "adapters are untracked in the OURSELF repo: no durable VCS custody for these changes yet; committing them requires separate authorization"
+  ]
+}

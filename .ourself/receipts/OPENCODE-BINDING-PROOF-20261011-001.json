@@ -1,0 +1,68 @@
+{
+  "receipt_id": "OPENCODE-BINDING-PROOF-20261011-001",
+  "record_type": "OURSELF_OPENCODE_MODEL_BINDING_PROOF_RECEIPT",
+  "created_at": "2026-10-11T18:45:00Z",
+  "reality": "OURSELF_MODEL_RESPONSE",
+  "campaign": "ALCHEMY two-reality execution, Reality 1",
+  "objective": "Reconcile completed native inference with the OpenCode execution path; establish the actual model binding; produce a complete, independently verifiable response receipt.",
+  "authorization": {
+    "founder_command": "REALITY 1: OURMODELSELFGENESIS | COMPLETE RESPONSE ... Required action: PROVE AND CLOSE",
+    "scope": "Prove and close the OpenCode model binding and reconcile the live SELFPI model to the canonical context window. No Telegram send in this reality.",
+    "context_directive": "Founder directed a full launch/everyday-use context window, not a minimal one."
+  },
+  "defect_found_and_reconciled": {
+    "defect": "Live SELFPI model ran PARAMETER num_ctx 2048 / num_predict 8, diverging from canonical Modelfile (num_ctx 32768 / num_predict 2048). A qwen3.5 thinking model burns tokens on reasoning before content; with num_predict 8 the model starved and emitted only reasoning, so every OpenCode run returned empty content. The /v1 OpenAI-compatible path ignores per-request options override, so no client-side fix was possible; the live model itself had to be corrected.",
+    "evidence_of_defect": "/api/show modelfile reported 'PARAMETER num_ctx 2048' and 'PARAMETER num_predict 8'; /v1 probe returned content:'' reasoning:'We need answer exactly: OURSELF_RETURN' finish_reason:'length' completion_tokens:8.",
+    "reconciliation": "Canonical Modelfile (~/OURSELF/runtime/ollama/Modelfile.OURMODELSELFGENESIS) scp'd to SELFPI /tmp, applied via 'ollama create ourmodelselfgenesis:latest -f'. Reused existing GGUF parent layers (no re-download).",
+    "post_state": "Live model now PARAMETER num_ctx 32768 / num_predict 2048, matching canonical.",
+    "digest_change": { "before": "5802535ec9520123920cb631bf47acf061903b63afd8e7f4d8b77cf901b79ae1", "after": "82b6f13910333cc83541aeab683c252e5a005f61d037994db65d01ba803e29fb", "reason": "parameter manifest rewritten during authorized reconciliation; GGUF weight layers unchanged (parent hf.co/ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF:IQ2_S, 26.9B, IQ3_XXS)" },
+    "ssh_target": "ourself-selfpi (192.168.12.112), ollama at 127.0.0.1:11434"
+  },
+  "binding_path": {
+    "opencode_config": "~/.config/opencode/opencode.json",
+    "config_sha256": "d86c3b0109ac7cdd01aaf41b8069340ec93e89d393711be67dbf1722ebe3b412",
+    "provider": "ourmodelselfgenesis (@ai-sdk/openai-compatible)",
+    "baseURL": "http://127.0.0.1:11435/v1",
+    "model_id": "ourmodelselfgenesis/ourmodelselfgenesis:latest",
+    "tunnel": { "type": "SSH RAWMAC tunnel 127.0.0.1:11435 -> SELFPI 127.0.0.1:11434", "pid": 10125, "listener": "127.0.0.1:11435" },
+    "proof_agent": "genesisproof (minimal tool-less agent, all tools denied, defined in scratch project opencode.json; needed because default build agent tool schemas exceeded the model context and triggered compaction.failed)"
+  },
+  "native_path_evidence": {
+    "endpoint": "http://127.0.0.1:11435/api/chat",
+    "model": "ourmodelselfgenesis:latest",
+    "done": true,
+    "done_reason": "stop",
+    "eval_count": 7,
+    "response": "OURSELF_RETURN_PATH_CONFIRMED",
+    "response_sha256": "0c15c8ade7f499705317feed3cbaad6f2044ea6b9d6a6147cc19b88396dce11b",
+    "body_sha256": "7a8c044e1a100bc2f5c41caef7b97632d2a8691b58fb6c4b38fb88a89439996d",
+    "artifact": ".ourself/genesis-native-probe.json"
+  },
+  "opencode_path_evidence": {
+    "invocation": "opencode run --standalone --agent genesisproof --format json 'Reply with exactly: OURSELF_RETURN_PATH_CONFIRMED'",
+    "session_id": "ses_ed3b86395ffeRPLEEipFy4K9OP",
+    "message_id": "msg_12c479cfb001eb0XsPFJIy9Liu",
+    "assistant_text": "OURSELF_RETURN_PATH_CONFIRMED",
+    "text_sha256": "0c15c8ade7f499705317feed3cbaad6f2044ea6b9d6a6147cc19b88396dce11b",
+    "exact_match": true,
+    "proof_file_sha256": "6121db38c260bd86b0a6e4a156b07aaeb4285d2791f6de36e91a146949056745",
+    "artifact": ".ourself/opencode-binding-proof.json"
+  },
+  "reconciliation": {
+    "native_and_opencode_text_sha256_identical": true,
+    "value": "0c15c8ade7f499705317feed3cbaad6f2044ea6b9d6a6147cc19b88396dce11b",
+    "meaning": "The same exact response was produced both by direct native inference and through OpenCode's full execution stack (config -> provider -> SDK -> /v1 -> SSH tunnel -> SELFPI Ollama), proving the OpenCode model binding is live and routed to OURMODELSELFGENESIS, not a substitute."
+  },
+  "corrections_recorded": [
+    "Earlier empty OpenCode runs were NOT a binding failure; they were the num_predict 8 starvation plus default-agent tool-schema overflow (compaction.failed). Both are now resolved.",
+    "Local Mac 11434 does NOT host ourmodelselfgenesis (only qwen3.5/tnc-r2/smollm2); any ourmodelselfgenesis response must traverse the tunnel, so tunnel routing is proven by model absence locally."
+  ],
+  "standing": "OPENCODE_BINDING_VERIFIED_NATIVE_AND_EXECUTION_PATH_RECONCILED",
+  "limitations": [
+    "Cold-load of the 32K context window takes ~295s prompt_eval on first touch (~442s total); warm requests ~70s. This is a runtime latency characteristic, not a binding defect.",
+    "The proof used a minimal tool-less agent because the default build agent's tool schemas exceed the model's context; everyday interactive use through the TUI with full tools is not yet exercised and may still trip compaction against the 32768 window.",
+    "Remote GitHub custody and production deployment remain NOT_ESTABLISHED; this receipt proves the model binding only."
+  ],
+  "external_effect": false,
+  "next_admissible_transition": "Append a proof-ledger entry referencing this receipt and the HOLLABACK delivery receipt if Founder directs durable remote custody; no further model mutation or Telegram send without new explicit authorization."
+}
