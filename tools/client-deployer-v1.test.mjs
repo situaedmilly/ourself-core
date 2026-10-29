@@ -29,7 +29,7 @@ test('preflight checks configured source file', () => {
     writeFileSync(file, JSON.stringify({ schema: 'OURSELF-CLIENT-WEBSITE-MANIFEST-v1', client: 'test', domain: 'example.com', origin: 'http://127.0.0.1:49330', sourcePath: 'public/index.html' }));
     const r = spawnSync(process.execPath, ['tools/client-deployer-v1.mjs', 'preflight', '--manifest', file], { encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);
-    assert.match(r.stdout, /"source_file_present": true/);
+    assert.match(r.stdout, /"name": "source_file_present"/);\n    assert.match(r.stdout, /"ok": true/);
     assert.match(r.stdout, /"status": "PASS"/);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
