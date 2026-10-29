@@ -16,6 +16,9 @@ on:
       - 'tools/client-deployer-v1.test.mjs'
       - 'schemas/ourself-client-website-manifest-v1.schema.json'
       - '.github/workflows/client-deployer-v1.yml'
+      - 'deployment/**'
+      - 'monitoring/**'
+      - 'docs/PERSISTENCE_AND_RECOVERY.md'
   workflow_dispatch:
 permissions:
   contents: read
