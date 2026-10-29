@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "OURSELF-CLIENT-WEBSITE-MANIFEST-v1",
+  "title": "OURSELF Client Website Manifest v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "client", "domain", "origin"],
+  "properties": {
+    "schema": { "const": "OURSELF-CLIENT-WEBSITE-MANIFEST-v1" },
+    "client": { "type": "string", "minLength": 1 },
+    "domain": { "type": "string", "pattern": "^[A-Za-z0-9.-]+$" },
+    "origin": { "type": "string", "format": "uri" },
+    "sourcePath": { "type": "string" },
+    "healthPath": { "type": "string", "default": "/health" },
+    "rootPath": { "type": "string", "default": "/" },
+    "expectedHealthText": { "type": "string" },
+    "www": { "type": "boolean", "default": true },
+    "publicHosts": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z0-9.-]+$" } }
+  }
+}
