@@ -4,6 +4,9 @@ on:
     paths:
       - 'tools/client-deployer-v1.mjs'
       - 'tools/client-deployer-v1.test.mjs'
+      - 'deployment/**'
+      - 'monitoring/**'
+      - 'docs/PERSISTENCE_AND_RECOVERY.md'
       - 'schemas/ourself-client-website-manifest-v1.schema.json'
       - '.github/workflows/client-deployer-v1.yml'
   push:
@@ -28,5 +31,7 @@ jobs:
         run: node --check tools/client-deployer-v1.mjs
       - name: Unit tests
         run: node --test tools/client-deployer-v1.test.mjs
+      - name: Shell syntax validation
+        run: bash -n deployment/install-persistent-services.sh && sh -n monitoring/health-watchdog.sh
       - name: Schema JSON validation
         run: node -e "JSON.parse(require('node:fs').readFileSync('schemas/ourself-client-website-manifest-v1.schema.json','utf8')); console.log('schema JSON PASS')"
