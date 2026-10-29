@@ -1,0 +1,32 @@
+name: OURSELF Client Deployer v1
+on:
+  pull_request:
+    paths:
+      - 'tools/client-deployer-v1.mjs'
+      - 'tools/client-deployer-v1.test.mjs'
+      - 'schemas/ourself-client-website-manifest-v1.schema.json'
+      - '.github/workflows/client-deployer-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/client-deployer-v1.mjs'
+      - 'tools/client-deployer-v1.test.mjs'
+      - 'schemas/ourself-client-website-manifest-v1.schema.json'
+      - '.github/workflows/client-deployer-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check tools/client-deployer-v1.mjs
+      - name: Unit tests
+        run: node --test tools/client-deployer-v1.test.mjs
+      - name: Schema JSON validation
+        run: node -e "JSON.parse(require('node:fs').readFileSync('schemas/ourself-client-website-manifest-v1.schema.json','utf8')); console.log('schema JSON PASS')"
