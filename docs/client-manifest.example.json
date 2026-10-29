@@ -1,0 +1,11 @@
+{
+  "schema": "OURSELF-CLIENT-WEBSITE-MANIFEST-v1",
+  "client": "Example Client",
+  "domain": "example.com",
+  "origin": "http://127.0.0.1:49330",
+  "sourcePath": "public/index.html",
+  "healthPath": "/health",
+  "rootPath": "/",
+  "expectedHealthText": "SERVICE_READY",
+  "www": true
+}
