@@ -200,3 +200,26 @@ Classification: **related jurisdiction/admission treaty candidate, not OSOS root
 A broader keyword search also found append-only ledgers and proof stores in the Mac bridge and proof-ledger workspaces. Append-only application logic and hash chaining improve tamper evidence but do not alone prove independent custody against an administrator or compromised host.
 
 This additional search does not close the owner-enrollment or witness-independence blockers. It strengthens the conclusion that existing design work should be reconciled before creating duplicate mechanisms.
+
+## 11. Repository custody and worktree observations
+
+A read-only Git metadata/status inspection was performed after the initial directory/source review.
+
+### Mac
+- `/Users/millysituated/OURSELF/ourself-core`: branch `alchemy/mergecer-self-20261007174434`, HEAD `dd87450`, 13 changed/untracked status entries.
+- `/Users/millysituated/OURSELF/OURPROCESSORSELF`: branch `v0.8-sovereign-runtime`, HEAD `9bab50e`, 25 changed/untracked entries.
+- `/Users/millysituated/OURSELF/ourself-agent-bridge-kernel`: branch `main`, HEAD `c6274a3`, 30 changed/untracked entries.
+- `/Users/millysituated/Projects/ourself-core`: branch `proof/pipeportal-telegram-custody-20261011`, HEAD `ca5cecd`, 11 changed/untracked entries.
+- The two Mac `ourself-core` directories both report origin `situaedmilly/ourself-core`, but they are distinct worktrees on different branches and with different local changes.
+
+### Raspberry Pi
+- `/home/selfadmin/ourself-control-plane` is a linked Git worktree whose Git directory resolves inside `/home/selfadmin/ourself-agent-bridge-kernel/.git/worktrees/ourself-control-plane`; its origin resolves to `situaedmilly/ourself-agent-bridge-kernel`.
+- Git status/revision operations on the Pi bridge repository and linked control-plane worktree report a malformed AppleDouble-style pack index path: `._pack-bd6691dcec21ebb23417580699bebc50ff618a87.idx` is reported as too small. The control-plane worktree's symbolic branch could not be resolved by the inspection command; HEAD resolves to short hash `d5fea86` despite object-index errors.
+- `/home/selfadmin/ourself-agent-bridge-kernel`: branch `main`, HEAD `7197f59`, 169 changed/untracked entries reported; Git emitted the same malformed pack-index error.
+- `/home/selfadmin/projects/hbc-html`: branch `main`, HEAD `af52f5f`, 9 changed/untracked entries.
+
+### Custody disposition
+
+These worktrees contain substantial local changes and must be preserved. No checkout, reset, clean, fetch, pull, rebase, repair, or index cleanup was performed. The Pi pack-index error must be investigated separately without deleting or rewriting the suspect file until its provenance and safe repair path are established.
+
+This materially blocks canonical-root selection and safe synchronization. A GitHub repository name or matching origin URL does not establish that a local worktree is canonical, clean, current, or safe to overwrite.
