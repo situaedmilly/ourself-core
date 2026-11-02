@@ -77,3 +77,35 @@ Existing repositories, daemons, runtimes, bridges, and protocols are implementat
 ## First acceptance gate
 
 Review the constitutional contract, map existing implementations without duplication, and define conformance tests before authorizing runtime or kernel mutations.
+
+## Parent authority doctrine
+
+**OSOS is the parent architectural and constitutional authority.** It is not a synonym for OURSELF ECOSYSTEM, OURSELFDAEMON, OURPROCESSORSELF, or a Linux-based runtime. Those are governed ecosystems, services, implementation candidates, or execution environments beneath OSOS.
+
+The governing model is:
+
+> One constitutional root. Multiple platform-specific execution environments. Independently evaluated authority. Independently witnessed effects. Recoverable continuity.
+
+A Raspberry Pi running Linux may be an OSOS-governed node. It is not thereby a Native OURSELF OS installation. A hosted deployment remains subordinate to the host kernel and the host's hardware-control boundary.
+
+### Owner authority
+
+Owner authority must be established by an explicit enrollment procedure bound to a protected owner root key and proof-of-possession challenge. Physical possession, username, local account, device registration, session, or successful login alone is insufficient. Enrollment must define key custody, delegated operational keys, rotation, revocation, and recovery. Private key material must never be copied into architecture documentation, registries, or receipts.
+
+### Witness independence
+
+A witness is independent only to the extent that:
+- its signing keys are not controlled by the executor;
+- its process and privilege boundary are separated from the workload being witnessed;
+- the executor cannot rewrite, suppress, or substitute the evidence channel;
+- the observation method and its claim ceiling are explicit;
+- compromise and collusion assumptions are documented.
+
+A separate source file or process name is not sufficient evidence of independence. If these properties are not demonstrated, the witness must be classified as coupled or independence-not-established.
+
+### Root custody
+
+The canonical physical/document root remains pending until Mac and Pi workspaces, repository custody, doctrine versioning, and distribution are reconciled. The current GitHub document set is a versioned architecture proposal, not yet a ratified permanent canonical root.
+
+- [Initial Mac/Pi root reconciliation](ROOT-RECONCILIATION-2026-11-02.md)
+- [Initial subsystem registry](SUBSYSTEM-REGISTRY.yaml)
