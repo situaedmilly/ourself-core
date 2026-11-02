@@ -186,3 +186,17 @@ No kernel rewrite, daemon creation, boot mutation, host configuration change, ke
 ## 9. Evidence limitations
 
 This report records direct observations from the connected Mac and Pi tools at the stated time. It is not a cryptographic attestation, full forensic image, complete repository audit, owner-identity proof, independent witness certification, or Native OURSELF OS certification.
+
+## 10. Additional candidate doctrine located during targeted semantic search
+
+A further candidate was located on the Pi at:
+
+`/home/selfadmin/selfpi-subject-review-01-nonself-handoff/selfpi-subject-review-01-nonself/inputs/control-plane/DESIGN/JURISDICTION-TREATY-DESIGN-04-CANDIDATE.md`
+
+The inspected sections specify fail-closed admission checks, repository/revision/substrate binding, authority non-minting, scope containment, replay identity, trusted time, append-only integrity-chained authority-state records, and witness metadata. The document explicitly leaves ledger custody, trusted time, revocation intake, human-origin truth policy, and substrate-pin custody as Founder-owned open decisions. It states that these open decisions block execution, not design.
+
+Classification: **related jurisdiction/admission treaty candidate, not OSOS root**. It is a valuable source for OSOS AUTHORITYSELF, CAPABILITYSELF, NETWORKSELF, and WITNESSSELF contract reconciliation. Its own candidate status and open Founder decisions must be preserved; the document does not establish that the specified mechanisms are fully implemented or that custody decisions have been made.
+
+A broader keyword search also found append-only ledgers and proof stores in the Mac bridge and proof-ledger workspaces. Append-only application logic and hash chaining improve tamper evidence but do not alone prove independent custody against an administrator or compromised host.
+
+This additional search does not close the owner-enrollment or witness-independence blockers. It strengthens the conclusion that existing design work should be reconciled before creating duplicate mechanisms.
