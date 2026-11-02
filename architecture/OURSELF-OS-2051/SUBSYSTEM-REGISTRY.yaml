@@ -142,3 +142,42 @@ related_unselected_designs:
       - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/persistence/mission-kernel-store.js"
       - "/Users/millysituated/OURSELF/ourself-core/governance/proof-ledger/"
     disposition: "Integrity and append-only behavior are candidate properties; independent custody against host/admin compromise remains unproven."
+
+repository_custody:
+  mac:
+    - path: "/Users/millysituated/OURSELF/ourself-core"
+      branch: "alchemy/mergecer-self-20261007174434"
+      head: "dd87450"
+      changed_or_untracked_entries: 13
+      origin: "situaedmilly/ourself-core"
+    - path: "/Users/millysituated/Projects/ourself-core"
+      branch: "proof/pipeportal-telegram-custody-20261011"
+      head: "ca5cecd"
+      changed_or_untracked_entries: 11
+      origin: "situaedmilly/ourself-core"
+    - path: "/Users/millysituated/OURSELF/OURPROCESSORSELF"
+      branch: "v0.8-sovereign-runtime"
+      head: "9bab50e"
+      changed_or_untracked_entries: 25
+    - path: "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel"
+      branch: "main"
+      head: "c6274a3"
+      changed_or_untracked_entries: 30
+  raspberry_pi:
+    - path: "/home/selfadmin/ourself-control-plane"
+      gitdir: "/home/selfadmin/ourself-agent-bridge-kernel/.git/worktrees/ourself-control-plane"
+      head: "d5fea86"
+      branch: "DETACHED_OR_UNRESOLVED"
+      origin: "situaedmilly/ourself-agent-bridge-kernel"
+      limitation: "Git reports malformed AppleDouble pack index too small."
+    - path: "/home/selfadmin/ourself-agent-bridge-kernel"
+      branch: "main"
+      head: "7197f59"
+      changed_or_untracked_entries: 169
+      limitation: "Git reports malformed AppleDouble pack index too small."
+    - path: "/home/selfadmin/projects/hbc-html"
+      branch: "main"
+      head: "af52f5f"
+      changed_or_untracked_entries: 9
+  preservation_rule: "Do not clean, reset, checkout, fetch, rebase, repair, or overwrite dirty worktrees as part of OSOS root selection."
+  canonical_root_blocker: "Distinct dirty Mac worktrees and Pi linked-worktree/object-index integrity error require reconciliation before canonical custody or synchronization."
