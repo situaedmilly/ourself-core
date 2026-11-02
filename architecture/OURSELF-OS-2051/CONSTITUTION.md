@@ -121,3 +121,40 @@ Conflicting observations remain conflicting until reconciled. Preserve source pr
 ## 10. Constitutional change
 
 This document is proposed doctrine. Changes to these invariants require explicit versioning, review of affected implementations, and conformance-test updates. Implementations pin the constitution version they enforce.
+
+## 11. Owner identity, enrollment, and key custody
+
+Owner authority is a cryptographically and procedurally established principal—not a conclusion inferred from physical possession, a username, device registration, account login, network location, or a model's recognition of a person.
+
+A conforming enrollment procedure must define and preserve:
+1. A stable owner principal identifier distinct from usernames, device IDs, and public-key fingerprints.
+2. Generation or import of an owner root key through a documented trusted ceremony. Prefer offline or hardware-protected custody where supported; disclose platform limitations.
+3. A proof-of-possession challenge signed by the owner root key and verified against the enrolled public key.
+4. A versioned enrollment record binding the principal, public-key fingerprint, enrollment method, verifier, timestamp, policy version, and evidence references.
+5. Separate delegated operational keys with explicit scope, expiry, and revocation. Operational services must not receive the owner root private key.
+6. A documented key rotation, compromise response, revocation, and recovery procedure.
+7. Independent custody or dual-control for recovery material, with the selected recovery threshold and its risks documented.
+
+Private keys, recovery secrets, seed phrases, and raw authorization tokens must never be stored in source repositories, logs, receipts, or ordinary node registries. A public-key fingerprint or credential fingerprint does not prove physical identity by itself; the enrollment process and trust assumptions must be stated.
+
+Until the enrollment and recovery procedures are implemented and verified, OWNERSELF remains NOT_ESTABLISHED.
+
+## 12. Witness independence and evidence custody
+
+Witness independence is a property of a threat model and an implemented trust boundary. It is not established by a module name, separate file, separate process label, hash, signature, or self-authored receipt alone.
+
+A witness independence claim must identify and test:
+- **Key separation:** who controls the witness signing key; whether the executor can read, invoke, replace, or rotate it.
+- **Execution separation:** distinct process identity and privilege boundary; where practical, a separate host, VM, or independently administered service.
+- **Evidence-channel separation:** append-only or externally anchored evidence custody that the executor cannot silently rewrite, suppress, or substitute.
+- **Observation independence:** a fresh observation method appropriate to the claimed postcondition, not merely replay of executor output.
+- **Time and provenance:** source identity, time basis, target identity, collection method, and integrity verification.
+- **Compromise model:** what happens if the executor, host administrator, witness host, signing key, or transport is compromised.
+
+A witness may be cryptographically intact but operationally coupled. Such a result must be reported as COUPLED or INDEPENDENCE_NOT_ESTABLISHED, not independently witnessed. Even an independent witness establishes only the postconditions within its observation scope and proof contract.
+
+## 13. Parent authority and implementation jurisdiction
+
+OSOS is the parent architecture and constitutional authority. OURSELF ECOSYSTEM, OURSELFDAEMON, OURPROCESSORSELF, MODELSELF, OURSELFMCP, host operating systems, and individual services are subordinate governed systems or implementation candidates. Their names, repository locations, or historical declarations do not independently grant them OSOS jurisdiction.
+
+A host operating system remains the actual kernel authority in a hosted deployment. An OSOS-governed Linux node is not a Native OURSELF OS installation. Native status requires a separately verified boot chain, kernel, hardware adapter, and native conformance result.
