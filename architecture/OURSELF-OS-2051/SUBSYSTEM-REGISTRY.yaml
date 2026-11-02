@@ -119,3 +119,26 @@ next_gate:
   id: OSOS-GATE-01B
   action: "Complete targeted repository and key-custody reconciliation; decide canonical root and doctrine distribution."
   mutation_scope: "Documentation only after canonical custody decision; no host, boot, kernel, daemon, or key mutation."
+
+related_unselected_designs:
+  jurisdiction_treaty:
+    path: "/home/selfadmin/selfpi-subject-review-01-nonself-handoff/selfpi-subject-review-01-nonself/inputs/control-plane/DESIGN/JURISDICTION-TREATY-DESIGN-04-CANDIDATE.md"
+    classification: "RELATED_JURISDICTION_AND_ADMISSION_TREATY_CANDIDATE"
+    relevant_subsystems:
+      - AUTHORITYSELF
+      - CAPABILITYSELF
+      - NETWORKSELF
+      - WITNESSSELF
+    observed_open_founder_decisions:
+      - ledger_custody
+      - trusted_time_source
+      - revocation_intake_and_granularity
+      - human_origin_truth_policy
+      - substrate_pin_custody
+    disposition: "Preserve candidate scope; reconcile contracts before implementation; do not treat design specification as runtime proof."
+  append_only_evidence:
+    candidates:
+      - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/persistence/pending-proposals.js"
+      - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/persistence/mission-kernel-store.js"
+      - "/Users/millysituated/OURSELF/ourself-core/governance/proof-ledger/"
+    disposition: "Integrity and append-only behavior are candidate properties; independent custody against host/admin compromise remains unproven."
