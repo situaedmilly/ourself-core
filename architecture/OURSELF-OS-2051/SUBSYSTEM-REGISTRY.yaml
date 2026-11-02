@@ -1,0 +1,183 @@
+schema: ourself.osos.subsystem-registry/v0.1
+architecture_id: OURSELF-OS-2051
+registry_status: INITIAL_RECONCILIATION_PARTIAL
+canonical_root_status: NOT_SELECTED
+observed_at: "2026-11-02"
+governing_rule: "OSOS is parent architectural authority; ecosystem and runtimes are governed implementations."
+evidence_policy:
+  declaration_is_not_observation: true
+  observation_is_not_verification: true
+  verification_is_not_admission: true
+  execution_is_not_effect_witness: true
+  witness_independence_requires_boundary_and_key_evidence: true
+  no_private_key_material_collected: true
+subsystems:
+  OWNERSELF:
+    status: NOT_ESTABLISHED
+    candidates:
+      - "/home/selfadmin/ourself-control-plane/persistence/human-turn-decisions.js"
+    gap: "No complete owner enrollment, protected root-key custody, proof-of-possession, recovery, and revocation procedure established."
+  CONSTITUTIONSELF:
+    status: RELATED_DOCTRINE_LOCATED
+    candidates:
+      - "/home/selfadmin/projects/hbc-html/doctrine/representation-to-reality-constitution-001.md"
+      - "/Users/millysituated/OURSELF/identity/ourselfd.authority.v001.json"
+      - "/Users/millysituated/OURSELF/identity/authority.manifest"
+      - "/Users/millysituated/Projects/ourself-core/AGENTS.md"
+    gap: "No universal OSOS root constitution established; HBC doctrine has distinct scope and CAPTURED_NOT_SEALED status."
+  NODESELF:
+    status: CANDIDATE
+    candidates:
+      - "/Users/millysituated/OURSELF/identity/origin.json"
+      - "/home/selfadmin/ourselfpi-instance.json"
+    gap: "Canonical owner-bound cross-platform node identity and admission contract not reconciled."
+  BOOTSELF:
+    status: CANDIDATE
+    candidates:
+      - "/home/selfadmin/ourself-kernelself-lenrek/"
+      - "/home/selfadmin/selfpi-boot-audit-20261102/"
+    gap: "Native OURSELF OS boot chain not established."
+  KERNELSELF:
+    status: HOST_KERNEL_OBSERVED_NATIVE_OSOS_NOT_ESTABLISHED
+    candidates:
+      - "macOS host kernel on OURSELFMAC"
+      - "Linux host kernel on OURSELFPIMAC"
+      - "/home/selfadmin/ourself-kernelself-lenrek/"
+    gap: "Host kernel control is distinct from an OSOS-native kernel."
+  AUTHORITYSELF:
+    status: IMPLEMENTATION_CANDIDATE
+    candidates:
+      - "/Users/millysituated/OURSELF/identity/ourselfd.authority.v001.json"
+      - "/home/selfadmin/ourself-control-plane/persistence/human-turn-decisions.js"
+    gap: "Runtime-wide independent enforcement and verified owner principal are not established."
+  CAPABILITYSELF:
+    status: IMPLEMENTATION_CANDIDATE
+    candidates:
+      - "/home/selfadmin/ourself-control-plane/contracts/ourselfd-capabilities.v0.1.json"
+      - "/home/selfadmin/ourself-control-plane/router/"
+    gap: "Universal OSOS capability schema and cross-platform conformance not established."
+  OURSELFMCP:
+    status: CANDIDATE
+    candidates:
+      - "/Users/millysituated/OURSELF/ourself_mcp.mjs"
+      - "/home/selfadmin/ourself-control-plane/"
+    gap: "Full typed capability and trust-boundary mapping pending."
+  MODELSELF:
+    status: COGNITIVE_SUBSTRATE_ONLY
+    candidates:
+      - "Ollama and provider/model adapters observed in existing workspaces"
+    gap: "Models are explicitly non-authoritative; provider-neutral OSOS contract pending."
+  MEMORYSELF:
+    status: CANDIDATE
+    candidates:
+      - "/Users/millysituated/OURSELF/runtime/"
+      - "/home/selfadmin/ourself-control-plane/persistence/"
+    gap: "Retention, provenance, authority separation, and cross-node recovery mapping pending."
+  NETWORKSELF:
+    status: CANDIDATE
+    candidates:
+      - "/Users/millysituated/OURSELF/ourself-cloud-server-network/"
+      - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/"
+      - "/home/selfadmin/ourself-agent-bridge-kernel/"
+    gap: "Node admission, transport identity, revocation, and trust topology not reconciled."
+  ALCHEMYSELF:
+    status: CANDIDATE
+    candidates:
+      - "/Users/millysituated/OURSELF/third_eye_chamber/"
+      - "/Users/millysituated/OURSELF/runtime/safeselfmutations/"
+      - "/home/selfadmin/ourself-control-plane/router/fault-isolation-core.js"
+    gap: "OSOS-wide threat model, isolation guarantees, and mutation policy coverage pending."
+  WITNESSSELF:
+    status: LOGIC_LOCATED_INDEPENDENCE_NOT_ESTABLISHED
+    candidates:
+      - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/persistence/execution-witness.js"
+      - "/home/selfadmin/ourself-agent-bridge-kernel/persistence/execution-witness.js"
+    gap: "Separate signing keys, host/privilege boundary, evidence channel, and executor-compromise resistance not proven."
+  RECOVERYSELF:
+    status: CANDIDATE
+    candidates:
+      - "/home/selfadmin/ourself-control-plane/runtime/recovery.js"
+      - "/home/selfadmin/recovery-rehearsals/"
+    gap: "Recovery authority and backup custody independent from workload not proven."
+  UPDATESELF:
+    status: NOT_RECONCILED
+    candidates: []
+    gap: "Signed update, compatibility, rollout, and rollback chain not audited."
+  INTERFACESELF:
+    status: NOT_RECONCILED
+    candidates: []
+    gap: "Human interface and accessibility components not mapped."
+canonical_root:
+  proposed_layout: "OURSELF-OS/"
+  repository_candidate: "situaedmilly/ourself-core"
+  decision: PENDING
+  reasons:
+    - "Multiple Mac workspaces/worktrees require custody reconciliation."
+    - "Pi has separate control-plane, bridge, kernel-observation, and HBC doctrine roots."
+    - "Doctrine distribution and version pinning policy not yet ratified."
+next_gate:
+  id: OSOS-GATE-01B
+  action: "Complete targeted repository and key-custody reconciliation; decide canonical root and doctrine distribution."
+  mutation_scope: "Documentation only after canonical custody decision; no host, boot, kernel, daemon, or key mutation."
+
+related_unselected_designs:
+  jurisdiction_treaty:
+    path: "/home/selfadmin/selfpi-subject-review-01-nonself-handoff/selfpi-subject-review-01-nonself/inputs/control-plane/DESIGN/JURISDICTION-TREATY-DESIGN-04-CANDIDATE.md"
+    classification: "RELATED_JURISDICTION_AND_ADMISSION_TREATY_CANDIDATE"
+    relevant_subsystems:
+      - AUTHORITYSELF
+      - CAPABILITYSELF
+      - NETWORKSELF
+      - WITNESSSELF
+    observed_open_founder_decisions:
+      - ledger_custody
+      - trusted_time_source
+      - revocation_intake_and_granularity
+      - human_origin_truth_policy
+      - substrate_pin_custody
+    disposition: "Preserve candidate scope; reconcile contracts before implementation; do not treat design specification as runtime proof."
+  append_only_evidence:
+    candidates:
+      - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/persistence/pending-proposals.js"
+      - "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel/persistence/mission-kernel-store.js"
+      - "/Users/millysituated/OURSELF/ourself-core/governance/proof-ledger/"
+    disposition: "Integrity and append-only behavior are candidate properties; independent custody against host/admin compromise remains unproven."
+
+repository_custody:
+  mac:
+    - path: "/Users/millysituated/OURSELF/ourself-core"
+      branch: "alchemy/mergecer-self-20261007174434"
+      head: "dd87450"
+      changed_or_untracked_entries: 13
+      origin: "situaedmilly/ourself-core"
+    - path: "/Users/millysituated/Projects/ourself-core"
+      branch: "proof/pipeportal-telegram-custody-20261011"
+      head: "ca5cecd"
+      changed_or_untracked_entries: 11
+      origin: "situaedmilly/ourself-core"
+    - path: "/Users/millysituated/OURSELF/OURPROCESSORSELF"
+      branch: "v0.8-sovereign-runtime"
+      head: "9bab50e"
+      changed_or_untracked_entries: 25
+    - path: "/Users/millysituated/OURSELF/ourself-agent-bridge-kernel"
+      branch: "main"
+      head: "c6274a3"
+      changed_or_untracked_entries: 30
+  raspberry_pi:
+    - path: "/home/selfadmin/ourself-control-plane"
+      gitdir: "/home/selfadmin/ourself-agent-bridge-kernel/.git/worktrees/ourself-control-plane"
+      head: "d5fea86"
+      branch: "DETACHED_OR_UNRESOLVED"
+      origin: "situaedmilly/ourself-agent-bridge-kernel"
+      limitation: "Git reports malformed AppleDouble pack index too small."
+    - path: "/home/selfadmin/ourself-agent-bridge-kernel"
+      branch: "main"
+      head: "7197f59"
+      changed_or_untracked_entries: 169
+      limitation: "Git reports malformed AppleDouble pack index too small."
+    - path: "/home/selfadmin/projects/hbc-html"
+      branch: "main"
+      head: "af52f5f"
+      changed_or_untracked_entries: 9
+  preservation_rule: "Do not clean, reset, checkout, fetch, rebase, repair, or overwrite dirty worktrees as part of OSOS root selection."
+  canonical_root_blocker: "Distinct dirty Mac worktrees and Pi linked-worktree/object-index integrity error require reconciliation before canonical custody or synchronization."
