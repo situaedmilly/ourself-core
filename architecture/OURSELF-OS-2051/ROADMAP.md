@@ -127,3 +127,29 @@ Investigate robotics, ambient computing, heterogeneous accelerators, neuromorphi
 | 2051 cross-substrate compatibility | LONG-HORIZON OBJECTIVE |
 
 This roadmap authorizes no host mutation, privilege change, deployment, reboot, kernel replacement, or production admission.
+
+## Gate 0B — Root reconciliation and custody decision
+
+**Observed initial state (2026-11-02):**
+- Mac has distinct `/Users/millysituated/OURSELF` and `/Users/millysituated/Projects/ourself-core` workspaces.
+- Pi has `/home/selfadmin/ourself-control-plane`, bridge, kernel-observation, and HBC doctrine roots; `/home/selfadmin/ourself-core` was not found at the inspected path.
+- Related identity, authority, capability, witness, recovery, and representation-to-reality doctrine candidates were located.
+- No complete owner enrollment/root-key custody procedure or independent witness boundary was established by the inspected artifacts.
+
+**Deliverables**
+- Targeted semantic audit of relevant repositories and worktrees on both nodes.
+- Repository custody and distribution decision for one canonical OSOS root.
+- Owner enrollment, root-key custody, delegation, rotation, revocation, and recovery contract.
+- Witness independence threat model and separation test plan.
+- Source-to-subsystem traceability registry with explicit evidence and status.
+
+**Exit criteria**
+- Canonical root repository and physical distribution path are selected and version-pinned.
+- Related doctrine is reconciled without overwriting or silently changing its jurisdiction.
+- Owner enrollment and recovery procedures are reviewed and testable.
+- Witness key, execution, and evidence-channel boundaries are identified.
+- Every subsystem has an accountable source, status, gap, and evidence reference.
+
+**Mutation boundary:** Until Gate 0B exits, do not create competing constitutional roots, move or rename existing repositories, copy private keys, change boot configuration, or claim OSOS root establishment.
+
+See [Initial Root Reconciliation](ROOT-RECONCILIATION-2026-11-02.md) and [Subsystem Registry](SUBSYSTEM-REGISTRY.yaml).
