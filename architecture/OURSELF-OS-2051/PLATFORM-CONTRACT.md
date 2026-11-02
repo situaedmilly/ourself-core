@@ -86,3 +86,24 @@ All capability states default to UNSUPPORTED until observed and tested. Empty ev
 A platform support statement includes exact hardware model, firmware, OS/kernel version, adapter version, deployment tier, test-suite version, result, evidence references, and known limitations.
 
 The words universal, secure, native, and certified are not implementation claims without corresponding evidence.
+
+## 8. Owner and witness trust-boundary requirements
+
+Platform adapters must declare the actual custody and isolation properties available on the exact hardware and OS version.
+
+### Owner enrollment
+- Identify supported key-generation and protected-storage mechanisms.
+- Declare whether keys are hardware-backed, software-protected, offline, or externally held.
+- Provide proof-of-possession verification and enrollment-record integrity.
+- Keep owner root private keys outside agent/model/runtime process environments.
+- Define rotation, revocation, backup, and recovery tests.
+- Do not equate device login, secure boot, TPM/Secure Enclave presence, or possession with owner identity.
+
+### Independent witness
+- Identify the witness process principal, host/VM boundary, signing-key custodian, and evidence destination.
+- Demonstrate that the executor cannot access witness private keys or rewrite authoritative witness records.
+- Use a fresh observation path for the postcondition, with source and method recorded.
+- Test executor compromise, host compromise, witness unavailability, evidence-channel tampering, and key revocation.
+- Declare residual common-mode risks when executor and witness share a host, administrator, storage, or root credential.
+
+A platform that lacks a demonstrable separation boundary may still run OSOS as a hosted runtime, but its witness independence status must remain NOT_ESTABLISHED or COUPLED. No platform may claim Native OURSELF OS status based solely on a Linux service, directory, daemon, or hosted runtime.
