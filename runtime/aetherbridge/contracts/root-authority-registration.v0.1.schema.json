@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ourself:schema:root-authority-registration:v0.1",
+  "title": "OURSELF Root Authority Registration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registration_id", "status", "authority", "root_key", "custody", "scope", "portal_signer", "endpoint_bindings", "registry_bindings", "lifecycle", "evidence", "independent_review"],
+  "properties": {
+    "schema_version": {"const": "ourself.root-authority-registration.v0.1"},
+    "registration_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["RECEIVED", "EVIDENCE_REVIEW", "IDENTITY_VERIFIED", "BOUND", "REFUSED_MISSING_EVIDENCE", "REFUSED_CONTRADICTORY_EVIDENCE", "REFUSED_UNVERIFIABLE_EVIDENCE", "QUARANTINED"]},
+    "authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority_id", "identity_ref", "trust_domain_id"],
+      "properties": {
+        "authority_id": {"type": "string", "minLength": 1},
+        "identity_ref": {"type": "string", "minLength": 1},
+        "trust_domain_id": {"type": "string", "minLength": 1},
+        "legal_entity_evidence_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "root_key": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "key_id", "public_key_pem", "spki_sha256", "possession_challenge_ref"],
+      "properties": {
+        "algorithm": {"const": "Ed25519"},
+        "key_id": {"type": "string", "minLength": 1},
+        "public_key_pem": {"type": "string", "minLength": 1},
+        "spki_sha256": {"$ref": "#/$defs/sha256"},
+        "possession_challenge_ref": {"type": "string", "minLength": 1},
+        "private_key_material": {"not": {}}
+      }
+    },
+    "custody": {
+      "type": "object", "additionalProperties": false,
+      "required": ["substrate_identity_ref", "custodian_identity_ref", "administrative_owner_ref", "separation_evidence_ref"],
+      "properties": {
+        "substrate_identity_ref": {"type": "string", "minLength": 1},
+        "custodian_identity_ref": {"type": "string", "minLength": 1},
+        "administrative_owner_ref": {"type": "string", "minLength": 1},
+        "separation_evidence_ref": {"type": "string", "minLength": 1},
+        "hardware_attestation_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["permitted_operations", "authority_grant_ref"],
+      "properties": {
+        "permitted_operations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["INPUTSELFTRUSTSELF_BUNDLE_SIGN", "ENDPOINT_CERTIFICATE_ISSUE"]}},
+        "authority_grant_ref": {"type": "string", "minLength": 1},
+        "delegation_chain_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "portal_signer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["identity_ref", "key_id", "algorithm", "public_key_pem", "allowed_capabilities", "separation_evidence_ref"],
+      "properties": {
+        "identity_ref": {"type": "string", "minLength": 1},
+        "key_id": {"type": "string", "minLength": 1},
+        "algorithm": {"const": "Ed25519"},
+        "public_key_pem": {"type": "string", "minLength": 1},
+        "allowed_capabilities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "separation_evidence_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "endpoint_bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "target"],
+      "properties": {
+        "source": {"$ref": "#/$defs/endpoint"},
+        "target": {"$ref": "#/$defs/endpoint"}
+      }
+    },
+    "registry_bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["hardware", "ecosystem_realities", "identity_bindings", "jurisdictions"],
+      "properties": {
+        "hardware": {"$ref": "#/$defs/sha256"},
+        "ecosystem_realities": {"$ref": "#/$defs/sha256"},
+        "identity_bindings": {"$ref": "#/$defs/sha256"},
+        "jurisdictions": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "lifecycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["revocation_ref", "rotation_policy_ref", "recovery_policy_ref", "compromise_response_ref", "independent_recontact_ref"],
+      "properties": {
+        "revocation_ref": {"type": "string", "minLength": 1},
+        "rotation_policy_ref": {"type": "string", "minLength": 1},
+        "recovery_policy_ref": {"type": "string", "minLength": 1},
+        "compromise_response_ref": {"type": "string", "minLength": 1},
+        "independent_recontact_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "evidence": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["evidence_id", "domain", "immutable_ref", "sha256", "issuer_identity_ref", "observed_at", "retrieval_method"],
+        "properties": {
+          "evidence_id": {"type": "string", "minLength": 1},
+          "domain": {"enum": ["LEGAL_IDENTITY", "CUSTODY", "ADMIN_SEPARATION", "ROOT_KEY_POSSESSION", "SIGNING_SCOPE", "PORTAL_SIGNER", "ENDPOINT_BINDING", "HARDWARE_IDENTITY", "JURISDICTION", "REVOCATION", "ROTATION", "RECOVERY", "AUDIT_INTEGRITY", "INDEPENDENT_RECONTACT"]},
+          "immutable_ref": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "issuer_identity_ref": {"type": "string", "minLength": 1},
+          "observed_at": {"type": "string", "format": "date-time"},
+          "valid_until": {"type": "string", "format": "date-time"},
+          "retrieval_method": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "independent_review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reviewer_identity_ref", "reviewer_trust_domain_id", "reviewed_at", "disposition", "review_receipt_ref"],
+      "properties": {
+        "reviewer_identity_ref": {"type": "string", "minLength": 1},
+        "reviewer_trust_domain_id": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "format": "date-time"},
+        "disposition": {"enum": ["PENDING", "VERIFIED", "REFUSED", "QUARANTINED"]},
+        "review_receipt_ref": {"type": "string", "minLength": 1},
+        "review_receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "endpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["identity_ref", "csr_sha256", "certificate_sha256", "san_identity_ref", "extended_key_usage", "hardware_evidence_ref"],
+      "properties": {
+        "identity_ref": {"type": "string", "minLength": 1},
+        "csr_sha256": {"$ref": "#/$defs/sha256"},
+        "certificate_sha256": {"$ref": "#/$defs/sha256"},
+        "san_identity_ref": {"type": "string", "minLength": 1},
+        "extended_key_usage": {"enum": ["serverAuth", "clientAuth"]},
+        "hardware_evidence_ref": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
