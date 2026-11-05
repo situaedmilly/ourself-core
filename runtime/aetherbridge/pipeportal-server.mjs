@@ -4,6 +4,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { Transform } from 'node:stream';
+import { decodePortalAdmissionHeader, portalTrustStatus, verifyPortalAdmissionEnvelope, PORTAL_ADAPTER_VERSION } from './portal-adapter.v0.2.mjs';
+import { verifyInputSelfTrustSelfBundle } from './inputselftrustself.v0.2.mjs';
+import { createHostAdminRoute } from './host-admin/host-admin-route.v0.1.mjs';
+import { createPipeHostAdminClient } from './host-admin/pipe-host-admin-client.v0.1.mjs';
+import { createConsciousConvoStore, CONSCIOUS_CONVO_FOUNDER_HTML } from './conscious-convo.v0.1.mjs';
 
 const HOST = process.env.AETHERBRIDGE_BIND_HOST || '127.0.0.1';
 const PORT = Number(process.env.AETHERBRIDGE_PORT || 49320);
@@ -116,17 +121,350 @@ const writeStore = (f, v) => { const tmp = f + '.' + process.pid + '.tmp'; fs.wr
 const hash = v => crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const send = (res, status, body) => { const b=JSON.stringify(body); res.writeHead(status, {'content-type':'application/json; charset=utf-8','cache-control':'no-store','content-length':Buffer.byteLength(b)}); res.end(b); };
 const auth = req => { const h=req.headers.authorization||''; if (!h.startsWith('Bearer ')) return false; const supplied=h.slice(7); return supplied.length===token.length && crypto.timingSafeEqual(Buffer.from(supplied),Buffer.from(token)); };
+const FOUNDER_LOCAL_INGRESS_ENABLED = ['127.0.0.1', '::1', 'localhost'].includes(HOST);
+const consciousConvoStore = createConsciousConvoStore({ dataDir: path.join(DATA_DIR, 'conscious-convo'), authenticate: auth });
+const PORTAL_DATA_DIR = path.join(DATA_DIR, 'portal');
+const PORTAL_RECEIPTS_FILE = path.join(PORTAL_DATA_DIR, 'verification-receipts.jsonl');
+fs.mkdirSync(PORTAL_DATA_DIR, { recursive: true, mode: 0o700 });
+const PORTAL_REGISTRY_CONFIG = {
+  hardwareRegistryFile: process.env.AETHERBRIDGE_PORTAL_HARDWARE_REGISTRY_FILE || '',
+  ecosystemRealitiesFile: process.env.AETHERBRIDGE_PORTAL_ECOSYSTEM_REALITIES_FILE || '',
+  identityBindingsFile: process.env.AETHERBRIDGE_PORTAL_IDENTITY_BINDINGS_FILE || '',
+  jurisdictionRegistryFile: process.env.AETHERBRIDGE_PORTAL_JURISDICTION_REGISTRY_FILE || ''
+};
+const PORTAL_ROOT_CONFIG = {
+  rootPublicKeyFile: process.env.AETHERBRIDGE_PORTAL_ROOT_PUBLIC_KEY_FILE || '',
+  rootKeyId: process.env.AETHERBRIDGE_PORTAL_ROOT_KEY_ID || '',
+  rootSignerIdentityRef: process.env.AETHERBRIDGE_PORTAL_ROOT_SIGNER_IDENTITY_REF || '',
+  trustBundleFile: process.env.AETHERBRIDGE_PORTAL_TRUST_BUNDLE_FILE || '',
+  ...PORTAL_REGISTRY_CONFIG
+};
+let PORTAL_BOOTSTRAP = { valid: false, reasons: ['trust_bundle_file_unconfigured'], resolvedConfig: null };
+try {
+  if (PORTAL_ROOT_CONFIG.trustBundleFile) {
+    const bundleStat = fs.lstatSync(PORTAL_ROOT_CONFIG.trustBundleFile);
+    if (!bundleStat.isFile() || bundleStat.isSymbolicLink() || (bundleStat.mode & 0o022) !== 0) {
+      throw new Error('trust_bundle_file_permissions_invalid');
+    }
+    const bundle = JSON.parse(fs.readFileSync(PORTAL_ROOT_CONFIG.trustBundleFile, 'utf8'));
+    PORTAL_BOOTSTRAP = verifyInputSelfTrustSelfBundle(bundle, PORTAL_ROOT_CONFIG);
+  }
+} catch (error) {
+  PORTAL_BOOTSTRAP = { valid: false, reasons: [error.message || 'trust_bundle_load_failed'], resolvedConfig: null };
+}
+const PORTAL_CONFIG = {
+  ...PORTAL_REGISTRY_CONFIG,
+  ...PORTAL_ROOT_CONFIG,
+  ...(PORTAL_BOOTSTRAP.resolvedConfig || {}),
+  revocationsFile: process.env.AETHERBRIDGE_PORTAL_REVOCATIONS_FILE || path.join(PORTAL_DATA_DIR, 'revoked-decisions.json'),
+  bundleVerified: PORTAL_BOOTSTRAP.valid === true,
+  bootstrapReasons: PORTAL_BOOTSTRAP.valid ? [] : PORTAL_BOOTSTRAP.reasons
+};
+const appendPortalReceipt = entry => {
+  let fd;
+  try {
+    fd = fs.openSync(PORTAL_RECEIPTS_FILE, fs.constants.O_WRONLY | fs.constants.O_APPEND | fs.constants.O_CREAT, 0o600);
+    fs.writeSync(fd, JSON.stringify({ schema_version: 'ourself.portal-verification-receipt.v0.2', ...entry }) + '\n');
+    fs.fsyncSync(fd);
+  } catch (error) {
+    console.error(JSON.stringify({ event: 'PORTAL_RECEIPT_WRITE_FAILED', error: error.code || error.message }));
+  } finally { if (fd !== undefined) try { fs.closeSync(fd); } catch {} }
+};
+const GBTSELF_TOKEN_FILE = process.env.AETHERBRIDGE_GBTSELF_TOKEN_FILE || path.join(os.homedir(), '.config/ourself-gbtself/ingress-token');
+const gbtselfAuth = req => {
+  const h = req.headers.authorization || '';
+  if (!h.startsWith('Bearer ')) return false;
+  try {
+    const expected = fs.readFileSync(GBTSELF_TOKEN_FILE, 'utf8').trim();
+    const supplied = h.slice(7);
+    return expected.length >= 32 && supplied.length === expected.length &&
+      crypto.timingSafeEqual(Buffer.from(supplied), Buffer.from(expected));
+  } catch { return false; }
+};
+const proxyGbtself = (req, res, pathname) => {
+  const headers = {};
+  for (const name of ['authorization', 'content-type', 'accept', 'user-agent']) {
+    if (req.headers[name]) headers[name] = req.headers[name];
+  }
+  const upstream = http.request({
+    hostname: '127.0.0.1', port: 49321, path: pathname,
+    method: req.method, headers
+  }, upstreamRes => {
+    res.writeHead(upstreamRes.statusCode || 502, upstreamRes.headers);
+    upstreamRes.pipe(res);
+  });
+  upstream.setTimeout(6000, () => upstream.destroy(new Error('GBTSELF_UPSTREAM_TIMEOUT')));
+  upstream.on('error', () => {
+    if (!res.headersSent) send(res, 502, { error: 'GBTSELF_BRIDGE_UNREACHABLE', externalEffect: false });
+    else res.destroy();
+  });
+  req.pipe(upstream);
+};
 const readRawBody = req => new Promise((resolve,reject)=>{ const chunks=[]; let n=0, settled=false; req.on('data',c=>{if(settled)return;n+=c.length;if(n>MAX_BODY){settled=true;reject(Object.assign(new Error('BODY_TOO_LARGE'),{status:413}));req.destroy();return;}chunks.push(c);});req.on('end',()=>{if(!settled)resolve(Buffer.concat(chunks));});req.on('error',e=>{if(!settled)reject(e);});});
 const readBody = async req => { const raw=await readRawBody(req); try { return JSON.parse(raw.toString('utf8')||'{}'); } catch { throw Object.assign(new Error('INVALID_JSON'),{status:400}); } };
+let HOST_ADMIN_PIPE_CLIENT = null;
+let HOST_ADMIN_PIPE_STATUS = { configured: false, reason: PORTAL_BOOTSTRAP.valid ? 'PIPE_MTLS_CONFIGURATION_MISSING' : 'PORTAL_TRUST_UNVERIFIED' };
+try {
+  const endpoint = process.env.AETHERBRIDGE_HOST_ADMIN_PI_ENDPOINT || '';
+  const clientKeyFile = process.env.AETHERBRIDGE_HOST_ADMIN_CLIENT_KEY_FILE || '';
+  const clientCertificateFile = process.env.AETHERBRIDGE_HOST_ADMIN_CLIENT_CERT_FILE || '';
+  const rootCaFile = process.env.AETHERBRIDGE_HOST_ADMIN_ROOT_CA_FILE || '';
+  if (PORTAL_CONFIG.bundleVerified && endpoint && clientKeyFile && clientCertificateFile && rootCaFile) {
+    HOST_ADMIN_PIPE_CLIENT = createPipeHostAdminClient({
+      endpoint, portalConfig: PORTAL_CONFIG, clientKeyFile, clientCertificateFile, rootCaFile
+    });
+    HOST_ADMIN_PIPE_STATUS = HOST_ADMIN_PIPE_CLIENT.status;
+  }
+} catch (error) {
+  HOST_ADMIN_PIPE_CLIENT = null;
+  HOST_ADMIN_PIPE_STATUS = { configured: false, reason: error.message || 'PIPE_MTLS_CONFIGURATION_INVALID' };
+  console.error(JSON.stringify({ event: 'HOST_ADMIN_PIPE_CONFIGURATION_BLOCKED', reason: HOST_ADMIN_PIPE_STATUS.reason }));
+}
+const hostAdminRoute = createHostAdminRoute({
+  portalConfig: PORTAL_CONFIG,
+  decodeAdmissionHeader: decodePortalAdmissionHeader,
+  verifyAdmissionEnvelope: verifyPortalAdmissionEnvelope,
+  authenticate: auth,
+  journalPath: path.join(PORTAL_DATA_DIR, 'host-admin-requests.v0.2.jsonl'),
+  dispatch: HOST_ADMIN_PIPE_CLIENT?.dispatch ?? null
+});
 const sourceDir = path.join(DATA_DIR, 'source-bytes');
 fs.mkdirSync(sourceDir,{recursive:true,mode:0o700});
 const hashBytes = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const safeId = s => typeof s==='string' && s.length>0 && s.length<=200 && !s.includes('/') && !s.includes('\\') && !/\s/.test(s);
+const portalCapabilityForRoute = (method, pathname) => {
+  if (method === 'POST' && pathname === '/founder/conscious-convo') return 'ecosystem.consciousconvo.submit';
+  if (method === 'GET' && (pathname === '/founder/conscious-convo/records' || (pathname.startsWith('/founder/conscious-convo/records/') && pathname.slice('/founder/conscious-convo/records/'.length).length > 0 && !pathname.slice('/founder/conscious-convo/records/'.length).includes('/')))) return 'ecosystem.consciousconvo.read';
+  if (method === 'POST' && pathname === '/v1/chat/completions') return 'inference.chat.completions';
+  if (method === 'GET' && pathname === '/v1/models') return 'inference.models.read';
+  if (method === 'GET' && pathname === '/v1/capabilities') return 'ecosystem.capabilities.read';
+  if (method === 'GET' && pathname === '/v1/reality') return 'ecosystem.reality.read';
+  if (method === 'POST' && pathname === '/v1/matter') return 'ecosystem.matter.submit';
+  if (method === 'POST' && pathname === '/v1/selfstatement') return 'ecosystem.selfstatement.submit';
+  if (method === 'GET' && pathname.startsWith('/v1/matter/') && pathname.slice('/v1/matter/'.length).length > 0 && !pathname.slice('/v1/matter/'.length).includes('/')) return 'ecosystem.matter.read';
+  if (method === 'GET' && pathname === '/health') return 'agentbridge.health.read';
+  if (method === 'GET' && pathname === '/reality') return 'gbtself.reality.read';
+  if (method === 'POST' && pathname === '/REALIZE/ACTIONGPT') return 'actiongpt.realize';
+  return null;
+};
+const authorizePortalRequest = (req, res, capability, route) => {
+  const envelope = decodePortalAdmissionHeader(req.headers['x-ourself-portal-admission']);
+  const verification = verifyPortalAdmissionEnvelope(envelope, PORTAL_CONFIG, {
+    requiredCapability: capability
+  });
+  appendPortalReceipt({
+    event: 'PORTAL_ADMISSION_VERIFICATION',
+    at: new Date().toISOString(),
+    route,
+    required_capability: capability,
+    decision_id: verification.decisionId,
+    decision_sha256: verification.decisionDigest,
+    signer_key_id: verification.signerKeyId ?? null,
+    result: verification.allowed ? 'VERIFIED_ADMISSION' : 'DENIED',
+    reasons: verification.reasons,
+    external_effect: false
+  });
+  if (!verification.allowed) {
+    send(res, 403, {
+      error: 'PORTAL_ADMISSION_DENIED',
+      adapter_version: PORTAL_ADAPTER_VERSION,
+      decision_id: verification.decisionId,
+      required_capability: capability,
+      reasons: verification.reasons,
+      standing: 'NOT_ADMITTED',
+      execution_authorized: false,
+      external_effect: false
+    });
+    return null;
+  }
+  return verification;
+};
+
 const server = http.createServer(async (req,res)=>{
   const url = new URL(req.url,'http://127.0.0.1');
-  if (req.method==='GET' && url.pathname==='/health') return send(res,200,{server:'AETHERBRIDGE-PIPEPORTAL',status:'LISTENING',reality:'BUBBLESELF-ALCHEMY',authentication:'BEARER_REQUIRED_FOR_API',runtime:'LOCAL',external_effect:false});
+  // Loopback-only liveness probe for launchd and the local watchdog.
+  if (req.method === 'GET' && url.pathname === '/healthz') {
+    return send(res, 200, { server: 'AETHERBRIDGE-PIPEPORTAL', status: 'LIVE', pid: process.pid, uptime_seconds: Math.floor(process.uptime()), host: HOST, port: PORT, portal_adapter: PORTAL_ADAPTER_VERSION, portal_enforcement: 'PORTAL_REQUIRED_FOR_GOVERNED_ROUTES_AND_CONSCIOUSCONVO', portal_exemptions: ['GET /healthz', 'GET /portal/v1/status'], founder_local_ingress: FOUNDER_LOCAL_INGRESS_ENABLED ? 'LOOPBACK_FOUNDER_AUTH_PLUS_PORTAL_CAPABILITY_ADMISSION' : 'DISABLED_NON_LOOPBACK_BIND', founder_local_ingress_route: '/founder/conscious-convo', portal_trust: portalTrustStatus(PORTAL_CONFIG), host_admin_pipe: HOST_ADMIN_PIPE_STATUS, external_effect: false });
+  }
+  // Founder ConsciousConvo is loopback-only source ingress with the same independent
+  // signed PORTAL admission verifier as other governed routes. Submission and reads
+  // have separate capabilities. Admission does not invoke cognition or authorize actions.
+  if (url.pathname === '/founder/conscious-convo' && req.method === 'GET') {
+    if (!FOUNDER_LOCAL_INGRESS_ENABLED) return send(res, 404, { error: 'FOUNDER_INGRESS_LOOPBACK_ONLY' });
+    res.writeHead(200, {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'no-store',
+      'content-security-policy': "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+      'x-content-type-options': 'nosniff',
+      'referrer-policy': 'no-referrer'
+    });
+    return res.end(CONSCIOUS_CONVO_FOUNDER_HTML);
+  }
+  if (url.pathname === '/founder/conscious-convo' && req.method === 'POST') {
+    if (!FOUNDER_LOCAL_INGRESS_ENABLED) return send(res, 404, { error: 'FOUNDER_INGRESS_LOOPBACK_ONLY' });
+    if (!auth(req)) return send(res, 401, { error: 'FOUNDER_CALLER_UNBOUND', standing: 'NOT_ADMITTED' });
+    const capability = portalCapabilityForRoute(req.method, url.pathname);
+    const admission = authorizePortalRequest(req, res, capability, req.method + ' ' + url.pathname);
+    if (!admission) return;
+    let raw, body;
+    try { raw = await readRawBody(req); body = JSON.parse(raw.toString('utf8') || '{}'); }
+    catch (error) { return send(res, error.status || 400, { error: error.message === 'Unexpected end of JSON input' ? 'INVALID_JSON' : (error.message || 'INVALID_REQUEST_BODY') }); }
+    const result = consciousConvoStore.submit(raw, body, req, { ...admission, requiredCapability: capability });
+    return send(res, result.statusCode, result.payload);
+  }
+  if (url.pathname === '/founder/conscious-convo/records' && req.method === 'GET') {
+    if (!FOUNDER_LOCAL_INGRESS_ENABLED) return send(res, 404, { error: 'FOUNDER_INGRESS_LOOPBACK_ONLY' });
+    if (!auth(req)) return send(res, 401, { error: 'FOUNDER_CALLER_UNBOUND', standing: 'NOT_ADMITTED' });
+    const capability = portalCapabilityForRoute(req.method, url.pathname);
+    const admission = authorizePortalRequest(req, res, capability, req.method + ' ' + url.pathname);
+    if (!admission) return;
+    const result = consciousConvoStore.list(req, { ...admission, requiredCapability: capability });
+    return send(res, result.statusCode, result.payload);
+  }
+  const consciousConvoRecordMatch = url.pathname.match(/^\/founder\/conscious-convo\/records\/([^/]+)$/);
+  if (consciousConvoRecordMatch && req.method === 'GET') {
+    if (!FOUNDER_LOCAL_INGRESS_ENABLED) return send(res, 404, { error: 'FOUNDER_INGRESS_LOOPBACK_ONLY' });
+    let conversationId;
+    try { conversationId = decodeURIComponent(consciousConvoRecordMatch[1]); }
+    catch { return send(res, 400, { error: 'CONVERSATION_ID_INVALID' }); }
+    if (!auth(req)) return send(res, 401, { error: 'FOUNDER_CALLER_UNBOUND', standing: 'NOT_ADMITTED' });
+    const capability = portalCapabilityForRoute(req.method, url.pathname);
+    const admission = authorizePortalRequest(req, res, capability, req.method + ' ' + url.pathname);
+    if (!admission) return;
+    const result = consciousConvoStore.read(conversationId, req, { ...admission, requiredCapability: capability });
+    return send(res, result.statusCode, result.payload);
+  }
+  if (req.method === 'GET' && url.pathname === '/portal/v1/status') {
+    if (!auth(req)) return send(res, 401, { error: 'CALLER_UNBOUND', standing: 'NOT_ADMITTED' });
+    return send(res, 200, {
+      adapter_version: PORTAL_ADAPTER_VERSION,
+      trust: portalTrustStatus(PORTAL_CONFIG),
+      host_admin_pipe: HOST_ADMIN_PIPE_STATUS,
+      governed_route: 'POST /portal/v1/chat/completions',
+      required_capability: 'inference.chat.completions',
+      conscious_convo_governed_routes: {
+        submit: { route: 'POST /founder/conscious-convo', required_capability: 'ecosystem.consciousconvo.submit' },
+        list: { route: 'GET /founder/conscious-convo/records', required_capability: 'ecosystem.consciousconvo.read' },
+        read: { route: 'GET /founder/conscious-convo/records/{conversation_id}', required_capability: 'ecosystem.consciousconvo.read' }
+      },
+      enforcement_mode: 'PORTAL_REQUIRED_FOR_GOVERNED_ROUTES_AND_CONSCIOUSCONVO',
+      founder_local_ingress: FOUNDER_LOCAL_INGRESS_ENABLED ? 'LOOPBACK_FOUNDER_AUTH_PLUS_PORTAL_CAPABILITY_ADMISSION' : 'DISABLED_NON_LOOPBACK_BIND',
+      governed_route_families: ['/v1/models', '/v1/chat/completions', '/v1/capabilities', '/v1/reality', '/v1/matter', '/v1/selfstatement', '/v1/matter/{matter_ref}', '/health', '/reality', '/REALIZE/ACTIONGPT', '/founder/conscious-convo (ecosystem.consciousconvo.submit)', '/founder/conscious-convo/records* (ecosystem.consciousconvo.read)'],
+      legacy_surface: 'Direct /v1/* compatibility paths remain available only with a valid PORTAL admission envelope; bearer-only requests are denied',
+      exemptions: ['GET /healthz', 'GET /portal/v1/status'],
+      execution_authority: 'NOT_GRANTED_BY_PORTAL',
+      external_effect: false
+    });
+  }
+  if (req.method === 'POST' && url.pathname === '/portal/v1/host-admin/requests') {
+    let body;
+    try { body = await readBody(req); }
+    catch (error) { return send(res, error.status || 400, { error: error.message || 'INVALID_REQUEST_BODY', dispatch: false }); }
+    const result = await hostAdminRoute.submit(body, req.headers['x-ourself-portal-admission'], req);
+    return send(res, result.statusCode, { ...result.payload, route_version: 'ourself.host-admin-route.v0.1' });
+  }
+  const hostAdminStatusPrefix = '/portal/v1/host-admin/requests/';
+  const hostAdminStatusMatch = url.pathname.startsWith(hostAdminStatusPrefix)
+    ? [null, url.pathname.slice(hostAdminStatusPrefix.length)]
+    : null;
+  if (req.method === 'GET' && hostAdminStatusMatch) {
+    let requestId;
+    try { requestId = decodeURIComponent(hostAdminStatusMatch[1]); }
+    catch { return send(res, 400, { error: 'REQUEST_ID_INVALID' }); }
+    const result = hostAdminRoute.read(requestId, req.headers['x-ourself-portal-admission'], req);
+    return send(res, result.statusCode, { ...result.payload, route_version: 'ourself.host-admin-route.v0.1', external_effect: false });
+  }
+  if (req.method === 'POST' && url.pathname === '/portal/v1/chat/completions') {
+    if (!auth(req)) return send(res, 401, { error: 'CALLER_UNBOUND', standing: 'NOT_ADMITTED' });
+    const envelope = decodePortalAdmissionHeader(req.headers['x-ourself-portal-admission']);
+    const verification = verifyPortalAdmissionEnvelope(envelope, PORTAL_CONFIG, {
+      requiredCapability: 'inference.chat.completions'
+    });
+    appendPortalReceipt({
+      event: 'PORTAL_ADMISSION_VERIFICATION',
+      at: new Date().toISOString(),
+      route: 'POST /portal/v1/chat/completions',
+      decision_id: verification.decisionId,
+      decision_sha256: verification.decisionDigest,
+      signer_key_id: verification.signerKeyId ?? null,
+      result: verification.allowed ? 'VERIFIED_ADMISSION' : 'DENIED',
+      reasons: verification.reasons,
+      external_effect: false
+    });
+    if (!verification.allowed) {
+      return send(res, 403, {
+        error: 'PORTAL_ADMISSION_DENIED',
+        adapter_version: PORTAL_ADAPTER_VERSION,
+        decision_id: verification.decisionId,
+        reasons: verification.reasons,
+        standing: 'NOT_ADMITTED',
+        execution_authorized: false,
+        external_effect: false
+      });
+    }
+    const startedAt = Date.now();
+    const headers = {
+      authorization: req.headers.authorization,
+      'content-type': req.headers['content-type'] || 'application/json',
+      'x-ourself-portal-admission': req.headers['x-ourself-portal-admission']
+    };
+    if (req.headers.accept) headers.accept = req.headers.accept;
+    if (req.headers['content-length']) headers['content-length'] = req.headers['content-length'];
+    const pipeRequest = http.request({
+      hostname: '127.0.0.1', port: PORT, path: '/v1/chat/completions',
+      method: 'POST', headers
+    }, pipeResponse => {
+      appendPortalReceipt({
+        event: 'PIPE_RESPONSE_OBSERVED',
+        at: new Date().toISOString(),
+        decision_id: verification.decisionId,
+        transport: 'LOCAL_LOOPBACK_HTTP',
+        upstream_status: pipeResponse.statusCode || 502,
+        duration_ms: Date.now() - startedAt,
+        execution_effect: 'NOT_INDEPENDENTLY_WITNESSED',
+        external_effect: false
+      });
+      const responseHeaders = { 'cache-control': 'no-store' };
+      if (pipeResponse.headers['content-type']) responseHeaders['content-type'] = pipeResponse.headers['content-type'];
+      if (pipeResponse.headers['content-length']) responseHeaders['content-length'] = pipeResponse.headers['content-length'];
+      res.writeHead(pipeResponse.statusCode || 502, responseHeaders);
+      pipeResponse.pipe(res);
+    });
+    pipeRequest.on('error', error => {
+      appendPortalReceipt({
+        event: 'PIPE_TRANSPORT_FAILED',
+        at: new Date().toISOString(),
+        decision_id: verification.decisionId,
+        error: error.code || 'PIPE_TRANSPORT_ERROR',
+        duration_ms: Date.now() - startedAt,
+        external_effect: false
+      });
+      if (!res.headersSent) send(res, 502, { error: 'PIPE_TRANSPORT_FAILED', decision_id: verification.decisionId, external_effect: false });
+      else res.destroy();
+    });
+    req.pipe(pipeRequest);
+    return;
+  }
+  const gbtselfPaths = ['/reality','/REALIZE/ACTIONGPT'];
+  if (req.method === 'GET' && url.pathname === '/health') {
+    if (!gbtselfAuth(req)) return send(res,401,{error:'CALLER_UNBOUND',standing:'NOT_ADMITTED'});
+    const capability = portalCapabilityForRoute(req.method, url.pathname);
+    if (!capability) return send(res,403,{error:'PORTAL_ROUTE_UNMAPPED',standing:'NOT_ADMITTED'});
+    if (!authorizePortalRequest(req,res,capability,req.method+' '+url.pathname)) return;
+    return proxyGbtself(req,res,url.pathname);
+  }
+  if (gbtselfPaths.includes(url.pathname)) {
+    if (!gbtselfAuth(req)) return send(res,401,{error:'CALLER_UNBOUND',standing:'NOT_ADMITTED'});
+    const capability = portalCapabilityForRoute(req.method, url.pathname);
+    if (!capability) return send(res,403,{error:'PORTAL_ROUTE_UNMAPPED',standing:'NOT_ADMITTED'});
+    if (!authorizePortalRequest(req,res,capability,req.method+' '+url.pathname)) return;
+    return proxyGbtself(req,res,url.pathname);
+  }
   if (!url.pathname.startsWith('/v1/')) return send(res,404,{error:'ROUTE_NOT_FOUND'});
   if (!auth(req)) return send(res,401,{error:'CALLER_UNBOUND',standing:'NOT_ADMITTED'});
+  const routeCapability = portalCapabilityForRoute(req.method, url.pathname);
+  if (!routeCapability) return send(res,403,{error:'PORTAL_ROUTE_UNMAPPED',route:req.method+' '+url.pathname,standing:'NOT_ADMITTED'});
+  if (!authorizePortalRequest(req,res,routeCapability,req.method+' '+url.pathname)) return;
   if (req.method==='GET' && url.pathname==='/v1/models') {
     const upstreams = await Promise.all(Object.entries(UPSTREAMS).map(([id, u]) => probeUpstream(id, u)));
     return send(res, 200, { as_of: new Date().toISOString(), record_type: 'OURSELF_OBSERVED_MODEL_REGISTRY', schema_version: '1.0.0', canonical_model: 'ourmodelselfgenesis:latest', policy: MODEL_POLICY, upstreams, note: 'Registry observed from live upstreams at request time. Policy classes are OURSELF declarations; reachability and digests are observations. Supersedes the 2026-09-29 THIRDEYE snapshot as the live surface; that snapshot is preserved as lineage.', external_effect: false });

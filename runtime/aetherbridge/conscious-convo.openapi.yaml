@@ -1,0 +1,163 @@
+openapi: 3.1.0
+info:
+  title: OURSELF ConsciousConvo Founder Ingress
+  version: 0.1.1
+  description: >
+    Receives explicitly submitted ChatGPT conversation text and founder directives.
+    Every data API operation requires BOTH the AetherBridge Founder bearer identity
+    and an independently signed PORTAL admission envelope. Submit and read use
+    separate capabilities. The current listener is loopback-only on OURSELFMAC.
+    This contract does not claim automatic access to ChatGPT sessions or public reachability.
+servers:
+  - url: /
+paths:
+  /founder/conscious-convo:
+    get:
+      operationId: openConsciousConvoFounderSurface
+      summary: Serve the local Founder ConsciousConvo interface
+      security: []
+      responses:
+        '200':
+          description: Loopback Founder interface HTML
+    post:
+      operationId: submitConsciousConvo
+      summary: Preserve a founder-submitted conversation and directive
+      description: >
+        Requires a valid Founder bearer token AND an independently verified
+        PORTAL decision admitting ecosystem.consciousconvo.submit. The decision
+        must bind the configured source and target identities, trusted signer,
+        authority grant, evidence, jurisdiction registries, expiry and revocation
+        state. Exact request bytes are preserved and hash-verified before a
+        hash-chained receipt is appended. Admission does not execute cognition.
+      security:
+        - FounderIngressBearer: []
+          PortalAdmission: []
+      parameters:
+        - $ref: '#/components/parameters/PortalAdmissionHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsciousConvoSubmission'
+      responses:
+        '201':
+          description: New source record preserved with verified PORTAL admission
+        '200':
+          description: Exact idempotent replay with source integrity rechecked
+        '400':
+          description: Contract validation failed
+        '401':
+          description: Founder bearer authentication failed
+        '403':
+          description: PORTAL admission missing, invalid, revoked, expired, or capability-mismatched
+        '409':
+          description: Conversation identity conflict
+        '503':
+          description: Receipt or source integrity unavailable
+  /founder/conscious-convo/records:
+    get:
+      operationId: listConsciousConvoReceipts
+      summary: List the latest founder conversation receipts
+      description: Requires Founder bearer authentication and a separate PORTAL read admission.
+      security:
+        - FounderIngressBearer: []
+          PortalAdmission: []
+      parameters:
+        - $ref: '#/components/parameters/PortalAdmissionHeader'
+      responses:
+        '200':
+          description: Up to 50 newest receipt records
+        '401':
+          description: Founder bearer authentication failed
+        '403':
+          description: PORTAL read admission missing or invalid
+        '503':
+          description: Receipt ledger integrity unavailable
+  /founder/conscious-convo/records/{conversation_id}:
+    get:
+      operationId: readConsciousConvo
+      summary: Read a conversation source and its receipt
+      description: Requires Founder bearer authentication and a separate PORTAL read admission.
+      security:
+        - FounderIngressBearer: []
+          PortalAdmission: []
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9._:-]{8,128}$'
+        - $ref: '#/components/parameters/PortalAdmissionHeader'
+      responses:
+        '200':
+          description: Source payload and integrity receipt
+        '401':
+          description: Founder bearer authentication failed
+        '403':
+          description: PORTAL read admission missing or invalid
+        '404':
+          description: Conversation not found
+        '503':
+          description: Source integrity check failed
+components:
+  securitySchemes:
+    FounderIngressBearer:
+      type: http
+      scheme: bearer
+    PortalAdmission:
+      type: apiKey
+      in: header
+      name: X-OURSELF-PORTAL-ADMISSION
+      description: >
+        Base64url-encoded PORTAL admission envelope containing decision, signer,
+        and Ed25519 signature. The envelope is verified against the independently
+        root-signed InputSelfTrustSelf bundle and pinned registries.
+  parameters:
+    PortalAdmissionHeader:
+      name: X-OURSELF-PORTAL-ADMISSION
+      in: header
+      required: true
+      description: Base64url-encoded independently signed PORTAL admission envelope.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 16384
+  schemas:
+    ConsciousConvoSubmission:
+      type: object
+      additionalProperties: false
+      required:
+        - conversation_id
+        - conversation_title
+        - source_platform
+        - source_capture_mode
+        - founder_input
+        - transcript
+      properties:
+        conversation_id:
+          type: string
+          pattern: '^[A-Za-z0-9._:-]{8,128}$'
+        conversation_title:
+          type: string
+          maxLength: 240
+        source_platform:
+          type: string
+          enum: [CHATGPT, OURSELF]
+        source_capture_mode:
+          type: string
+          enum: [FOUNDER_PASTE, GPT_ACTION, API]
+          description: Declared capture mode, not independently verified provenance.
+        source_session_ref:
+          type: string
+          maxLength: 256
+        captured_at:
+          type: string
+          format: date-time
+        founder_input:
+          type: string
+          maxLength: 20000
+        transcript:
+          type: string
+          maxLength: 220000
