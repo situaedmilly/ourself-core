@@ -117,7 +117,7 @@
       "properties": {
         "rootCustodianIds": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 0,
           "uniqueItems": true,
           "items": {
             "type": "string",
@@ -126,7 +126,7 @@
         },
         "rootApproverIds": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 0,
           "uniqueItems": true,
           "items": {
             "type": "string",
@@ -134,12 +134,15 @@
           }
         },
         "independentWitnessId": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1
         },
         "endpointAdminIds": {
           "type": "array",
-          "minItems": 1,
+          "minItems": 0,
           "uniqueItems": true,
           "items": {
             "type": "string",
@@ -147,11 +150,14 @@
           }
         },
         "portalSignerId": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1
         },
         "roleSeparationVerified": {
-          "const": true
+          "type": "boolean"
         },
         "separationEvidenceRef": {
           "type": "string",
@@ -295,7 +301,66 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "NOT_CONFIGURED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "endpoint": {
+                "type": "null"
+              },
+              "peerIdentity": {
+                "type": "null"
+              },
+              "trustAnchorFingerprint": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "AUTHENTICATED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "mutualAuthenticationEvidenceRef",
+              "authenticatedAt"
+            ],
+            "properties": {
+              "endpoint": {
+                "type": "string",
+                "format": "uri"
+              },
+              "peerIdentity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "trustAnchorFingerprint": {
+                "type": "string",
+                "pattern": "^[a-fA-F0-9]{64}$"
+              }
+            }
+          }
+        }
+      ]
     },
     "liveConnection": {
       "type": "object",
@@ -337,7 +402,31 @@
           "type": "string",
           "minLength": 1
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "VERIFIED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "checkedAt",
+              "requestId",
+              "challengeNonce",
+              "responseDigest",
+              "responseSignatureRef",
+              "independentVerificationEvidenceRef"
+            ]
+          }
+        }
+      ]
     },
     "decision": {
       "type": "object",
@@ -470,6 +559,238 @@
               },
               "independentReviewComplete": {
                 "const": true
+              },
+              "predicates": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H01"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H02"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H03"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H04"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H05"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H06"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H07"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H08"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H09"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H10"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H11"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "properties": {
+                        "predicateId": {
+                          "const": "H12"
+                        },
+                        "result": {
+                          "const": "PASS"
+                        }
+                      },
+                      "required": [
+                        "predicateId",
+                        "result"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  }
+                ]
               }
             }
           },
@@ -491,6 +812,30 @@
             "properties": {
               "disposition": {
                 "const": "ADMITTED"
+              }
+            }
+          },
+          "roles": {
+            "properties": {
+              "rootCustodianIds": {
+                "minItems": 2
+              },
+              "rootApproverIds": {
+                "minItems": 2
+              },
+              "independentWitnessId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "endpointAdminIds": {
+                "minItems": 1
+              },
+              "portalSignerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "roleSeparationVerified": {
+                "const": true
               }
             }
           }
