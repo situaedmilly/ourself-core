@@ -1,0 +1,25 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "$id":"urn:ourself:selftosys:custody-acceptance:v0.1",
+ "title":"SELFTOSYS Human Custody Acceptance",
+ "type":"object","additionalProperties":false,
+ "required":["reality","status","roles","separationPolicy"],
+ "properties":{
+  "reality":{"const":"SELFTOSYS"},
+  "status":{"enum":["UNASSIGNED","INTAKE","QUALIFICATION","ACCEPTED","REJECTED"]},
+  "separationPolicy":{"const":"DISTINCT_NATURAL_PERSONS_AND_AUTHENTICATED_PRINCIPALS"},
+  "roles":{"type":"array","minItems":5,"items":{"type":"object","additionalProperties":false,
+   "required":["role","personId","acceptanceStatus","authenticatedSubject","acceptanceEvidenceRef"],
+   "properties":{
+    "role":{"enum":["CUSTODIAN_A","CUSTODIAN_B","APPROVER_A","APPROVER_B","INDEPENDENT_WITNESS"]},
+    "personId":{"type":["string","null"],"minLength":1},
+    "acceptanceStatus":{"enum":["UNASSIGNED","INVITED","ACCEPTED","REJECTED"]},
+    "authenticatedSubject":{"type":["string","null"],"minLength":1},
+    "acceptanceEvidenceRef":{"type":["string","null"],"minLength":1},
+    "acceptedAt":{"type":["string","null"],"format":"date-time"}
+   }}},
+  "distinctPersonCheck":{"type":"boolean","const":false},
+  "independentReviewerRef":{"type":["string","null"],"minLength":1}
+ },
+ "$comment":"Template starts unassigned. Acceptance requires explicit human consent and independently verified identity. A software account name is not proof of a human custodian."
+}
