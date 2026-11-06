@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {evaluateRootBinding,transitionRootBinding} from './admission.mjs';
+const keys=['custodianAId','custodianBId','approverAId','approverBId','independentWitnessId','rootHardwareAdminId','rootEndpointAdminId','portalSignerId'];
+function fixture(){
+ const roles=Object.fromEntries(keys.map((k,i)=>[k,'principal-'+i])); roles.separationEvidenceStatus='VERIFIED';
+ return {state:'QUALIFICATION',hardware:{assetId:'asset-1',protectedBoundaryRef:'evidence:boundary',ownershipStatus:'VERIFIED'},qualification:{allPredicatesPassed:true,independentReviewComplete:true,predicates:Array.from({length:12},(_,i)=>({predicateId:'H'+String(i+1).padStart(2,'0'),status:'PASS',evidenceRefs:['evidence:'+i],method:'physical-review',observedAt:'2026-11-06T12:00:00Z',observerId:'observer-'+i,independentReviewerId:'reviewer-'+i,contentDigest:'sha256:'+i}))},roles,quorum:{status:'ENFORCED',evidenceRef:'evidence:quorum'},recovery:{status:'INDEPENDENTLY_TESTED',evidenceRef:'evidence:recovery'},transport:{status:'VERIFIED',exactEndpoint:'https://root.invalid/intake',protocol:'mTLS',rootTrustAnchorRef:'evidence:anchor',clientIdentityRef:'evidence:client',evidenceRef:'evidence:handshake',mutualAuthentication:true},liveChallenge:{status:'VERIFIED',challengeId:'c1',nonce:'fresh-nonce',rootIdentity:'root1',verifierIdentity:'verifier1',signatureRef:'evidence:sig',independentVerificationRef:'evidence:independent',evidenceDigest:'sha256:abc',nonceConsumed:true,signatureVerified:true,independentVerification:true,expiresAt:'2026-11-06T12:05:00Z',verifiedAt:'2026-11-06T12:01:00Z'}};
+}
+test('unbound and absent inputs fail closed',()=>{assert.equal(evaluateRootBinding(null).decision,'BLOCKED');assert.equal(evaluateRootBinding({state:'UNBOUND'}).decision,'BLOCKED')});
+test('complete evidence fixture qualifies',()=>{assert.deepEqual(evaluateRootBinding(fixture()),{decision:'ADMITTED',state:'ADMITTED',blockers:[]})});
+test('unknown predicate blocks',()=>{const b=fixture();b.qualification.predicates[6].status='UNKNOWN';assert.ok(evaluateRootBinding(b).blockers.includes('predicate:H07:not_pass'))});
+test('role collision blocks',()=>{const b=fixture();b.roles.portalSignerId=b.roles.custodianAId;assert.ok(evaluateRootBinding(b).blockers.includes('roles:separation_collision'))});
+test('expired challenge blocks',()=>{const b=fixture();b.liveChallenge.expiresAt='2026-11-06T11:59:00Z';assert.ok(evaluateRootBinding(b).blockers.includes('challenge:invalid_or_expired_time_window'))});
+test('no direct admission transition exists',()=>{assert.deepEqual(transitionRootBinding('QUALIFICATION','ADMIT_BINDING'),{accepted:false,state:'QUALIFICATION',reason:'transition_not_permitted'})});
