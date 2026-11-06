@@ -37,7 +37,7 @@ export function evaluateRootBinding(b) {
   if (c.nonceConsumed!==true) blockers.push('challenge:nonce_not_single_use');
   const expiry=Date.parse(c.expiresAt), verified=Date.parse(c.verifiedAt);
   if (!Number.isFinite(expiry)||!Number.isFinite(verified)||verified>expiry) blockers.push('challenge:invalid_or_expired_time_window');
-  return blockers.length ? {decision:'BLOCKED',state:b.state,blockers:[...new Set(blockers)]} : {decision:'ADMITTED',state:'ADMITTED',blockers:[]};
+  return blockers.length ? {decision:'BLOCKED',state:b.state,blockers:[...new Set(blockers)]} : {decision:'PREFLIGHT_PASS',state:'QUALIFICATION_READY',blockers:[],admissionReceiptRequired:true};
 }
 export function transitionRootBinding(state,event) {
   const table={UNBOUND:{OPEN_INTAKE:'EVIDENCE_INTAKE'},EVIDENCE_INTAKE:{SUBMIT_FOR_QUALIFICATION:'QUALIFICATION',REJECT_EVIDENCE:'REJECTED'},QUALIFICATION:{REJECT_EVIDENCE:'REJECTED'},REJECTED:{OPEN_NEW_INTAKE:'EVIDENCE_INTAKE'},ADMITTED:{}};
