@@ -1,0 +1,90 @@
+schema_id: OURSELF-SELFMOAT-WITNESSED-ESTATE
+schema_version: 0.1.0
+record_type: WITNESS_ATTESTATION
+record_status: TEMPLATE_NOT_AN_ATTESTATION
+constitutional_owner: OSOS
+authority_model:
+  registry_authority: DECLARATION_AND_CONFORMANCE_CRITERIA
+  witness_authority: OBSERVATION_AND_EVIDENCE_PROVENANCE
+  execution_authority: SEPARATE_ADMISSION_GATE
+  independence_requirement: Witness key custody and evaluator must be independent of registry author and target runtime operator.
+  same_account_rule: A second repository, branch, or commit under the same account is not an independent witness.
+  receipt_effect_rule: RECEIPT_DOES_NOT_PROVE_EXTERNAL_EFFECT
+required_fields:
+  - attestation_id
+  - registry_id
+  - registry_revision
+  - reality_id
+  - reality_revision
+  - request_id
+  - nonce
+  - witness_id
+  - witness_key_id
+  - verifier_identity
+  - verifier_version
+  - target_endpoint_identity
+  - target_attestation_state
+  - procedure_id
+  - procedure_version
+  - observed_at
+  - evidence_refs
+  - evidence_digests
+  - evaluation
+  - limitations
+  - issued_at
+  - expires_at
+  - revocation_status
+  - signature
+state_machine:
+  transitions:
+    - [REQUESTED, ACCEPTED]
+    - [REQUESTED, REJECTED]
+    - [ACCEPTED, OBSERVED]
+    - [OBSERVED, EVALUATED]
+    - [EVALUATED, ATTESTED]
+    - [EVALUATED, INCONCLUSIVE]
+    - [EVALUATED, NONCONFORMANT]
+    - [ATTESTED, REVOKED]
+    - [ATTESTED, EXPIRED]
+  append_only: true
+  overwrite_prior_records: false
+evaluation_values:
+  - PASS
+  - FAIL
+  - INCONCLUSIVE
+  - NOT_RUN
+verification_class:
+  - SELF_ATTESTED
+  - SOURCE_VERIFIED
+  - TEST_VERIFIED
+  - RUNTIME_VERIFIED
+  - INDEPENDENTLY_VERIFIED
+attestation_template:
+  attestation_id: null
+  registry_id: OURSELF-SELFMOAT-REALITY-REGISTRY
+  registry_revision: null
+  reality_id: null
+  reality_revision: null
+  request_id: null
+  nonce: null
+  witness_id: null
+  witness_key_id: null
+  verifier_identity: null
+  verifier_version: null
+  target_endpoint_identity: null
+  target_attestation_state: NOT_ESTABLISHED
+  procedure_id: null
+  procedure_version: null
+  observed_at: null
+  evidence_refs: []
+  evidence_digests: []
+  evaluation: NOT_RUN
+  verification_class: SELF_ATTESTED
+  limitations:
+    - TEMPLATE_ONLY
+    - NO_RUNTIME_OBSERVATION_PERFORMED
+    - NO_INDEPENDENT_WITNESS_KEY_CUSTODY_ESTABLISHED
+  issued_at: null
+  expires_at: null
+  revocation_status: NOT_ISSUED
+  signature: null
