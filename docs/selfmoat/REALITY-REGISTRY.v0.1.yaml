@@ -1,0 +1,201 @@
+schema_id: OURSELF-SELFMOAT-REALITY-REGISTRY
+schema_version: 0.1.0
+registry_status: INITIAL_DRAFT
+constitutional_owner: OSOS
+created_at: 2026-11-10
+governance:
+  invariants:
+    - DESIGNED != DEPLOYED != OPERATIONAL != INDEPENDENTLY_VERIFIED
+    - DECLARATION != AUTHORITY
+    - PROPOSAL != ADMISSION
+    - ADMISSION != ACTUATION
+    - RECEIPT != EFFECT
+    - No authority, no effect.
+  admission_rule: A reality is not independently established by a repository, device, integration, or declaration alone.
+  evidence_rule: Every capability claim must reference an inspectable artifact and a reproducible verification procedure.
+  mutation_boundary: This registry is a draft on an isolated branch; no default-branch mutation or runtime actuation is authorized by this commit.
+
+required_fields:
+  - reality_id
+  - reality_name
+  - moat_class
+  - root_identity
+  - infrastructure
+  - capabilities
+  - authority_boundary
+  - evidence_refs
+  - operational_status
+  - verification_state
+  - dependency_graph
+  - known_gaps
+  - last_verified_at
+
+status_vocabulary:
+  operational_status: [DESIGNED, DEPLOYED, PARTIAL, LIVE, BLOCKED]
+  verification_state: [UNVERIFIED, SOURCE_VERIFIED, TEST_VERIFIED, RUNTIME_VERIFIED, INDEPENDENTLY_VERIFIED]
+
+realities:
+  - reality_id: OURSELF-REALITY-001-SIRI-IPHONE
+    reality_name: SIRI / IPHONE GENESIS
+    moat_class: DEVICE_NATIVE_VOICE_INGRESS
+    root_identity: OURSELF-INSTANCE-0001; paired OURSELF-IPHONENODE (reported; attestation evidence pending)
+    infrastructure:
+      - iPhone device-native interface
+      - local cognition and listening gateway
+      - HTTPS gateway
+      - session continuity and receipt ledger
+    capabilities:
+      - Siri invocation architecture
+      - iPhone delivery paths
+    authority_boundary: Siri is an ingress surface; execution authority remains with OSOS-governed OURSELF admission.
+    evidence_refs:
+      - https://github.com/situaedmilly/ourself-core
+      - https://github.com/situaedmilly/ourself-agent-bridge-kernel
+    operational_status: PARTIAL
+    verification_state: UNVERIFIED
+    dependency_graph: [OURSELF-REALITY-004-OURSELFCONTROL, OURSELF-REALITY-003-MAC-COGNITION]
+    known_gaps:
+      - Siri credential issuance
+      - push subscription and delivery
+      - verified off-network iPhone-to-OURSELF roundtrip
+      - November 9 health-check report stated zero push subscriptions; underlying receipt not attached in this registry revision
+    last_verified_at: null
+
+  - reality_id: OURSELF-REALITY-002-ANDROID-SELFPI
+    reality_name: SELFPI / ANDROID / ARM64
+    moat_class: MOBILE_COMPUTE_AND_EXECUTION_SUBSTRATE
+    root_identity: SELFPI device identity; hardware-root custody not yet independently established
+    infrastructure:
+      - ARM64 Linux substrate
+      - Android ADB and Fastboot discovery
+      - emulator and local model/agent bridge architecture
+    capabilities:
+      - device discovery and intended mobile execution
+      - local cognition substrate (implementation and runtime scope require verification)
+    authority_boundary: Device presence or ADB reachability does not confer execution authority; OSOS admission is required.
+    evidence_refs:
+      - https://github.com/situaedmilly/ourself-core
+      - https://github.com/situaedmilly/ourself-agent-bridge-kernel
+    operational_status: PARTIAL
+    verification_state: UNVERIFIED
+    dependency_graph: [OURSELF-REALITY-004-OURSELFCONTROL, OURSELF-REALITY-003-MAC-COGNITION, OURSELF-REALITY-005-AETHERNET]
+    known_gaps:
+      - Android emulator and KVM constraints
+      - verified hardware-root custody
+      - complete Android-to-OURSELF operational roundtrip
+    last_verified_at: null
+
+  - reality_id: OURSELF-REALITY-003-MAC-COGNITION
+    reality_name: SELFPI / MAC / SOVEREIGN COGNITION
+    moat_class: LOCALLY_CONTROLLED_COMPUTE_AND_COGNITION
+    root_identity: OURSELFMAC.local host identity; device attestation and custody evidence pending
+    infrastructure:
+      - Mac mini M4, 16 GB unified memory (reported)
+      - Ollama and local Qwen runtime
+      - Apple FoundationModels exploration
+      - Aider and Codex development workflows
+      - COGNITSELF_V0 provider contract
+    capabilities:
+      - local inference
+      - provider abstraction under development
+    authority_boundary: Model availability and provider selection do not grant authority to perform ecosystem actions.
+    evidence_refs:
+      - https://github.com/situaedmilly/ourself-core
+      - https://github.com/situaedmilly/ourself-agent-bridge-kernel
+    operational_status: PARTIAL
+    verification_state: UNVERIFIED
+    dependency_graph: [OURSELF-REALITY-004-OURSELFCONTROL]
+    known_gaps:
+      - unified runtime governance across cognition providers
+      - independently verified provider-routing and action-isolation tests
+    last_verified_at: null
+
+  - reality_id: OURSELF-REALITY-004-OURSELFCONTROL
+    reality_name: OURSELFCONTROL / SELFMOAT / TRUST PLANE
+    moat_class: IDENTITY_AUTHORITY_ADMISSION_AND_PROOF
+    root_identity: OSOS constitutional root; independent trust-root custodian and hardware signing root unresolved
+    infrastructure:
+      - capability membrane
+      - jurisdiction gate
+      - MODELSELFWITNESS and MCB forensic discovery
+      - admission and receipt contracts
+    capabilities:
+      - separate VALID, AUTHORIZED and ADMITTED states
+      - ACTION_ID_MATCH requirement
+      - authority-bound execution policy
+      - witness and evidence evaluation architecture
+    authority_boundary: Governing trust plane; must not self-certify independent verification. Independent evaluator and trust-root custody are required.
+    evidence_refs:
+      - https://github.com/situaedmilly/ourself-core
+      - https://github.com/situaedmilly/ourself-agent-bridge-kernel
+      - https://github.com/situaedmilly/self-protocol-suite
+    operational_status: PARTIAL
+    verification_state: UNVERIFIED
+    dependency_graph: [OURSELF-REALITY-006-MODELSELFWITNESS]
+    known_gaps:
+      - independent hardware signing root
+      - external end-to-end verification
+      - independently governed trust-root custody
+    last_verified_at: null
+
+  - reality_id: OURSELF-REALITY-005-AETHERNET
+    reality_name: AETHERNET / AGENT BRIDGE / SELFCOMM
+    moat_class: GOVERNED_INTEROPERABILITY_AND_DISTRIBUTED_COMMUNICATION
+    root_identity: OSOS-governed agent and endpoint identities; per-endpoint admission evidence required
+    infrastructure:
+      - Agent Bridge kernel
+      - Agent Bridge repository
+      - SELFCOMM-SIMPLE-V0.1
+      - ÆTHERBRIDGE / PIPEPORTAL
+      - GitHub webhook integration contracts
+      - CHAMBOXREALITY and GBTWEBHOOKS
+      - ActionGPT discovery and execution bridge contracts
+    capabilities:
+      - governed mission persistence and execution-integrity architecture
+      - controlled communication across foreign surfaces
+      - webhook and agent orchestration contracts
+    authority_boundary: Foreign systems remain outside OURSELF jurisdiction; each action requires explicit endpoint admission, scoped authority and a witnessable result.
+    evidence_refs:
+      - https://github.com/situaedmilly/ourself-agent-bridge-kernel
+      - https://github.com/situaedmilly/ourself-agent-bridge
+      - https://github.com/situaedmilly/self-communication
+      - https://github.com/situaedmilly/SELFCOMM-SIMPLE-V0.1
+      - https://github.com/situaedmilly/axiom-aethernet
+    operational_status: PARTIAL
+    verification_state: UNVERIFIED
+    dependency_graph: [OURSELF-REALITY-004-OURSELFCONTROL, OURSELF-REALITY-006-MODELSELFWITNESS]
+    known_gaps:
+      - foreign action endpoint configuration
+      - authenticated runtime execution against each admitted endpoint
+      - independently verified cross-system receipts
+    last_verified_at: null
+
+  - reality_id: OURSELF-REALITY-006-MODELSELFWITNESS
+    reality_name: MODELSELFWITNESS
+    moat_class: INDEPENDENT_EVIDENCE_AND_CONTINUITY
+    root_identity: Independent witness identity and custody model to be specified
+    infrastructure:
+      - witness/evidence evaluation contracts
+      - receipt ledger and forensic discovery paths
+    capabilities:
+      - evidence capture and evaluation (scope requires source and runtime verification)
+      - receipt correlation and continuity (scope requires source and runtime verification)
+    authority_boundary: Witness records observations; it cannot manufacture authority or equate a receipt with a successful external effect.
+    evidence_refs:
+      - https://github.com/situaedmilly/ourself-core
+      - https://github.com/situaedmilly/ourself-agent-bridge-kernel
+      - https://github.com/situaedmilly/self-communication
+    operational_status: DESIGNED
+    verification_state: UNVERIFIED
+    dependency_graph: [OURSELF-REALITY-004-OURSELFCONTROL, OURSELF-REALITY-005-AETHERNET]
+    known_gaps:
+      - independent witness custody and key lifecycle
+      - externally reproducible receipt verification
+      - effect verification separate from receipt issuance
+    last_verified_at: null
+
+initialization_notes:
+  - Records are provisional inventory entries derived from the supplied November 10 ecosystem synthesis; they are not a fresh source/runtime audit.
+  - Repository URLs are discovery pointers, not proof of implementation or operation.
+  - Reported device specifications and health-check findings require attached source receipts before status promotion.
+  - A future revision must attach immutable evidence identifiers, hashes, test commands, observed outputs, verifier identity, and verification timestamps.
