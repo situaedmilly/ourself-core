@@ -240,3 +240,11 @@ runtime_observation_snapshot:
     - Android evidence is from an Android 16 ARM64 emulator, not physical Android hardware.
     - Positive admission and externally witnessed foreign effects were not tested.
   promotion_rule: Runtime observations do not promote any reality to INDEPENDENTLY_VERIFIED; retain existing operational and verification statuses until external witness criteria pass.
+
+  cross_host_signature_verification:
+    status: PASS
+    verifier_host: OURSELFPIMAC
+    verifier_runtime: Python cryptography 43.0.0
+    evidence_digest_match: true
+    independent_attestation: false
+    note: Cryptographic verification on a second host proves signature portability and integrity, not independent key custody or independent evaluator governance.
