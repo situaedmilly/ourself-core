@@ -213,3 +213,30 @@ reciprocal_authority:
   current_witness_state: CONTRACT_ONLY_NO_ATTESTATIONS
   independence_state: NOT_ESTABLISHED
   runtime_verification_state: NOT_PERFORMED
+
+runtime_observation_snapshot:
+  evidence_id: OURSELF-SELFMOAT-RUNTIME-OBS-20261110-001
+  evidence_ref: docs/selfmoat/evidence/OURSELF-SELFMOAT-RUNTIME-OBS-20261110-001.json
+  detached_signature_ref: docs/selfmoat/evidence/OURSELF-SELFMOAT-RUNTIME-OBS-20261110-001.signature.json
+  observed_at: 2026-11-10T22:50:59Z
+  classification: HOST_SEPARATED_SELF_ATTESTATION
+  signature_verification: PASS_ON_SIGNING_HOST
+  independent_attestation: false
+  independent_key_custody: false
+  runtime_observations:
+    OURSELF-REALITY-001-SIRI-IPHONE: NOT_OBSERVED
+    OURSELF-REALITY-002-ANDROID-SELFPI: RUNTIME_OBSERVED_PARTIAL
+    OURSELF-REALITY-003-MAC-COGNITION: RUNTIME_OBSERVED_PARTIAL
+    OURSELF-REALITY-004-OURSELFCONTROL: NEGATIVE_AUTHORITY_PATH_OBSERVED
+    OURSELF-REALITY-005-AETHERNET: RUNTIME_OBSERVED_PARTIAL
+    OURSELF-REALITY-006-MODELSELFWITNESS: LOCAL_HARDWARE_KEY_ESTABLISHED_NOT_INDEPENDENT
+    OURSELFPIMAC-ESTATE: RUNTIME_OBSERVED_PARTIAL
+  blocking_findings:
+    - Registry author and Secure Enclave key custodian remain in the same founder/operator control domain.
+    - OURSELFPIMAC exposes no TPM device at /dev/tpm0 or /sys/class/tpm/tpm0.
+    - Pi root intake reports authority NONE, binding UNBOUND, signing DISABLED, upstream transport CONFIGURATION_REQUIRED.
+    - Mac-to-Pi HTTP probes to 10.0.0.108 timed out during observation.
+    - Siri/iPhone physical device invocation and push delivery were not tested.
+    - Android evidence is from an Android 16 ARM64 emulator, not physical Android hardware.
+    - Positive admission and externally witnessed foreign effects were not tested.
+  promotion_rule: Runtime observations do not promote any reality to INDEPENDENTLY_VERIFIED; retain existing operational and verification statuses until external witness criteria pass.
