@@ -1,0 +1,148 @@
+{
+  "evidence_id": "OURSELF-SELFMOAT-RUNTIME-OBS-20261110-001",
+  "observed_at": "2026-11-10T22:50:59Z",
+  "collection_method": "REMOTE_READ_ONLY_PROBES_FROM_AUTHORIZED_HOST_SESSIONS",
+  "attestation_class": "HOST_SEPARATED_SELF_ATTESTATION",
+  "independent_attestation": false,
+  "signer_custody": "OURSELFMAC.local Secure Enclave key; same founder/operator control domain as registry author",
+  "registry_ref": "situaedmilly/ourself-core@execution/chamboxreality-selfmoat-registry-v0.1",
+  "observations": [
+    {
+      "reality_id": "OURSELF-REALITY-001-SIRI-IPHONE",
+      "result": "NOT_OBSERVED",
+      "scope": "No physical iPhone or Siri end-to-end invocation tested in this run",
+      "gaps": [
+        "No iPhone-to-OURSELF invocation",
+        "No APNs push delivery",
+        "No credential issuance or off-network roundtrip"
+      ],
+      "reported_prior_signal": "User-supplied November 9 health-check reported zero push subscriptions; not independently re-queried"
+    },
+    {
+      "reality_id": "OURSELF-REALITY-002-ANDROID-SELFPI",
+      "result": "RUNTIME_OBSERVED_PARTIAL",
+      "host": "OURSELFMAC.local Android Emulator",
+      "facts": {
+        "emulator": "emulator-5554",
+        "device_model": "sdk_gphone64_arm64",
+        "abi": "arm64-v8a",
+        "android_release": "16",
+        "api_level": "36",
+        "build_fingerprint": "google/sdk_gphone64_arm64/emu64a:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys",
+        "app_package": "cloud.ourself.mobile.debug",
+        "app_version": "0.1.0-debug",
+        "app_process_present": true,
+        "top_resumed_activity": "cloud.ourself.mobile.MainActivity"
+      },
+      "gaps": [
+        "Emulator is not physical Android hardware",
+        "Verified boot state and hardware root not established",
+        "No complete Android-to-OURSELF authorized execution roundtrip"
+      ]
+    },
+    {
+      "reality_id": "OURSELF-REALITY-003-MAC-COGNITION",
+      "result": "RUNTIME_OBSERVED_PARTIAL",
+      "host": "OURSELFMAC.local",
+      "facts": {
+        "platform": "macOS 27.0.1",
+        "architecture": "arm64",
+        "ollama_version": "0.40.15",
+        "ollama_listener": "127.0.0.1:11434",
+        "secure_boot": "Full Security",
+        "sip": "Enabled",
+        "signed_system_volume": "Enabled"
+      },
+      "gaps": [
+        "Provider governance and action isolation not tested",
+        "No unified cognition-provider authorization proof"
+      ]
+    },
+    {
+      "reality_id": "OURSELF-REALITY-004-OURSELFCONTROL",
+      "result": "NEGATIVE_AUTHORITY_PATH_OBSERVED",
+      "facts": {
+        "pipeportal_port": 49320,
+        "http_status": 401,
+        "response": {
+          "error": "CALLER_UNBOUND",
+          "standing": "NOT_ADMITTED"
+        }
+      },
+      "gaps": [
+        "Positive authorized admission path not tested",
+        "No external trust-root custody",
+        "No independent evaluator"
+      ]
+    },
+    {
+      "reality_id": "OURSELF-REALITY-005-AETHERNET",
+      "result": "RUNTIME_OBSERVED_PARTIAL",
+      "host": "OURSELFMAC.local",
+      "facts": {
+        "agent_bridge_port": 3002,
+        "http_status": 200,
+        "response": {
+          "status": "alive",
+          "name": "ÆTHERNET Agent Bridge",
+          "pending_count": 0
+        }
+      },
+      "gaps": [
+        "No admitted foreign action executed",
+        "No cross-system effect receipt verified"
+      ]
+    },
+    {
+      "reality_id": "OURSELF-REALITY-006-MODELSELFWITNESS",
+      "result": "LOCAL_HARDWARE_KEY_ESTABLISHED_NOT_INDEPENDENT",
+      "host": "OURSELFMAC.local",
+      "facts": {
+        "secure_enclave_available": true,
+        "algorithm": "P-256 ECDSA",
+        "keychain_service": "org.ourself.selfmoat.witness",
+        "keychain_account": "SELFMOAT-WITNESS-SE-P256-V0.1",
+        "accessibility": "WhenUnlockedThisDeviceOnly",
+        "local_sign_verify": "PASS"
+      },
+      "gaps": [
+        "Same founder/operator custody domain",
+        "No independent external witness identity",
+        "Pi has no /dev/tpm0 and no TPM sysfs device",
+        "No independent external attestation"
+      ]
+    },
+    {
+      "reality_id": "OURSELFPIMAC-ESTATE",
+      "result": "RUNTIME_OBSERVED_PARTIAL",
+      "host": "OURSELFPIMAC",
+      "facts": {
+        "platform": "Debian GNU/Linux 13",
+        "architecture": "aarch64",
+        "kernel": "6.18.39+rpt-rpi-2712",
+        "intake_service": "selftosys-root-intake",
+        "intake_http_status": 200,
+        "intake_health": "OK",
+        "authority": "NONE",
+        "binding": "UNBOUND",
+        "signing": "DISABLED",
+        "upstream_transport": "CONFIGURATION_REQUIRED",
+        "ollama_version": "0.34.1",
+        "ollama_listener": "127.0.0.1:11434",
+        "adb_devices": 0
+      },
+      "gaps": [
+        "TPM device absent",
+        "Root intake has no signing and no authority binding",
+        "Mac-to-Pi HTTP probes timed out",
+        "No independently witnessed cross-host receipt"
+      ]
+    }
+  ],
+  "host_security_observations": {
+    "mac_identity_store": "No valid code-signing identities found by security find-identity -v -p codesigning",
+    "pi_tpm": "ABSENT",
+    "mac_secure_enclave": "AVAILABLE"
+  },
+  "conclusion": "Live runtime observations now exist for selected Mac services, Android emulator app, Mac local cognition, Pi local cognition and Pi root-intake service. These are partial operational observations, not full capability proofs. A hardware-backed Mac witness key is provisioned and self-tested. Independent key custody and independent attestation remain NOT ESTABLISHED."
+}
