@@ -1,15 +1,22 @@
 {
-  "algorithm" : "P-256 ECDSA DER",
-  "attestation_class" : "HOST_SEPARATED_SELF_ATTESTATION",
-  "evidence_id" : "OURSELF-SELFMOAT-RUNTIME-OBS-20261110-001",
-  "evidence_sha256" : "340e8c563c572ef3efa286306915742a01ccf3774e6485012fa86ad66db31429",
-  "independence_limitation" : "Signer and registry author share the same founder\/operator control domain; this is not an independent attestation.",
-  "independent_attestation" : false,
-  "key_custody" : "SecureEnclave + WhenUnlockedThisDeviceOnly Keychain item",
-  "local_signature_verification" : "PASS",
-  "public_key_hex" : "d5ddda37aac00d3a682a1d855dda70b745df603c95437a077e19583a0075fcf64304dcace85c13edcb9d83c10c6c07ca8139a7669cd844b9f017a6353c3b54f1",
-  "signature_der_base64" : "MEUCIF3kpS8YcvnIF5Tu9u7bWo6Ixn6NyQ0Doe7jBDUKbDfAAiEA4QOr0idS8Xk\/s0+0YrmT085J8yb44Zl5HBxzzAzsPps=",
-  "signer_host" : "OURSELFMAC.local"
+  "algorithm": "P-256 ECDSA DER",
+  "attestation_class": "HOST_SEPARATED_SELF_ATTESTATION",
+  "evidence_id": "OURSELF-SELFMOAT-RUNTIME-OBS-20261110-001",
+  "evidence_sha256": "340e8c563c572ef3efa286306915742a01ccf3774e6485012fa86ad66db31429",
+  "independence_limitation": "Signer and registry author share the same founder/operator control domain; this is not an independent attestation.",
+  "independent_attestation": false,
+  "key_custody": "SecureEnclave + WhenUnlockedThisDeviceOnly Keychain item",
+  "local_signature_verification": "PASS",
+  "public_key_hex": "d5ddda37aac00d3a682a1d855dda70b745df603c95437a077e19583a0075fcf64304dcace85c13edcb9d83c10c6c07ca8139a7669cd844b9f017a6353c3b54f1",
+  "signature_der_base64": "MEUCIF3kpS8YcvnIF5Tu9u7bWo6Ixn6NyQ0Doe7jBDUKbDfAAiEA4QOr0idS8Xk/s0+0YrmT085J8yb44Zl5HBxzzAzsPps=",
+  "signer_host": "OURSELFMAC.local",
+  "cross_host_verification": {
+    "status": "PASS",
+    "verifier_host": "OURSELFPIMAC",
+    "verifier_runtime": "Python cryptography 43.0.0",
+    "verification_method": "P-256 ECDSA SHA-256 detached signature verification",
+    "evidence_digest_match": true,
+    "independent_attestation": false,
+    "limitation": "Cryptographic verification on a second host does not establish independent key custody or independent evaluator governance."
+  }
 }
-
-[executed on device: OURSELFMAC.local (6aa04271-1f06-4c6b-a774-71d64812dc7c)]
