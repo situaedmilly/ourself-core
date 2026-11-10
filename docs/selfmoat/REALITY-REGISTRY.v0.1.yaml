@@ -199,3 +199,17 @@ initialization_notes:
   - Repository URLs are discovery pointers, not proof of implementation or operation.
   - Reported device specifications and health-check findings require attached source receipts before status promotion.
   - A future revision must attach immutable evidence identifiers, hashes, test commands, observed outputs, verifier identity, and verification timestamps.
+
+reciprocal_authority:
+  protocol: docs/selfmoat/RECIPROCAL-AUTHORITY-PROTOCOL.v0.1.md
+  witnessed_estate_contract: docs/selfmoat/WITNESSED-ESTATE-RECORD.v0.1.yaml
+  conformance_cases: docs/selfmoat/RECIPROCAL-CONFORMANCE-CASES.v0.1.md
+  relationship: RECIPROCAL_NON_EQUIVALENT_AUTHORITY
+  registry_can: [DECLARE, DEFINE_CRITERIA, REQUEST_VERIFICATION, CHALLENGE_ATTESTATION]
+  witness_can: [OBSERVE, PRESERVE_EVIDENCE, EVALUATE, ATTEST, CHALLENGE_DECLARATION]
+  neither_can: [SELF_CERTIFY_INDEPENDENCE, GRANT_EXECUTION_AUTHORITY_BY_RECEIPT]
+  execution_authority: SEPARATE_OSOS_ADMISSION_GATE
+  current_registry_state: DRAFT
+  current_witness_state: CONTRACT_ONLY_NO_ATTESTATIONS
+  independence_state: NOT_ESTABLISHED
+  runtime_verification_state: NOT_PERFORMED
