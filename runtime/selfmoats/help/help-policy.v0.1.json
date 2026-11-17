@@ -1,0 +1,27 @@
+{
+  "schema_version": "OURSELF.HELPMOAT.POLICY.v0.1",
+  "default": "DENY",
+  "model_authority": false,
+  "proposal_is_authorization": false,
+  "identity_proof_is_execution_authority": false,
+  "permitted_help_actions": {
+    "EXPLAIN": "HELP_ONLY",
+    "SUMMARIZE": "HELP_ONLY",
+    "DRAFT": "HELP_ONLY",
+    "PROPOSE": "PROPOSAL_ONLY",
+    "INSPECT": "READ_ONLY"
+  },
+  "denied_effect_actions": [
+    "EXECUTE", "MUTATE", "DELETE", "NETWORK", "CREDENTIAL_ACCESS",
+    "IDENTITY_ENROLL", "AUTHORITY_GRANT", "BROKER_ACTUATION", "BOOT", "RESTORE"
+  ],
+  "invariants": {
+    "model_output_cannot_self_authorize": true,
+    "retrieved_content_is_untrusted_data": true,
+    "proposal_is_not_admission": true,
+    "admission_is_not_actuation": true,
+    "identity_is_not_authority": true,
+    "effect_requires_separate_execution_membrane": true,
+    "receipt_does_not_authorize": true
+  }
+}

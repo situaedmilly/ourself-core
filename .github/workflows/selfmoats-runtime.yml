@@ -1,0 +1,40 @@
+name: SELFMOAT Runtime Verification
+
+on:
+  pull_request:
+    paths:
+      - "runtime/selfmoats/**"
+      - "scripts/test-selfmoats.sh"
+      - ".github/workflows/selfmoats-runtime.yml"
+  push:
+    paths:
+      - "runtime/selfmoats/**"
+      - "scripts/test-selfmoats.sh"
+      - ".github/workflows/selfmoats-runtime.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  selfmoat-runtime:
+    runs-on: macos-14
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run identity and help moat tests
+        run: ./scripts/test-selfmoats.sh
+
+      - name: Compile Secure Enclave helper
+        run: swiftc runtime/selfmoats/identity/secure-enclave-founder-key.swift -o /tmp/ourself-founder-key
+
+      - name: Validate JavaScript syntax and JSON documents
+        run: |
+          node --check runtime/selfmoats/identity/identity-moat.v0.1.mjs
+          node --check runtime/selfmoats/help/help-moat.v0.1.mjs
+          node -e "for (const p of ['runtime/selfmoats/identity/identity-moat.v0.1.schema.json','runtime/selfmoats/help/help-request.v0.1.schema.json','runtime/selfmoats/help/help-policy.v0.1.json']) JSON.parse(require('fs').readFileSync(p)); console.log('JSON_PARSE=PASS')"
