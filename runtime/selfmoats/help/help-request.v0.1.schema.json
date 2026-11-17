@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ourself.invalid/schemas/help-request.v0.1.schema.json",
+  "title": "OURSELF Help Moat Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "requester", "subject", "action", "input_ref"],
+  "properties": {
+    "schema_version": { "const": "OURSELF.HELPMOAT.REQUEST.v0.1" },
+    "request_id": { "type": "string", "minLength": 1 },
+    "requester": { "type": "string", "minLength": 1 },
+    "subject": { "type": "string", "minLength": 1 },
+    "action": { "enum": ["EXPLAIN", "SUMMARIZE", "DRAFT", "PROPOSE", "INSPECT", "EXECUTE", "MUTATE", "DELETE", "NETWORK", "CREDENTIAL_ACCESS", "IDENTITY_ENROLL", "AUTHORITY_GRANT", "BROKER_ACTUATION", "BOOT", "RESTORE"] },
+    "input_ref": { "type": ["string", "null"] }
+  }
+}

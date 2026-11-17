@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ourself.invalid/schemas/identity-moat.v0.1.schema.json",
+  "title": "OURSELF Identity Moat Identity Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "identity_id", "principal_id", "key_algorithm", "public_key_spki_pem", "public_key_sha256", "authenticator", "state", "identity_attestation", "authority", "created_at"],
+  "properties": {
+    "schema_version": { "const": "OURSELF.IDENTITYMOAT.v0.1" },
+    "identity_id": { "type": "string", "minLength": 1 },
+    "principal_id": { "type": "string", "minLength": 1 },
+    "key_algorithm": { "const": "ECDSA_P256_SHA256" },
+    "public_key_spki_pem": { "type": "string", "pattern": "^-----BEGIN PUBLIC KEY-----" },
+    "public_key_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "authenticator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "hardware_backed", "user_presence_required", "private_key_exportable"],
+      "properties": {
+        "class": { "type": "string", "minLength": 1 },
+        "hardware_backed": { "type": "boolean" },
+        "user_presence_required": { "const": true },
+        "private_key_exportable": { "const": false }
+      }
+    },
+    "state": { "enum": ["PENDING", "ENROLLED", "REVOKED"] },
+    "identity_attestation": { "enum": ["UNVERIFIED", "INDEPENDENTLY_ATTESTED"] },
+    "authority": { "const": false },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}
