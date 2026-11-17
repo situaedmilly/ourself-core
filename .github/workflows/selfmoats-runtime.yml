@@ -7,8 +7,6 @@ on:
       - "scripts/test-selfmoats.sh"
       - ".github/workflows/selfmoats-runtime.yml"
   push:
-    branches:
-      - main
     paths:
       - "runtime/selfmoats/**"
       - "scripts/test-selfmoats.sh"
