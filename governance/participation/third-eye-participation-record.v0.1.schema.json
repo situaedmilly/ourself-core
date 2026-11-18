@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ourself.invalid/contracts/third-eye-participation-record.v0.1.schema.json",
+  "title": "OURSELF Third Eye Participation Record v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "cycle_id",
+    "domain",
+    "target_system",
+    "observation",
+    "evidence",
+    "interpretation",
+    "design",
+    "proposed_action",
+    "scope",
+    "authority",
+    "expected_postconditions"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "OURSELF-THIRD-EYE-PARTICIPATION-v0.1"
+    },
+    "cycle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_system": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim",
+          "classification"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "enum": [
+              "DECLARED",
+              "OBSERVED",
+              "VERIFIED",
+              "INFERRED",
+              "UNKNOWN"
+            ]
+          },
+          "source_ref": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "interpretation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "assumptions",
+        "alternatives",
+        "confidence"
+      ],
+      "properties": {
+        "statement": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "desired_outcome",
+        "selected_option",
+        "constraints"
+      ],
+      "properties": {
+        "desired_outcome": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selected_option": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proposed_action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "principal_id",
+        "source",
+        "granted_at",
+        "expires_at",
+        "nonce",
+        "revocation_ref",
+        "credential_ref"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NONE",
+            "HUMAN_GRANTED",
+            "SYSTEM_GRANTED"
+          ]
+        },
+        "principal_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "granted_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "nonce": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "revocation_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "credential_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "expected_postconditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "predicate_id",
+          "description"
+        ],
+        "properties": {
+          "predicate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "witness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "predicate_results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "predicate_id",
+              "result"
+            ],
+            "properties": {
+              "predicate_id": {
+                "type": "string"
+              },
+              "result": {
+                "enum": [
+                  "PASS",
+                  "FAIL",
+                  "INDETERMINATE"
+                ]
+              },
+              "evidence_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
